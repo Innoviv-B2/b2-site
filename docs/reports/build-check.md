@@ -3,7 +3,7 @@
 21 pages.
 
 ## / — `home.html`
-- 856 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 11 images · 18 internal links
+- 842 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 18 internal links
 
 ## /race-with-us/ — `race-with-us.html`
 - 1442 words · H1: "Arrive and drive a Spec Racer Ford." · 8 images · 11 internal links
@@ -66,7 +66,8 @@
 - 631 words · H1: "The B2 Motorsports Driver Development Program" · 2 images · 7 internal links
 
 ## /simulator-and-sim-training/ — `sim-training.html`
-- 493 words · H1: "Racing simulator training, before you load the trailer" · 1 images · 5 internal links
+- 722 words · H1: "Racing simulator training and coaching, from people who race." · 2 images · 8 internal links
+- warn: description is 165 chars (aim 140–159)
 
 ## /product-development/ — `product-development.html`
 - 472 words · H1: "Custom race car parts, built by racers" · 3 images · 4 internal links
@@ -75,4 +76,4 @@
 - 2448 words · H1: "Privacy Policy" · 1 images · 1 internal links
 - warn: title is 31 chars (aim 50–65)
 
-**0 errors, 10 warnings.**
+**0 errors, 11 warnings.**
