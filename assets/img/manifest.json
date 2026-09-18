@@ -328,5 +328,16 @@
     "subject": "Small Facebook photo of the shop bay with car 58 and the purple wall alignment equipment.",
     "suggestedAlt": "B2 Motorsports shop bay with purple wall and Spec Racer Ford car 58",
     "suggestedUse": "any"
+  },
+  {
+    "file": "sim-rig-shop.jpg",
+    "webp": "sim-rig-shop.webp",
+    "small": "sim-rig-shop-800.jpg",
+    "width": 1600,
+    "height": 900,
+    "source": "OneDrive zip: 20230418_105218.jpg, cropped to the simulator (upscaled ~2x)",
+    "subject": "The B2 racing simulator rig in the shop: seat, wheel, pedals and monitor by the members lounge.",
+    "suggestedAlt": "The B2 Motorsports racing simulator in the Huntsville shop",
+    "suggestedUse": "sim"
   }
 ]

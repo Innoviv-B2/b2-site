@@ -66,7 +66,7 @@
 - 631 words · H1: "The B2 Motorsports Driver Development Program" · 2 images · 7 internal links
 
 ## /simulator-and-sim-training/ — `sim-training.html`
-- 722 words · H1: "Racing simulator training and coaching, from people who race." · 2 images · 8 internal links
+- 717 words · H1: "Racing simulator training and coaching, from people who race." · 2 images · 8 internal links
 
 ## /product-development/ — `product-development.html`
 - 472 words · H1: "Custom race car parts, built by racers" · 3 images · 4 internal links
