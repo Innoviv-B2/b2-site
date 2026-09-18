@@ -3,7 +3,7 @@
 21 pages.
 
 ## / — `home.html`
-- 841 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 11 images · 18 internal links
+- 856 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 11 images · 18 internal links
 
 ## /race-with-us/ — `race-with-us.html`
 - 1442 words · H1: "Arrive and drive a Spec Racer Ford." · 8 images · 11 internal links
@@ -60,8 +60,7 @@
 - warn: keyphrase not in description
 
 ## /media-packages/ — `media-packages.html`
-- 358 words · H1: "A race weekend video package to take home with you." · 2 images · 3 internal links
-- warn: keyphrase not in description
+- 524 words · H1: "Club racing, on camera. Amateur Racer on YouTube." · 3 images · 3 internal links
 
 ## /driver-development-program/ — `driver-development.html`
 - 631 words · H1: "The B2 Motorsports Driver Development Program" · 2 images · 7 internal links
@@ -76,4 +75,4 @@
 - 2448 words · H1: "Privacy Policy" · 1 images · 1 internal links
 - warn: title is 31 chars (aim 50–65)
 
-**0 errors, 11 warnings.**
+**0 errors, 10 warnings.**
