@@ -1,0 +1,571 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>B2 Arrive & Drive Draft</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600&family=Roboto:wght@400;500&family=Saira:ital,wght@0,400;0,600;1,800;1,900&family=Space+Mono:wght@400;700&display=swap">
+<style>
+  /* ---------- review chrome (not part of the site) ---------- */
+  body { margin:0; background:#141418; color:#E8E6EF; }
+  .bar { position:sticky; top:0; z-index:50; display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+         padding:10px 16px; background:#1D1C24; border-bottom:1px solid #2E2D38;
+         font:12px/1.4 "Space Mono", ui-monospace, Menlo, monospace; }
+  .bar .t { font-weight:700; letter-spacing:.5px; }
+  .bar .d { color:#9A97AB; }
+  .seg { display:inline-flex; border:1px solid #3A3946; border-radius:4px; overflow:hidden; }
+  .seg button { font:inherit; background:transparent; color:#E8E6EF; border:0; padding:6px 12px; cursor:pointer; }
+  .seg button + button { border-left:1px solid #3A3946; }
+  .seg button[aria-pressed="true"] { background:#E8E6EF; color:#141418; }
+  .bar label { display:inline-flex; gap:6px; align-items:center; cursor:pointer; }
+  .bar .sp { flex:1; }
+  @media (max-width:760px) { .bar .sp, .bar .d { display:none; } }
+
+  /* ---------- the two systems, as tokens (same set as the homepage mockup) ---------- */
+  .site { --maxw:1200px; font-family:var(--body); color:var(--fg); background:var(--g); font-size:17px; line-height:1.6;
+          -webkit-font-smoothing:antialiased; }
+  .site[data-brand="kit"] {
+    --g:#FFFFFF; --g-alt:#F7F7F7; --dark:#252525;
+    --fg:#252525; --fg-on-dark:#FFFFFF; --muted:#6B6C6C; --muted-on-dark:#C4C4C4; --edge:#E0E0E0; --edge-on-dark:#3B3B3B;
+    --accent:#FE7429; --accent-fg:#FFFFFF; --accent-hover:transparent; --hi:#FE7429; --link:#B34A0F;
+    --display:"Lato", system-ui, sans-serif; --head:"Lato", system-ui, sans-serif;
+    --body:"Roboto", system-ui, sans-serif; --label:"Lato", system-ui, sans-serif;
+    --radius:0px; --card-radius:0px; --skew:0deg; --rule-skew:0deg;
+    --hdr-bg:#FFFFFF; --hdr-fg:#252525; --hdr-edge:#E0E0E0;
+    --card-bg:#FFFFFF; --card-edge:#E0E0E0; --raised:#F7F7F7;
+    --dark-card:#2E2E2E; --dark-edge:#3C3C3C;
+    --cta-bg:#FE7429; --cta-fg:#FFFFFF;
+    --foot-bg:#252525; --foot-fg:#FFFFFF; --foot-muted:#C4C4C4; --foot-edge:#3B3B3B;
+    --input-bg:#FFFFFF; --input-edge:#B9B9B9;
+  }
+  .site[data-brand="brand"] {
+    --g:#0F0E13; --g-alt:#12101B; --dark:#0F0E13;
+    --fg:#F4F3F7; --fg-on-dark:#F4F3F7; --muted:#9A93B8; --muted-on-dark:#9A93B8; --edge:#2E2743; --edge-on-dark:#2E2743;
+    --accent:#7C2FF0; --accent-fg:#F4F3F7; --accent-hover:#4B18A8; --hi:#FF6A00; --link:#B48CFF;
+    --display:"Saira", system-ui, sans-serif; --head:"Saira", system-ui, sans-serif;
+    --body:"Saira", system-ui, sans-serif; --label:"Space Mono", ui-monospace, Menlo, monospace;
+    --radius:3px; --card-radius:6px; --skew:-6deg; --rule-skew:-18deg;
+    --hdr-bg:#0F0E13; --hdr-fg:#F4F3F7; --hdr-edge:#241F35;
+    --card-bg:#12101B; --card-edge:#2E2743; --raised:#12101B;
+    --dark-card:#12101B; --dark-edge:#2E2743;
+    --cta-bg:linear-gradient(120deg, #4B18A8 0%, #7C2FF0 100%); --cta-fg:#F4F3F7;
+    --foot-bg:#0F0E13; --foot-fg:#F4F3F7; --foot-muted:#9A93B8; --foot-edge:#241F35;
+    --input-bg:#0F0E13; --input-edge:#2E2743;
+  }
+  .site *, .site *::before, .site *::after { box-sizing:border-box; }
+  .site a { color:inherit; }
+  .site a:focus-visible, .site button:focus-visible, .site input:focus-visible { outline:2px solid var(--hi); outline-offset:2px; }
+  .wrap { max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+  .sec { padding-block:72px; }
+  .sec.alt { background:var(--g-alt); }
+  .site p { margin:0; }
+  .site table { border-collapse:collapse; }
+
+  /* type */
+  .site h1, .site h2, .site h3 { font-family:var(--head); font-weight:600; margin:0; text-wrap:balance; }
+  .site h1 { font-size:clamp(38px, 5.4vw, 64px); line-height:1.06; }
+  .site h2 { font-size:clamp(28px, 3.4vw, 40px); line-height:1.15; }
+  .site h3 { font-size:21px; line-height:1.3; }
+  .site[data-brand="brand"] h1 { font-weight:900; font-style:italic; letter-spacing:-1.5px; line-height:.94; font-size:clamp(44px, 6.4vw, 78px); }
+  .site[data-brand="brand"] h2 { font-weight:800; font-style:italic; text-transform:uppercase; letter-spacing:-.3px; line-height:1.02; }
+  .site[data-brand="brand"] h3 { font-weight:800; font-style:italic; text-transform:uppercase; letter-spacing:0; font-size:19px; }
+  .site[data-brand="brand"] h1 em { font-style:inherit; color:var(--hi); }
+  .site[data-brand="kit"] h1 em { font-style:normal; color:var(--hi); }
+  .label { font-family:var(--label); font-size:13px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; margin:0 0 14px; color:var(--hi); }
+  .site[data-brand="brand"] .label { font-size:11px; font-weight:400; letter-spacing:2.5px; }
+  .lede { font-size:clamp(17px, 1.5vw, 20px); line-height:1.55; max-width:36em; }
+  .sub { max-width:40em; color:var(--muted); margin-top:14px; }
+  .head { margin-bottom:40px; }
+  .num { font-variant-numeric:tabular-nums; }
+
+  /* buttons */
+  .btn { display:inline-block; font-family:var(--head); font-weight:600; font-size:16px; line-height:1.2; padding:15px 40px;
+         border:2px solid var(--accent); background:var(--accent); color:var(--accent-fg); text-decoration:none;
+         border-radius:var(--radius); transform:skewX(var(--skew)); transition:background .15s, color .15s, border-color .15s; cursor:pointer; }
+  .btn > span { display:inline-block; transform:skewX(calc(-1 * var(--skew))); }
+  .btn.ghost { background:transparent; color:currentColor; border-color:currentColor; }
+  .site[data-brand="kit"] .btn:hover { background:transparent; color:var(--accent); border-color:var(--accent); }
+  .site[data-brand="kit"] .on-dark .btn.ghost:hover { color:var(--accent); border-color:var(--accent); }
+  .site[data-brand="brand"] .btn { font-weight:800; font-style:italic; text-transform:uppercase; letter-spacing:.3px; padding:14px 26px; }
+  .site[data-brand="brand"] .btn > span::after { content:" \2192"; }
+  .site[data-brand="brand"] .btn:hover { background:var(--accent-hover); border-color:var(--accent-hover); color:var(--accent-fg); }
+  .site[data-brand="brand"] .btn.ghost { background:transparent; border-color:var(--accent); color:var(--fg); }
+  .site[data-brand="brand"] .btn.ghost:hover { background:var(--accent); border-color:var(--accent); }
+  .btn.small { padding:10px 22px; font-size:14px; }
+  .btns { display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+  .more { font-family:var(--head); font-weight:600; text-decoration:none; color:var(--link); }
+  .site[data-brand="brand"] .more { font-style:italic; font-weight:800; text-transform:uppercase; font-size:14px; letter-spacing:.4px; }
+  .more::after { content:" \2192"; }
+
+  /* review flags */
+  .flag { display:inline-block; font:700 10px/1 "Space Mono", ui-monospace, monospace; letter-spacing:1px; text-transform:uppercase;
+          color:#E0A100; border:1px solid #E0A100; border-radius:3px; padding:3px 6px; margin-left:8px; vertical-align:middle; white-space:nowrap; }
+  .site:not(.flags) .flag { display:none; }
+
+  /* ---------- header ---------- */
+  .hdr { background:var(--hdr-bg); color:var(--hdr-fg); border-bottom:1px solid var(--hdr-edge); }
+  .hdr-in { display:flex; align-items:center; gap:28px; min-height:76px; }
+  .logo { display:flex; align-items:center; text-decoration:none; flex-shrink:0; }
+  .logo img { height:40px; width:auto; display:block; }
+  .lockup { display:flex; align-items:center; gap:12px; }
+  .lockup .mark { font-family:"Saira", system-ui, sans-serif; font-style:italic; font-weight:900; font-size:34px; line-height:.8; letter-spacing:-2px; }
+  .lockup .mark i { color:var(--accent); font-style:inherit; }
+  .lockup .slash { width:6px; height:36px; background:var(--hi); transform:skewX(-18deg); }
+  .lockup .word { font-family:"Saira", system-ui, sans-serif; font-style:italic; font-weight:800; font-size:12px; letter-spacing:4px; }
+  .site[data-brand="kit"] .lockup { display:none; }
+  .site[data-brand="brand"] .logo img { display:none; }
+  .nav { display:flex; gap:4px; margin-left:auto; }
+  .nav a { text-decoration:none; padding:10px 14px; font-family:var(--head); font-weight:600; font-size:15px; }
+  .nav a.here { color:var(--hi); }
+  .site[data-brand="brand"] .nav a { font-weight:800; font-style:italic; text-transform:uppercase; font-size:14px; letter-spacing:.3px; }
+  .nav a:hover { color:var(--hi); }
+  .hdr-cta { display:flex; align-items:center; gap:16px; flex-shrink:0; }
+  .tel { text-decoration:none; font-family:var(--label); font-weight:700; font-size:14px; letter-spacing:.5px; font-variant-numeric:tabular-nums; }
+  .menu { display:none; font:inherit; background:transparent; border:2px solid currentColor; color:inherit; padding:8px 14px; border-radius:var(--radius); cursor:pointer; }
+
+  /* ---------- hero ---------- */
+  .hero { position:relative; overflow:hidden; background:var(--dark); color:var(--fg-on-dark); isolation:isolate; }
+  .hero-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 55%; z-index:-2; }
+  .hero-shade { position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgba(20,20,22,.9) 0%, rgba(20,20,22,.72) 55%, rgba(20,20,22,.3) 100%); }
+  .site[data-brand="brand"] .hero-shade { background:linear-gradient(90deg, rgba(15,14,19,.95) 0%, rgba(15,14,19,.8) 52%, rgba(76,24,168,.35) 100%); }
+  .hero-in { padding-block:96px 88px; }
+  .hero h1 { max-width:11em; margin-bottom:22px; }
+  .hero .lede { margin-bottom:34px; color:rgba(255,255,255,.9); }
+  .site[data-brand="brand"] .hero .lede { color:#CFC7E8; }
+  .hero .tagline { font-family:var(--display); font-weight:600; font-style:italic; font-size:clamp(19px, 2.1vw, 26px); line-height:1.2; color:var(--hi); margin:0 0 20px; }
+  .site[data-brand="brand"] .hero .tagline { font-weight:800; letter-spacing:-.3px; }
+
+  /* ---------- included ---------- */
+  .incl .wrap { display:grid; grid-template-columns:minmax(0, 7fr) minmax(0, 5fr); gap:48px; align-items:start; }
+  .check { list-style:none; margin:32px 0 0; padding:0; display:grid; gap:0; border-top:1px solid var(--edge); }
+  .check li { display:grid; grid-template-columns:28px 150px 1fr; gap:16px; padding:16px 0; border-bottom:1px solid var(--edge); align-items:start; }
+  .check .tick { font-family:var(--label); font-weight:700; color:var(--hi); font-size:16px; line-height:1.4; }
+  .check .k { font-family:var(--head); font-weight:600; font-size:16px; line-height:1.4; }
+  .site[data-brand="brand"] .check .k { font-weight:800; font-style:italic; text-transform:uppercase; font-size:14px; letter-spacing:.3px; }
+  .check p { color:var(--muted); font-size:15.5px; }
+  .check li.you .tick { color:var(--muted); }
+  .incl figure { margin:0; position:sticky; top:72px; }
+  .incl img { width:100%; max-width:100%; aspect-ratio:4/5; object-fit:cover; object-position:center; border-radius:var(--card-radius); display:block; }
+  .incl figcaption { font-family:var(--label); font-size:12px; color:var(--muted); margin-top:10px; letter-spacing:.06em; }
+  .site[data-brand="brand"] .incl figcaption { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; }
+
+  /* ---------- cost example ---------- */
+  .cost { border-block:1px solid var(--edge); }
+  .cost .wrap { display:grid; grid-template-columns:minmax(0, 5fr) minmax(0, 7fr); gap:48px; align-items:start; }
+  .big { font-family:var(--display); font-weight:600; font-size:clamp(64px, 9vw, 112px); line-height:.95; color:var(--hi); letter-spacing:-2px; font-variant-numeric:tabular-nums; }
+  .site[data-brand="brand"] .big { font-weight:900; font-style:italic; color:var(--accent); letter-spacing:-4px; }
+  .site[data-brand="brand"] .big .tilde { color:var(--hi); }
+  .big + .l { color:var(--muted); font-family:var(--label); font-size:14px; margin-top:10px; max-width:22em; }
+  .site[data-brand="brand"] .big + .l { font-size:11px; letter-spacing:2px; text-transform:uppercase; line-height:1.7; }
+  .cost h2 { margin-bottom:16px; }
+  .cost .body { color:var(--muted); margin-bottom:22px; max-width:38em; }
+  .lines { width:100%; font-size:15.5px; margin:0 0 22px; }
+  .lines th, .lines td { text-align:left; padding:11px 0; border-bottom:1px solid var(--edge); vertical-align:top; }
+  .lines th { font-family:var(--label); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+  .site[data-brand="brand"] .lines th { font-size:10.5px; letter-spacing:2px; font-weight:400; }
+  .lines td.amt, .lines th.amt { text-align:right; font-variant-numeric:tabular-nums; padding-left:24px; white-space:nowrap; }
+  .lines td.what, .lines th:last-child { color:var(--muted); padding-left:48px; font-size:14.5px; }
+  .lines tr.total td { border-bottom:0; border-top:2px solid var(--fg); font-family:var(--head); font-weight:600; font-size:18px; padding-top:14px; }
+  .site[data-brand="brand"] .lines tr.total td { font-weight:800; font-style:italic; text-transform:uppercase; }
+  .lines tr.total td.amt { color:var(--hi); }
+  .site[data-brand="brand"] .lines tr.total td.amt { color:var(--accent); }
+  .est { font:700 9px/1 var(--label); letter-spacing:1px; color:var(--hi); border:1px solid currentColor; border-radius:2px; padding:2px 4px; margin-left:6px; vertical-align:middle; }
+  .cost .after { color:var(--muted); font-size:15.5px; max-width:38em; margin-bottom:24px; }
+
+  /* ---------- fit ---------- */
+  .fit .wrap { display:grid; grid-template-columns:minmax(0, 6fr) minmax(0, 6fr); gap:48px; align-items:start; }
+  .fit .body { color:var(--muted); margin:18px 0 26px; max-width:34em; }
+  .form { background:var(--card-bg); border:1px solid var(--card-edge); border-radius:var(--card-radius); padding:26px 26px 24px; }
+  .form .fh { display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:16px; }
+  .form .fh h3 { font-size:18px; }
+  .form .fh .src { font-family:var(--label); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+  .fields { display:grid; grid-template-columns:1fr 1fr; gap:14px 16px; }
+  .fields label { display:grid; gap:6px; font-family:var(--label); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  .site[data-brand="brand"] .fields label { font-size:10.5px; letter-spacing:1.5px; }
+  .fields input { font:16px var(--body); color:var(--fg); background:var(--input-bg); border:1px solid var(--input-edge); border-radius:var(--radius); padding:11px 12px; min-width:0; width:100%; }
+  .fields .full { grid-column:1 / -1; }
+  .form .btn { margin-top:16px; }
+  .form .fine { font-size:13px; color:var(--muted); margin-top:14px; }
+  .strip { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-top:44px; }
+  .strip figure { margin:0; }
+  .strip img { width:100%; max-width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:calc(var(--card-radius) - 2px); display:block; background:#fff; }
+  .strip figcaption { font-family:var(--head); font-weight:600; font-size:14px; margin-top:8px; }
+  .site[data-brand="brand"] .strip figcaption { font-weight:800; font-style:italic; text-transform:uppercase; font-size:12.5px; letter-spacing:.3px; }
+
+  /* ---------- timeline ---------- */
+  .day .wrap { display:grid; grid-template-columns:minmax(0, 7fr) minmax(0, 5fr); gap:48px; align-items:start; }
+  .rail { list-style:none; margin:0; padding:0; display:grid; }
+  .rail li { display:grid; grid-template-columns:150px 1fr; gap:20px; padding:18px 0; border-bottom:1px solid var(--edge); position:relative; }
+  .rail li:first-child { border-top:1px solid var(--edge); }
+  .rail .t { font-family:var(--label); font-weight:700; font-size:15px; letter-spacing:.06em; color:var(--hi); font-variant-numeric:tabular-nums; line-height:1.5; }
+  .site[data-brand="brand"] .rail .t { font-size:13px; letter-spacing:1.5px; text-transform:uppercase; }
+  .rail p { font-size:15.5px; color:var(--muted); }
+  .rail p b { color:var(--fg); font-weight:600; }
+  .day figure { margin:0; }
+  .day img { width:100%; max-width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:var(--card-radius); display:block; }
+  .day figcaption { font-family:var(--label); font-size:12px; color:var(--muted); margin-top:10px; letter-spacing:.06em; }
+  .site[data-brand="brand"] .day figcaption { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; }
+  .day .sub { margin-bottom:28px; }
+
+  /* ---------- same faces ---------- */
+  .faces .wrap { display:grid; grid-template-columns:minmax(0, 5fr) minmax(0, 7fr); gap:48px; align-items:center; }
+  .faces img { width:100%; max-width:100%; aspect-ratio:4/5; object-fit:cover; object-position:top center; border-radius:var(--card-radius); display:block; }
+  .faces .body { color:var(--muted); margin:18px 0 22px; max-width:36em; }
+
+  /* ---------- booking ---------- */
+  .book { background:var(--dark); color:var(--fg-on-dark); }
+  .steps { display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; }
+  .step { background:var(--dark-card); border:1px solid var(--dark-edge); border-radius:var(--card-radius); padding:26px 24px 24px; display:flex; flex-direction:column; gap:10px; }
+  .site[data-brand="kit"] .step { border-top:4px solid var(--hi); }
+  .step .n { font-family:var(--label); font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--hi); font-weight:700; }
+  .site[data-brand="brand"] .step .n { font-size:11px; letter-spacing:2.5px; font-weight:400; }
+  .step p { color:var(--muted-on-dark); font-size:15.5px; }
+  .book .after { color:var(--muted-on-dark); margin-top:28px; max-width:40em; }
+
+  /* ---------- faq teasers ---------- */
+  .faq .qs { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
+  .q { background:var(--card-bg); border:1px solid var(--card-edge); border-radius:var(--card-radius); padding:26px 24px 22px; display:flex; flex-direction:column; gap:10px; }
+  .q p { color:var(--muted); font-size:15.5px; flex:1; }
+  .faq .after { margin-top:24px; }
+
+  /* ---------- closing cta ---------- */
+  .cta { background:var(--cta-bg); color:var(--cta-fg); }
+  .cta .wrap { display:grid; grid-template-columns:minmax(0, 5fr) minmax(0, 7fr); gap:48px; align-items:start; }
+  .cta h2 { margin-bottom:14px; }
+  .cta .body { margin-bottom:24px; opacity:.92; max-width:30em; }
+  .cta .tel { font-size:16px; }
+  .cta .form { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.28); }
+  .cta .fields label, .cta .form .fh .src, .cta .form .fine { color:rgba(255,255,255,.82); }
+  .cta .fields input { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.35); color:#fff; }
+  .site[data-brand="kit"] .cta .btn { background:#FFFFFF; border-color:#FFFFFF; color:#252525; }
+  .site[data-brand="kit"] .cta .btn:hover { background:transparent; color:#FFFFFF; }
+  .site[data-brand="brand"] .cta .btn { background:#F4F3F7; border-color:#F4F3F7; color:#0F0E13; }
+  .site[data-brand="brand"] .cta .btn:hover { background:#0F0E13; border-color:#0F0E13; color:#F4F3F7; }
+  .cta .contact { margin-top:18px; font-size:15px; }
+
+  /* ---------- footer ---------- */
+  .foot { background:var(--foot-bg); color:var(--foot-fg); border-top:1px solid var(--foot-edge); }
+  .foot .cols { display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:36px; padding-block:56px 40px; }
+  .foot h4 { font-family:var(--label); font-size:12px; letter-spacing:.18em; text-transform:uppercase; margin:0 0 14px; color:var(--foot-muted); font-weight:700; }
+  .site[data-brand="brand"] .foot h4 { letter-spacing:2.5px; font-size:11px; font-weight:400; }
+  .foot ul { list-style:none; margin:0; padding:0; display:grid; gap:8px; font-size:15px; }
+  .foot a { text-decoration:none; }
+  .foot a:hover { color:var(--hi); }
+  .site[data-brand="kit"] .foot .logo img { filter:brightness(0) invert(1); }
+  .foot .tag { font-family:var(--head); font-weight:600; font-size:18px; margin-top:16px; }
+  .site[data-brand="brand"] .foot .tag { font-style:italic; font-weight:800; }
+  .foot .nap { font-style:normal; font-size:15px; line-height:1.7; }
+  .foot .bottom { border-top:1px solid var(--foot-edge); padding-block:18px; display:flex; flex-wrap:wrap; gap:8px 24px; font-size:13px; color:var(--foot-muted); }
+
+  /* ---------- phone ---------- */
+  @media (max-width:980px) {
+    .nav { display:none; }
+    .menu { display:inline-block; }
+    .steps, .faq .qs { grid-template-columns:1fr 1fr; }
+    .strip { grid-template-columns:1fr 1fr; }
+    .foot .cols { grid-template-columns:1fr 1fr; }
+    .incl figure { position:static; }
+  }
+  @media (max-width:760px) {
+    .sec { padding-block:56px; }
+    .hero-in { padding-block:72px 64px; }
+    .hdr-cta .btn { display:none; }
+    .incl .wrap, .cost .wrap, .fit .wrap, .day .wrap, .faces .wrap, .cta .wrap { grid-template-columns:1fr; gap:32px; }
+    .check li { grid-template-columns:24px 1fr; }
+    .check li p { grid-column:2; }
+    .rail li { grid-template-columns:1fr; gap:6px; }
+    .steps, .faq .qs, .fields { grid-template-columns:1fr; }
+    .faces img { aspect-ratio:4/3; }
+    .incl img { aspect-ratio:4/3; }
+    .foot .cols { grid-template-columns:1fr; gap:28px; }
+    .lines td.what { display:none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .site * { transition:none !important; } }
+</style>
+
+<div class="bar" role="toolbar" aria-label="Review controls">
+  <span class="t">B2 Arrive &amp; Drive · draft v1 · page 2973</span>
+  <span class="seg" role="group" aria-label="Design system">
+    <button type="button" data-set-brand="brand" aria-pressed="true">New brand (decided 14 Sep)</button>
+    <button type="button" data-set-brand="kit" aria-pressed="false">Old kit (reference)</button>
+  </span>
+  <label><input type="checkbox" id="flags" checked> review flags</label>
+  <span class="sp"></span>
+  <span class="d">same copy, two visual systems · flags mark claims not yet on the live site · copy deck: docs/redesign/02-arrive-and-drive.md</span>
+</div>
+
+<div class="site flags" id="site" data-brand="brand">
+
+  <header class="hdr">
+    <div class="wrap hdr-in">
+      <a class="logo" href="#" aria-label="B2 Motorsports home">
+        <img src="IMG-STRIPPED" alt="B2 Motorsports">
+        <span class="lockup" aria-hidden="true"><span class="mark">B<i>2</i></span><span class="slash"></span><span class="word">MOTORSPORTS</span></span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a class="here" href="#">Race With Us &#9662;</a>
+        <a href="#">Storage</a>
+        <a href="#">Owner Services</a>
+        <a href="#">About &#9662;</a>
+        <a href="#">Contact</a>
+      </nav>
+      <div class="hdr-cta">
+        <a class="tel" href="tel:+12569100658">Call or text 256-910-0658</a>
+        <a class="btn small" href="#quote"><span>Get a quote</span></a>
+        <button class="menu" type="button" aria-label="Open menu">Menu</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. Hero -->
+  <section class="hero on-dark">
+    <img class="hero-img" src="IMG-STRIPPED" alt="">
+    <div class="hero-shade"></div>
+    <div class="wrap hero-in">
+      <p class="label">Arrive &amp; drive &middot; Spec Racer Ford Gen3 &middot; Huntsville, AL</p>
+      <h1>Arrive &amp; drive <em>an SRF3.</em></h1>
+      <p class="tagline">The best dollars per sMile.</p>
+      <p class="lede">You show up with your gear. We store the car, prep it, transport it and crew it, and we stand behind the wall with you all weekend. First track day or fiftieth race, the same people meet you at the trailer.</p>
+      <div class="btns">
+        <a class="btn" href="#quote"><span>Get your itemized quote</span></a>
+        <a class="btn ghost" href="#fit"><span>Check your fit</span></a>
+        <a class="btn ghost" href="#"><span>See the 2026 calendar</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. What's included -->
+  <section class="incl sec">
+    <div class="wrap">
+      <div>
+        <p class="label">What&rsquo;s included</p>
+        <h2>What you get, and what you bring</h2>
+        <p class="sub">One weekend, one car, everything around it. Nothing on this list is an add-on.</p>
+        <ul class="check">
+          <li><span class="tick">&#10003;</span><span class="k">The car</span><p>A race-ready Spec Racer Ford Gen3, sealed and equal to every other car on the grid. Prepped before every event: alignment, nut and bolt, wash, driver fitment.</p></li>
+          <li><span class="tick">&#10003;</span><span class="k">Transport</span><p>Truck, trailer and crew to the track and home again. You never touch a trailer. Transport is shared by the cars aboard, so a full trailer costs you less.</p></li>
+          <li><span class="tick">&#10003;</span><span class="k">Trackside crew</span><p>Mechanical checks in the morning and after every session, tire pressures in pit lane, and mechanics in the paddock and on pit wall if something happens.</p></li>
+          <li><span class="tick">&#10003;</span><span class="k">Radio</span><p>We put you on our radios, so you hear flag status, time left in the session and where you are on track. Agreed with you before the session, not improvised during it.</p></li>
+          <li><span class="tick">&#10003;</span><span class="k">Coaching</span><p>Session-specific goals before you go out. Video and data after every session, reviewed with you in plain language: the car, your driving, your race craft.</p></li>
+          <li><span class="tick">&#10003;</span><span class="k">Fuel and tires</span><p>Estimated up front, settled on what you actually use. One session is one heat cycle, and you pay for the cycles you consume.</p></li>
+          <li><span class="tick">&#10003;</span><span class="k">The awning</span><p>Shade, seats and something to drink for you and whoever you bring. Spouses, kids, friends, a client or two.</p></li>
+          <li class="you"><span class="tick">&mdash;</span><span class="k">You bring</span><p>Helmet, suit, gloves, shoes, arm restraints and a head-and-neck restraint, your travel, and your entry fee with the organizer. No arm restraints or head-and-neck restraint yet? We can provide them, and renting a full set of gear is coming.</p></li>
+        </ul>
+      </div>
+      <figure>
+        <img src="IMG-STRIPPED" alt="The B2 fleet under the canopy at Road Atlanta">
+        <figcaption>Under the awning, Road Atlanta</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 4. Worked cost example -->
+  <section class="cost sec alt">
+    <div class="wrap">
+      <div>
+        <p class="label">What a weekend costs</p>
+        <div class="big num"><span class="tilde">~</span>$4,500</div>
+        <div class="l">two-day track weekend &middot; Barber &middot; 8 sessions, 4 h of track time &middot; one of three cars in the trailer &middot; scuffed tires<span class="flag">not on site yet</span></div>
+      </div>
+      <div>
+        <h2>A two-day track weekend runs around $4,500. Here is the one we would quote you.</h2>
+        <p class="body">Six lines, nothing hidden. This is the calculator&rsquo;s own arithmetic for two days at Barber, one car of three in the trailer, four hours of track time over eight sessions, on scuffed tires.</p>
+        <table class="lines">
+          <thead><tr><th>Line</th><th class="amt">Amount</th><th>What drives it</th></tr></thead>
+          <tbody>
+            <tr><td>Transport</td><td class="amt num">$249</td><td class="what">196 round-trip miles, shared three ways, once per event</td></tr>
+            <tr><td>Prep</td><td class="amt num">$600</td><td class="what">flat, once per event</td></tr>
+            <tr><td>Trackside support</td><td class="amt num">$1,200</td><td class="what">two event days</td></tr>
+            <tr><td>Tires<span class="est">EST</span></td><td class="amt num">$348</td><td class="what">eight heat cycles on a scuffed set</td></tr>
+            <tr><td>Fuel<span class="est">EST</span></td><td class="amt num">$273</td><td class="what">4 hours of track time</td></tr>
+            <tr><td>Car rental</td><td class="amt num">$1,799</td><td class="what">4 hours of track time</td></tr>
+            <tr class="total"><td>Total</td><td class="amt num">$4,468</td><td class="what">tires and fuel settle on actuals</td></tr>
+          </tbody>
+        </table>
+        <p class="after">Transport and prep are charged once per event, not per day, which is why the second day costs less than the first. Race weekends are priced the same way, line by line: three days at Road Atlanta for the ARRC, five hours on track over eight sessions, comes to about $5,900 on scuffed tires and about $6,750 on a new set. The crash-damage deposit is $6,000, returned in full if the car comes back undamaged.</p>
+        <a class="btn" href="#"><span>Price your own weekend</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Fit -->
+  <section class="fit sec" id="fit">
+    <div class="wrap">
+      <div>
+        <p class="label">Fit</p>
+        <h2>It probably fits you. Let us confirm it before you spend a dollar.</h2>
+        <p class="body">We have fitted a driver at 6&#8242;7&#8243; and 275 lb. Most &ldquo;I am too big&rdquo; worries come down to leg room or wheel clearance, and we solve those with an extended pedal rack, a smaller steering wheel and a seat insert molded to you. Send three numbers and a real person answers.</p>
+        <a class="more" href="#">The full fit page, with the four adjustments and the longer form</a>
+      </div>
+      <form class="form" onsubmit="return false">
+        <div class="fh"><h3>Confirm my fit</h3><span class="src">HubSpot &middot; Fit Check (short)<span class="flag">form to build</span></span></div>
+        <div class="fields">
+          <label for="fit-first">First name<input id="fit-first" name="firstname" type="text" autocomplete="given-name"></label>
+          <label for="fit-email">Email<input id="fit-email" name="email" type="email" autocomplete="email"></label>
+          <label for="fit-height">Height<input id="fit-height" name="fit_height" type="text" placeholder="6&#8242;2&#8243;"></label>
+          <label for="fit-weight">Weight (lb)<input id="fit-weight" name="fit_weight_lb" type="text" inputmode="numeric" placeholder="210"></label>
+          <label class="full" for="fit-seated">Seated height<input id="fit-seated" name="fit_seated_height" type="text" placeholder="on a hard chair, floor to top of head"></label>
+        </div>
+        <button class="btn" type="submit"><span>Confirm my fit</span></button>
+        <p class="fine">A person reads every one of these. No automated answer.</p>
+      </form>
+    </div>
+    <div class="wrap">
+      <div class="strip">
+        <figure><img src="IMG-STRIPPED" alt="Standard SRF3 seat"><figcaption>Standard SRF3 seat</figcaption></figure>
+        <figure><img src="IMG-STRIPPED" alt="Custom seat insert"><figcaption>Custom seat insert, foam or bead</figcaption></figure>
+        <figure><img src="IMG-STRIPPED" alt="Adjustable pedal rack"><figcaption>Adjustable pedal rack</figcaption></figure>
+        <figure><img src="IMG-STRIPPED" alt="Adjustable steering column"><figcaption>Adjustable steering column</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. How your day works -->
+  <section class="day sec alt">
+    <div class="wrap">
+      <div>
+        <p class="label">The day</p>
+        <h2>What a test day actually looks like</h2>
+        <p class="sub">Times are from a Chin Track Days weekend at Road Atlanta, advanced solo group. Test days at Polecat run more open track; race weekends add qualifying and the races. The loop is the same everywhere.</p>
+        <ul class="rail">
+          <li><span class="t num">7:30<span class="flag">inferred</span></span><p><b>You arrive.</b> The car is off the trailer, checked and warmed through. You sign in with the organizer and sit in on the drivers&rsquo; meeting.</p></li>
+          <li><span class="t">Before session one</span><p><b>The walkaround.</b> Belts and seat, the start-up ritual, the sequential gearbox, what the dash is telling you, how we talk on the radio. You do it, we watch. It is all in the binder in the trailer if you want to read ahead.</p></li>
+          <li><span class="t num">9:00</span><p><b>Session one, twenty minutes.</b> Out-lap to put temperature in the car, then laps. We are on the radio with flags and time remaining.</p></li>
+          <li><span class="t">After every session</span><p><b>Pressures, a nut-and-bolt look, then the data.</b> Video and data with a coach, in plain language. One thing to try next time out.</p></li>
+          <li><span class="t num">Noon &middot; 1:30 &middot; 3:00</span><p><b>Sessions two to four, same loop.</b> Between sessions the awning is yours: shade, seats, something to drink, your people.</p></li>
+          <li><span class="t">End of day</span><p><b>The car goes back on the trailer.</b> You go home with the video, and we settle tires and fuel on what you actually used.</p></li>
+        </ul>
+      </div>
+      <figure>
+        <img src="IMG-STRIPPED" alt="Two B2 crew in purple reviewing data on a laptop on the car in the paddock">
+        <figcaption>After the session: the data, in plain language</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 7. Same faces -->
+  <section class="faces sec">
+    <div class="wrap">
+      <img src="IMG-STRIPPED" alt="Car 57 in the paddock with the B2 crew">
+      <div>
+        <p class="label">Who you&rsquo;ll see at the track</p>
+        <h2>The same faces, every weekend.</h2>
+        <p class="body">You are not handed off between weekends. Cliff White, Todd White and Mark Eaton are the people you meet, the people who prep your car, and the people on the radio when it counts. Nobody figures it out alone: grid procedure, flags, tire pressures, what the car is telling you. Questions are the point, not an interruption.</p>
+        <a class="more" href="#">Meet the team</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Booking -->
+  <section class="book sec on-dark">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Booking</p>
+        <h2>From &ldquo;I&rsquo;m in&rdquo; to strapped in</h2>
+      </div>
+      <div class="steps">
+        <article class="step"><span class="n">Step 1</span><h3>Driver registration</h3><p>A short form we send you: who you are, what you have driven, where you want to go.</p></article>
+        <article class="step"><span class="n">Step 2</span><h3>Intro to the Spec Racer</h3><p>The binder: start-up, the transmission, over-rev, the data. Read it once before the weekend; we walk it with you at the track.</p></article>
+        <article class="step"><span class="n">Step 3</span><h3>DocuSign agreement</h3><p>The rental and support agreement, signed and returned online. Nothing on paper.</p></article>
+        <article class="step"><span class="n">Step 4</span><h3>Deposit and rental</h3><p>Settled at hand-off. The crash-damage deposit is $6,000, returned in full if the car comes back undamaged. ACH or check, no fee; a credit card carries a 3% convenience fee.</p></article>
+      </div>
+      <p class="after">Pick a date on the 2026 calendar, register with the organizer, and text us your dates. We confirm your trailer spot and send the itemized quote.</p>
+    </div>
+  </section>
+
+  <!-- 9. FAQ teasers -->
+  <section class="faq sec">
+    <div class="wrap">
+      <div class="head">
+        <h2>Three questions everyone asks</h2>
+      </div>
+      <div class="qs">
+        <article class="q"><h3>Do I need a racing license?</h3><p>Not for a test day or a track day. Time trials need a Time Trials license, a quick online application with no racing school. Wheel-to-wheel racing needs an SCCA competition license or novice permit. The calendar marks every event.</p><a class="more" href="#">License, on the FAQ</a></article>
+        <article class="q"><h3>What happens if I crash?</h3><p>The $6,000 crash-damage deposit covers repairs and comes back in full if the car is undamaged. Normal wear is ours, not yours. The full policy is on the FAQ.<span class="flag">legal review</span></p><a class="more" href="#">Crash and deposit, on the FAQ</a></article>
+        <article class="q"><h3>What do I bring?</h3><p>Helmet, suit, gloves, shoes, arm restraints and a head-and-neck restraint, plus your entry with the organizer. We can provide the arm restraints and the head-and-neck restraint, and we bring the car and everything around it.</p><a class="more" href="#">What to bring, on the FAQ</a></article>
+      </div>
+      <p class="after"><a class="more" href="#">All the questions</a></p>
+    </div>
+  </section>
+
+  <!-- 10. Closing band + form -->
+  <section class="cta sec" id="quote">
+    <div class="wrap">
+      <div>
+        <h2>Tell us where you are in this.</h2>
+        <p class="body">Never driven, done a few track days, or already licensed and shopping for a better program. We will tell you honestly what the next step looks like, and the quote is itemized before you commit to anything.</p>
+        <p class="contact">or call or text <a class="tel" href="tel:+12569100658">256-910-0658</a><br><a class="tel" href="mailto:info@b2motorsports.com">info@b2motorsports.com</a></p>
+      </div>
+      <form class="form" onsubmit="return false">
+        <div class="fh"><h3>Get your itemized quote</h3><span class="src">HubSpot &middot; General Inquiry</span></div>
+        <div class="fields">
+          <label for="gi-first">First name<input id="gi-first" name="firstname" type="text" autocomplete="given-name"></label>
+          <label for="gi-last">Last name<input id="gi-last" name="lastname" type="text" autocomplete="family-name"></label>
+          <label for="gi-email">Email<input id="gi-email" name="email" type="email" autocomplete="email"></label>
+          <label for="gi-phone">Phone<input id="gi-phone" name="phone" type="tel" autocomplete="tel"></label>
+          <label class="full" for="gi-exp">Where are you in this?<input id="gi-exp" name="inquiry_experience" type="text" placeholder="never driven / track days / licensed"></label>
+          <label class="full" for="gi-events">Event(s) or dates you have in mind<input id="gi-events" name="inquiry_events" type="text" placeholder="Barber, November"></label>
+          <label class="full" for="gi-msg">Anything else<input id="gi-msg" name="inquiry_message" type="text"></label>
+        </div>
+        <button class="btn" type="submit"><span>Send</span></button>
+        <p class="fine">Service checkboxes and the consent text ride along on the real form; the mock omits them.</p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="cols">
+        <div>
+          <a class="logo" href="#" aria-label="B2 Motorsports">
+            <img src="IMG-STRIPPED" alt="B2 Motorsports">
+            <span class="lockup" aria-hidden="true"><span class="mark">B<i>2</i></span><span class="slash"></span><span class="word">MOTORSPORTS</span></span>
+          </a>
+          <p class="tag">The best dollars per sMile.<span class="flag">placement</span></p>
+        </div>
+        <div>
+          <h4>Race With Us</h4>
+          <ul><li><a href="#">The Cars</a></li><li><a href="#">Do You Fit?</a></li><li><a href="#">What It Costs</a></li><li><a href="#">2026 Calendar</a></li><li><a href="#">FAQ</a></li></ul>
+        </div>
+        <div>
+          <h4>More from B2</h4>
+          <ul><li><a href="#">Driver Development</a></li><li><a href="#">Sim Training</a></li><li><a href="#">Business &amp; Hospitality</a></li><li><a href="#">Media Packages</a></li><li><a href="#">Parts &amp; Fabrication</a></li><li><a href="#">Blog</a></li><li><a href="#">B2 Store</a></li></ul>
+        </div>
+        <div>
+          <h4>Visit</h4>
+          <address class="nap">2919A Bob Wallace Ave<br>Huntsville, AL 35805<br>Call or text <a href="tel:+12569100658">256-910-0658</a><br><a href="mailto:info@b2motorsports.com">info@b2motorsports.com</a><br>Storage: <a href="mailto:storage@b2motorsports.com">storage@b2motorsports.com</a><br>Mon&ndash;Fri 8:00&ndash;5:00</address>
+        </div>
+      </div>
+      <div class="bottom">
+        <span>&copy; 2026 B2 Motorsports</span><a href="#">Privacy</a><a href="#">Sitemap</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var site = document.getElementById('site');
+    var buttons = document.querySelectorAll('[data-set-brand]');
+    var flags = document.getElementById('flags');
+    function sync() {
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-set-brand') === site.getAttribute('data-brand') ? 'true' : 'false'); });
+      site.classList.toggle('flags', flags.checked);
+    }
+    try {
+      var b = localStorage.getItem('b2-mock-brand'); if (b === 'kit' || b === 'brand') site.setAttribute('data-brand', b);
+      var f = localStorage.getItem('b2-mock-flags'); if (f === '0') flags.checked = false;
+    } catch (e) {}
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        site.setAttribute('data-brand', b.getAttribute('data-set-brand'));
+        try { localStorage.setItem('b2-mock-brand', site.getAttribute('data-brand')); } catch (e) {}
+        sync();
+      });
+    });
+    flags.addEventListener('change', function () {
+      try { localStorage.setItem('b2-mock-flags', flags.checked ? '1' : '0'); } catch (e) {}
+      sync();
+    });
+    sync();
+  })();
+</script>
+
+</body></html>

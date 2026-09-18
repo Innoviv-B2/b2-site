@@ -1,0 +1,1274 @@
+<!--meta
+{
+  "path": "/rental-pricing-calculator/",
+  "order": 50,
+  "nav": "race",
+  "navLabel": "What It Costs",
+  "title": "Spec Racer Ford Rental Cost Calculator | B2 Motorsports",
+  "description": "See your Spec Racer Ford rental cost in seconds: car, transport, tires, fuel and trackside crew, each its own line. Pick a 2026 race weekend for a real number.",
+  "keyphrase": "Spec Racer Ford rental cost",
+  "ogImage": "/assets/img/hero-car59-on-track.jpg",
+  "breadcrumb": [
+    [
+      "What It Costs",
+      "/rental-pricing-calculator/"
+    ]
+  ],
+  "pageType": "WebPage",
+  "schema": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Spec Racer Ford rental cost estimator",
+      "serviceType": "Itemized Spec Racer Ford arrive-and-drive rental pricing",
+      "provider": {
+        "@id": "https://b2motorsports.com/#org"
+      },
+      "areaServed": "Southeast United States",
+      "url": "https://b2motorsports.com/rental-pricing-calculator/",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "price": "4468",
+        "description": "Typical two-day track weekend at Barber Motorsports Park, itemized: transport, prep, trackside support, tires, fuel, car rental."
+      }
+    }
+  ]
+}
+-->
+<!-- B2 Motorsports — SRF3 Rental Estimate (Elementor html-widget FRAGMENT)
+     Not a standalone document: no html/head/body tags, no meta, no font links, no header or
+     footer of its own — the GeneratePress theme supplies all of that. Push on the
+     elementor_header_footer template so site nav and footer wrap it.
+     Every rule is scoped under .b2-calc and inherits the B2 Elementor kit: accent retinted to
+     brand purple #7C2FF0 on #F7F7F7 (--signal/--signal-dim), with #FE7429 kept as --amber for
+     deposit/fee warnings and #FF6A00 as --est for the tower's "EST" tags. Lato headings, Roboto
+     body, 1200px container. Do not reintroduce bare body/html/* rules —
+     they repaint the whole page. Class names are deliberately unchanged; the JS selects on IDs.
+     Transport = round-trip miles x $1.50/mi, i.e. $1.50 per mile EACH WAY (do not double it —
+     tracks[].miles are already round trip). Multi-car loads are discounted at quote time; a full
+     transport calculator is pending. Tires key off SESSIONS; fuel keys off HOURS.
+     Track search is wired for Google Places/Distance Matrix via a server proxy (see CONFIG); the
+     prototype works off a built-in track list until that proxy/key is supplied. -->
+<style>
+  .b2-calc {
+    --asphalt:#F7F7F7; --carbon:#FFFFFF; --carbon-2:#F2F3F3; --edge:#E4E5E5; --edge-bright:#C9CBCA;
+    --signal:#7C2FF0; --signal-dim:#5B21B6; --amber:#FE7429; --est:#FF6A00; --hi:#252525; --mid:#6B6C6C; --lo:#909291;
+    --display:"Lato",system-ui,sans-serif; --body:"Roboto",system-ui,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --maxw:1200px;
+    background:var(--asphalt); color:var(--hi); font-family:var(--body);
+    line-height:1.5; letter-spacing:.005em;
+  }
+  .b2-calc *, .b2-calc *::before, .b2-calc *::after { box-sizing:border-box; }
+
+  .b2-calc .wrap { max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+
+  .b2-calc .hero { padding:56px 0 40px; border-bottom:1px solid var(--edge); }
+  .b2-calc .eyebrow { font-family:var(--mono); font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--signal); margin:0 0 22px; }
+  .b2-calc .hero h1 { font-family:var(--display); font-weight:800; text-transform:uppercase; font-size:clamp(34px,5.5vw,58px); line-height:.92; letter-spacing:.01em; margin:0 0 26px; }
+  .b2-calc .hero h1 .out { color:var(--lo); }
+  .b2-calc .hero p.lede { max-width:640px; color:var(--mid); font-size:18px; margin:0; }
+  .b2-calc .hero p.lede b { color:var(--hi); font-weight:600; }
+
+  .b2-calc section { padding:64px 0; border-bottom:1px solid var(--edge); }
+  .b2-calc .sec-head { display:flex; align-items:baseline; gap:16px; margin:0 0 34px; }
+  .b2-calc .sec-num { font-family:var(--mono); color:var(--signal); font-size:13px; letter-spacing:.1em; }
+  .b2-calc .sec-title { font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-size:30px; margin:0; }
+  .b2-calc .sec-sub { color:var(--lo); font-size:14px; margin-left:auto; max-width:340px; text-align:right; }
+
+  .b2-calc .channels { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+  .b2-calc .chan { background:var(--carbon); border:1px solid var(--edge); border-radius:4px; padding:18px 16px 20px; position:relative; overflow:hidden; }
+  .b2-calc .chan::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--edge-bright); }
+  .b2-calc .chan .tag { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--lo); }
+  .b2-calc .chan h3 { font-family:var(--display); font-weight:600; text-transform:uppercase; letter-spacing:.02em; font-size:19px; margin:8px 0 8px; }
+  .b2-calc .chan p { color:var(--mid); font-size:13px; margin:0; line-height:1.45; }
+  .b2-calc .chan p .rate { color:var(--signal); font-family:var(--mono); font-size:12px; }
+
+  .b2-calc .calc { display:grid; grid-template-columns:1fr 1.05fr; gap:0; border:1px solid var(--edge); border-radius:6px; overflow:hidden; }
+  .b2-calc .inputs { background:var(--carbon); padding:30px 30px 34px; }
+  .b2-calc .tower { background:var(--carbon-2); padding:30px 30px 30px; border-left:1px solid var(--edge); }
+
+  .b2-calc .field { margin-bottom:24px; }
+  .b2-calc .field:last-child { margin-bottom:0; }
+  .b2-calc .field > label { display:block; font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--mid); margin-bottom:10px; }
+  .b2-calc .field.hidden { display:none; }
+
+  .b2-calc select, .b2-calc input.txt {
+    width:100%; appearance:none; background:var(--asphalt); color:var(--hi);
+    border:1px solid var(--edge-bright); border-radius:3px; padding:12px 13px; font-family:var(--body); font-size:15px;
+  }
+  .b2-calc input.txt::placeholder { color:var(--lo); }
+  .b2-calc input.txt:focus-visible { outline:2px solid var(--signal); outline-offset:2px; }
+
+  /* combobox */
+  .b2-calc .combo { position:relative; }
+  .b2-calc .combo .ico { position:absolute; right:13px; top:50%; transform:translateY(-50%); color:var(--lo); font-family:var(--mono); font-size:13px; pointer-events:none; }
+  .b2-calc .options { position:absolute; z-index:30; left:0; right:0; top:calc(100% + 4px); margin:0; padding:6px; list-style:none;
+    background:#FFFFFF; border:1px solid var(--edge-bright); border-radius:4px; max-height:260px; overflow:auto; box-shadow:0 18px 40px rgba(0,0,0,.14); }
+  .b2-calc .options[hidden] { display:none; }
+  .b2-calc .options li { padding:10px 11px; border-radius:3px; cursor:pointer; font-size:14px; color:var(--hi); display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
+  .b2-calc .options li .d { font-family:var(--mono); font-size:11px; color:var(--lo); white-space:nowrap; }
+  .b2-calc .options li:hover, .b2-calc .options li.active { background:rgba(124,47,240,.12); }
+  .b2-calc .options li.empty { color:var(--mid); cursor:default; }
+  .b2-calc .options li.empty:hover { background:transparent; }
+  .b2-calc .options li.empty b { color:var(--signal); cursor:pointer; }
+  .b2-calc .options li .reg { font-family:var(--mono); font-style:normal; font-size:9px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--lo); border:1px solid var(--edge-bright); border-radius:2px;
+    padding:1px 4px; margin-left:8px; vertical-align:middle; }
+  .b2-calc .options li .d i { font-style:normal; margin-left:6px; font-size:9px; }
+  .b2-calc .options li .d i.ok { color:var(--signal); }
+  .b2-calc .options li .d i.est { color:var(--lo); }
+  .b2-calc .legend { margin-top:8px; font-family:var(--mono); font-size:10.5px; color:var(--lo); letter-spacing:.02em; }
+  .b2-calc .legend b { color:var(--signal); font-weight:400; }
+
+  .b2-calc .dist { margin-top:9px; font-family:var(--mono); font-size:11.5px; color:var(--lo); letter-spacing:.02em; min-height:14px; }
+  .b2-calc .dist b { color:var(--mid); font-weight:500; }
+  .b2-calc .dist .src { color:var(--signal-dim); }
+
+  .b2-calc .stepper { display:flex; align-items:stretch; width:100%; border:1px solid var(--edge-bright); border-radius:3px; overflow:hidden; }
+  .b2-calc .stepper button { width:46px; background:var(--asphalt); color:var(--hi); border:none; cursor:pointer; font-family:var(--display); font-size:24px; line-height:1; transition:background .12s; }
+  .b2-calc .stepper button:hover { background:#EDEDED; color:var(--signal); }
+  .b2-calc .stepper button:focus-visible { outline:2px solid var(--signal); outline-offset:-2px; }
+  .b2-calc .stepper .val { flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:var(--asphalt); font-family:var(--mono); font-size:18px; }
+  .b2-calc .stepper .val small { color:var(--lo); font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
+
+  .b2-calc .toggle { display:flex; gap:8px; }
+  .b2-calc .toggle.three button { padding:11px 8px; }
+  .b2-calc .toggle button { flex:1; background:var(--asphalt); color:var(--mid); border:1px solid var(--edge-bright); border-radius:3px; padding:12px 10px; cursor:pointer; font-family:var(--body); font-size:14px; transition:all .12s; text-align:left; }
+  .b2-calc .toggle button .t1 { display:block; font-weight:600; color:var(--hi); font-size:14px; }
+  .b2-calc .toggle button .t2 { display:block; font-family:var(--mono); font-size:10px; color:var(--lo); margin-top:3px; letter-spacing:.04em; }
+  .b2-calc .toggle button[aria-pressed="true"] { border-color:var(--signal); background:rgba(124,47,240,.08); }
+  .b2-calc .toggle button[aria-pressed="true"] .t1 { color:var(--signal); }
+  .b2-calc .toggle button:focus-visible { outline:2px solid var(--signal); outline-offset:2px; }
+
+  .b2-calc .tower h4 { font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--lo); margin:0 0 20px; }
+  .b2-calc .line { padding:11px 0; border-bottom:1px solid var(--edge); }
+  .b2-calc .line.hidden { display:none; }
+  .b2-calc .line .row { display:flex; align-items:baseline; justify-content:space-between; }
+  .b2-calc .line .name { font-family:var(--body); font-size:14px; color:var(--mid); }
+  .b2-calc .line .amt { font-family:var(--mono); font-size:16px; color:var(--hi); font-variant-numeric:tabular-nums; }
+  .b2-calc .line .est { color:var(--est); font-size:10px; font-family:var(--mono); letter-spacing:.1em; margin-left:7px; }
+  .b2-calc .line .sub { font-family:var(--mono); font-size:11px; color:var(--lo); margin-top:5px; letter-spacing:.02em; }
+  .b2-calc .line .tnote { font-family:var(--body); font-size:12px; line-height:1.5; color:var(--mid); background:rgba(124,47,240,.07); border-left:2px solid var(--signal); padding:8px 11px; margin-top:9px; }
+  .b2-calc .line .tnote b { color:var(--signal); font-weight:600; }
+  .b2-calc .chan p b { color:var(--signal); font-weight:600; }
+  .b2-calc .bar { height:3px; background:var(--edge); border-radius:2px; margin-top:8px; overflow:hidden; }
+  .b2-calc .bar > i { display:block; height:100%; background:var(--edge-bright); border-radius:2px; transition:width .45s cubic-bezier(.2,.7,.2,1); }
+  .b2-calc .line.cardfee .name, .b2-calc .line.cardfee .amt { color:var(--signal); }
+  .b2-calc .line.cardfee .bar > i { background:var(--signal); }
+
+  .b2-calc .total { margin-top:22px; padding-top:18px; border-top:2px solid var(--edge-bright); display:flex; align-items:flex-end; justify-content:space-between; }
+  .b2-calc .total .lbl { font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--mid); }
+  .b2-calc .total .lbl span { display:block; color:var(--lo); font-size:10px; letter-spacing:.12em; margin-top:4px; }
+  .b2-calc .total .big { font-family:var(--display); font-weight:800; font-size:46px; line-height:.9; color:var(--signal); font-variant-numeric:tabular-nums; }
+  .b2-calc .total .big::before { content:"$"; font-size:26px; color:var(--signal-dim); vertical-align:top; margin-right:2px; }
+
+  .b2-calc .calc-note { margin-top:18px; color:var(--lo); font-size:12.5px; line-height:1.5; font-family:var(--mono); }
+  .b2-calc .calc-note b { color:var(--mid); font-weight:500; }
+
+  .b2-calc .two { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .b2-calc .panel { background:var(--carbon); border:1px solid var(--edge); border-radius:5px; padding:26px 26px 28px; }
+  .b2-calc .panel h3 { font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-size:21px; margin:0 0 18px; }
+  .b2-calc .kv { display:flex; justify-content:space-between; gap:14px; padding:11px 0; border-bottom:1px solid var(--edge); }
+  .b2-calc .kv:last-child { border-bottom:none; }
+  .b2-calc .kv .k { color:var(--mid); font-size:14px; }
+  .b2-calc .kv .v { font-family:var(--mono); font-size:14px; color:var(--hi); text-align:right; }
+  .b2-calc .kv .v.amber { color:var(--amber); }
+  .b2-calc ol.steps { margin:0; padding:0; list-style:none; counter-reset:s; }
+  .b2-calc ol.steps li { counter-increment:s; padding:11px 0 11px 38px; border-bottom:1px solid var(--edge); position:relative; color:var(--mid); font-size:14px; }
+  .b2-calc ol.steps li:last-child { border-bottom:none; }
+  .b2-calc ol.steps li b { color:var(--hi); font-weight:600; }
+  .b2-calc ol.steps li::before { content:counter(s,decimal-leading-zero); position:absolute; left:0; top:11px; font-family:var(--mono); font-size:12px; color:var(--signal); }
+
+  .b2-calc .closing { border-bottom:none; text-align:center; padding:80px 0 90px; }
+  .b2-calc .closing h2 { font-family:var(--display); font-weight:800; text-transform:uppercase; font-size:clamp(32px,5vw,56px); letter-spacing:.02em; margin:0 0 14px; }
+  .b2-calc .closing p { color:var(--mid); max-width:480px; margin:0 auto 30px; }
+  .b2-calc .bigcta { display:inline-block; font-family:var(--mono); font-size:14px; letter-spacing:.1em; text-transform:uppercase; font-weight:600; color:var(--asphalt); background:var(--signal); text-decoration:none; padding:16px 34px; border-radius:0; border:2px solid var(--signal); transition:transform .12s, background .12s; }
+  .b2-calc .bigcta:hover { background:transparent; color:var(--signal); transform:translateY(-2px); }
+  .b2-calc .fineprint { margin-top:22px; color:var(--lo); font-size:12px; font-family:var(--mono); }
+
+  @media (max-width:880px) {
+    .b2-calc .channels { grid-template-columns:1fr 1fr; }
+    .b2-calc .calc { grid-template-columns:1fr; }
+    .b2-calc .tower { border-left:none; border-top:1px solid var(--edge); }
+    .b2-calc .two { grid-template-columns:1fr; }
+    .b2-calc .sec-sub { display:none; }
+  }
+  @media (max-width:520px) {
+    .b2-calc .channels { grid-template-columns:1fr; }
+    .b2-calc .hero { padding:56px 0 38px; }
+    .b2-calc .wrap { padding:0 18px; }
+    .b2-calc .toggle.three { flex-wrap:wrap; }
+    .b2-calc .toggle.three button { flex:1 1 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { .b2-calc * { transition:none !important; } }
+
+  /* --- analytics quote CTA + modal --- */
+  .b2-calc .towercta { margin-top:16px; width:100%; background:var(--signal); color:var(--asphalt); border:none; border-radius:0; border:2px solid var(--signal);
+    padding:14px; font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; cursor:pointer; transition:background .12s, transform .12s; }
+  .b2-calc .towercta:hover { background:transparent; color:var(--signal); transform:translateY(-1px); }
+  .b2-calc .overlay { position:fixed; inset:0; z-index:100; background:rgba(37,37,37,.6); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; padding:20px; }
+  .b2-calc .overlay[hidden] { display:none; }
+  .b2-calc .modal { width:100%; max-width:460px; background:var(--carbon); border:1px solid var(--edge-bright); border-radius:8px; padding:26px 26px 28px; max-height:90vh; overflow:auto; }
+  .b2-calc .modal h3 { font-family:var(--display); font-weight:800; text-transform:uppercase; font-size:26px; margin:0 0 4px; }
+  .b2-calc .modal .msub { color:var(--mid); font-size:13.5px; margin:0 0 18px; line-height:1.45; }
+  .b2-calc .modal .sum { background:var(--asphalt); border:1px solid var(--edge); border-radius:4px; padding:12px 14px; margin-bottom:18px; font-family:var(--mono); font-size:12px; color:var(--mid); line-height:1.7; }
+  .b2-calc .modal .sum b { color:var(--signal); }
+  .b2-calc .modal label.fld { display:block; margin-bottom:12px; font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--mid); }
+  .b2-calc .modal label.fld input { display:block; width:100%; margin-top:6px; background:var(--asphalt); color:var(--hi); border:1px solid var(--edge-bright); border-radius:3px; padding:11px 12px; font-family:var(--body); font-size:15px; }
+  .b2-calc .modal label.fld input:focus-visible { outline:2px solid var(--signal); outline-offset:2px; }
+  .b2-calc .modal .consent { display:flex; gap:9px; align-items:flex-start; font-family:var(--body); font-size:11px; line-height:1.45; color:var(--mid); margin:4px 0 18px; }
+  .b2-calc .modal .consent input { margin-top:2px; flex:none; }
+  .b2-calc .modal .consent > span { max-height:104px; overflow-y:auto; padding-right:6px; }
+  .b2-calc .modal .actions { display:flex; gap:10px; }
+  .b2-calc .modal .actions button { flex:1; border-radius:3px; padding:13px; font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; cursor:pointer; border:1px solid var(--edge-bright); }
+  .b2-calc .modal .submit { background:var(--signal); color:var(--asphalt); border-color:var(--signal); }
+  .b2-calc .modal .cancel { background:transparent; color:var(--mid); }
+  .b2-calc .modal .done { text-align:center; padding:10px 0; }
+  .b2-calc .modal .done .big { font-family:var(--display); font-size:38px; color:var(--signal); text-transform:uppercase; margin-bottom:6px; }
+
+  /* event handoff banner — shown when the calendar links in with ?event=&track=&date= */
+  .b2-calc .evt { display:flex; align-items:baseline; flex-wrap:wrap; gap:10px; margin:0 0 18px;
+    padding:12px 16px; background:rgba(124,47,240,.08); border-left:3px solid var(--signal); }
+  .b2-calc .evt[hidden] { display:none; }
+  .b2-calc .evt-tag { font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--signal); }
+  .b2-calc .evt-name { font-weight:600; color:var(--hi); font-size:15px; }
+  .b2-calc .evt-date { font-family:var(--mono); font-size:13px; color:var(--mid); }
+  .b2-calc .evt-type { font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--hi); border:1px solid var(--edge-bright); padding:2px 7px; }
+  .b2-calc .evt-clear { margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--lo); text-decoration:underline; }
+  .b2-calc .evt-clear:hover { color:var(--signal); }
+  .b2-calc .field > label .opt { font-family:var(--body); font-size:11px; letter-spacing:0; text-transform:none; color:var(--lo); margin-left:8px; }
+  .b2-calc .lede a, .b2-calc .related a { color:var(--signal); text-decoration:underline; text-underline-offset:2px; }
+  .b2-calc .lede a:hover, .b2-calc .related a:hover { color:var(--hi); }
+  .b2-calc .related { margin-top:14px; font-size:13px; color:var(--lo); }
+
+  /* anchor band — new, between hero and §01 */
+  .b2-calc .anchor-h2 { font-family:var(--display); font-weight:800; text-transform:uppercase; font-size:clamp(26px,3.6vw,38px); line-height:1.05; letter-spacing:.01em; margin:0 0 16px; max-width:760px; }
+  .b2-calc .anchor-lede { max-width:760px; color:var(--mid); font-size:16px; margin:0 0 24px; }
+  .b2-calc .anchor-panel { max-width:760px; margin:0 0 16px; }
+  .b2-calc .anchor-total { border-top:2px solid var(--edge-bright); margin-top:4px; padding-top:14px; }
+  .b2-calc .anchor-total .k { font-weight:700; font-size:17px; }
+  .b2-calc .anchor-total .v { font-weight:700; font-size:17px; color:var(--signal); }
+  .b2-calc .anchor-note { max-width:760px; color:var(--lo); font-size:12.5px; font-family:var(--mono); margin:0 0 22px; }
+  .b2-calc .anchor-actions { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+  .b2-calc .anchor-cta { width:auto; padding:14px 28px; }
+  .b2-calc .anchor-link { color:var(--signal); font-size:13px; text-decoration:underline; text-underline-offset:2px; }
+  .b2-calc .anchor-link:hover { color:var(--hi); }
+  @media (max-width:520px) {
+    .b2-calc .anchor-cta { width:100%; }
+  }
+</style>
+
+<div class="b2-calc">
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Spec Racer Ford · Gen 3 · Arrive & Drive</p>
+    <h1>Spec Racer Ford rental cost<br><span class="out">Every line. Nothing hidden.</span></h1>
+    <p class="lede">A spec car is a level field — so we price like one. Here is what an SRF3 Spec Racer Ford rental costs, line by line: transport, tires, fuel, <a href="/the-cars/">the car itself</a>, and <a href="/race-with-us/">our trackside crew</a> — each its own line, so you see exactly what you pay for. Build an estimate below and we'll follow up with a firm quote.</p>
+    <img src="/assets/img/hero-car59-on-track.jpg" alt="Spec Racer Ford Gen 3 rental car at Barber Motorsports Park" width="1600" height="816" loading="lazy" style="display:block;width:100%;height:auto;border-radius:6px;margin-top:32px;">
+  </div>
+</div>
+
+<section class="anchor">
+  <div class="wrap">
+    <p class="eyebrow">The short answer</p>
+    <h2 class="anchor-h2">A typical two-day track weekend runs around $4,500. Race weekends are priced line by line.</h2>
+    <p class="anchor-lede">Here is the arithmetic for two days at Barber: one car of three in the trailer, four hours on track over eight sessions, scuffed tires. Transport and prep are charged once per event, so the second day costs less than the first. Change any input below and the number follows.</p>
+    <div class="panel anchor-panel">
+      <div class="kv"><span class="k">Transport</span><span class="v">$249</span></div>
+      <div class="kv"><span class="k">Prep</span><span class="v">$600</span></div>
+      <div class="kv"><span class="k">Trackside support</span><span class="v">$1,200</span></div>
+      <div class="kv"><span class="k">Tires (est.)</span><span class="v">$348</span></div>
+      <div class="kv"><span class="k">Fuel (est.)</span><span class="v">$273</span></div>
+      <div class="kv"><span class="k">Car rental</span><span class="v">$1,799</span></div>
+      <div class="kv anchor-total"><span class="k">Total</span><span class="v">$4,468</span></div>
+    </div>
+    <p class="anchor-note">Crash-damage deposit $6,000, returned in full if the car comes back undamaged &middot; Agreement by DocuSign &middot; ACH or check, no fee &middot; Credit card +3%.</p>
+    <div class="anchor-actions">
+      <button class="towercta anchor-cta" id="anchorStart" type="button">Start from this example</button>
+      <a class="anchor-link" href="/race-with-us/">Or read how a weekend works &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">What a Spec Racer Ford rental costs</h2>
+      <p class="sec-sub">Six line items. Tires and fuel are estimated, then settled on what you actually use.</p>
+    </div>
+    <div class="channels">
+      <div class="chan"><span class="tag">Logistics</span><h3>Transport</h3><p>The truck and trailer cost <span class="rate" id="rateLabel"></span> per round-trip mile to run, and that is <b>split by the cars aboard</b> — set the number below and watch your share drop. One charge per trip, never per day.</p></div>
+      <div class="chan"><span class="tag">Service</span><h3>Prep</h3><p>Getting the car ready for your event: alignment, nut and bolt, wash, driver fitment and loading the trailer. One flat charge per event, however long the weekend runs.</p></div>
+      <div class="chan"><span class="tag">Service</span><h3>Trackside Support</h3><p>Crew, setup, between-session work, and coaching across the day.</p></div>
+      <div class="chan"><span class="tag">Consumable</span><h3>Tires</h3><p>One session is one heat cycle. A set lasts 16, and the early cycles are worth the most — so new costs more than scuffed.</p></div>
+      <div class="chan"><span class="tag">Consumable</span><h3>Fuel</h3><p>Estimated by hours of track time, then settled on actuals.</p></div>
+      <div class="chan"><span class="tag">Equipment</span><h3>Car Rental</h3><p>The SRF3 chassis, prepped and ready, charged by the hour of track time — not by the day you are parked.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="quote">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">Build your estimate</h2>
+      <p class="sec-sub">Live ballpark. Your real quote comes from us after a quick fit check.</p>
+    </div>
+
+    <div class="evt" id="eventBanner" hidden>
+      <span class="evt-tag">Quoting for</span>
+      <span class="evt-name" id="eventName"></span>
+      <span class="evt-date" id="eventDate"></span>
+      <span class="evt-type" id="eventType"></span>
+      <a class="evt-clear" href="#" id="eventClear">clear</a>
+    </div>
+    <div class="calc">
+      <div class="inputs">
+        <div class="field hidden" id="eventField">
+          <label for="eventSelect">Race weekend <span class="opt">optional &mdash; live from the 2026 calendar</span></label>
+          <select id="eventSelect">
+            <option value="">Not tied to an event &mdash; just pricing a day</option>
+          </select>
+          <div class="dist" id="eventStatus"></div>
+        </div>
+
+        <div class="field">
+          <label for="trackSearch">Track / event</label>
+          <div class="combo">
+            <input class="txt" id="trackSearch" type="text" placeholder="Search a track…" autocomplete="off"
+                   role="combobox" aria-expanded="false" aria-controls="trackList" aria-autocomplete="list" />
+            <span class="ico">▾</span>
+            <ul class="options" id="trackList" role="listbox" hidden></ul>
+          </div>
+          <div class="dist" id="distStatus"></div>
+          <div class="legend"><b>●</b> confirmed road distance · ○ estimated ±15% — we confirm exact miles on your quote</div>
+        </div>
+
+        <div class="field hidden" id="milesField">
+          <label for="milesInput">Round-trip distance (miles)</label>
+          <input class="txt" id="milesInput" type="number" min="0" step="10" value="300" inputmode="numeric" style="font-family:var(--mono)" />
+        </div>
+
+        <div class="field">
+          <label>Event days <span class="opt">drives trackside crew only</span></label>
+          <div class="stepper" data-step="days">
+            <button type="button" data-dir="-1" aria-label="One fewer day">&minus;</button>
+            <div class="val"><span id="daysVal">2</span><small>days</small></div>
+            <button type="button" data-dir="1" aria-label="One more day">+</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Track time <span class="opt">weekend total</span></label>
+          <div class="stepper" data-step="hours">
+            <button type="button" data-dir="-1" aria-label="Less track time">&minus;</button>
+            <div class="val"><span id="hoursVal">4</span><small>hrs</small></div>
+            <button type="button" data-dir="1" aria-label="More track time">+</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Sessions on track <span class="opt">weekend total &mdash; one session = one heat cycle</span></label>
+          <div class="stepper" data-step="sessions">
+            <button type="button" data-dir="-1" aria-label="Fewer sessions">&minus;</button>
+            <div class="val"><span id="sessVal">8</span><small>sessions</small></div>
+            <button type="button" data-dir="1" aria-label="More sessions">+</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Cars in the trailer <span class="opt">transport is shared &mdash; more cars, less each</span></label>
+          <div class="stepper" data-step="cars">
+            <button type="button" data-dir="-1" aria-label="Fewer cars">&minus;</button>
+            <div class="val"><span id="carsVal">3</span><small>cars</small></div>
+            <button type="button" data-dir="1" aria-label="More cars">+</button>
+          </div>
+          <div class="dist" id="carsStatus"></div>
+        </div>
+
+        <div class="field">
+          <label>Tires</label>
+          <div class="toggle" id="tireToggle">
+            <button type="button" data-tire="new" aria-pressed="false"><span class="t1">New set</span><span class="t2">heat cycles 1-8</span></button>
+            <button type="button" data-tire="used" aria-pressed="true"><span class="t1">Scuffed / used</span><span class="t2">heat cycles 9-16</span></button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Payment method</label>
+          <div class="toggle three" id="payToggle">
+            <button type="button" data-pay="ach" aria-pressed="true"><span class="t1">ACH</span><span class="t2">no fee</span></button>
+            <button type="button" data-pay="check" aria-pressed="false"><span class="t1">Check</span><span class="t2">no fee</span></button>
+            <button type="button" data-pay="card" aria-pressed="false"><span class="t1">Credit card</span><span class="t2" id="cardFeeHint">+ fee</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tower">
+        <h4>Estimate ▸ live</h4>
+        <div class="line" data-line="transport">
+          <div class="row"><span class="name">Transport</span><span class="amt" id="a-transport">248.56</span></div>
+          <div class="sub" id="s-transport"></div>
+          <div class="tnote">Indicative rate. <b>Transport is shared by the cars in the trailer</b> — at six cars your share is roughly a sixth of a solo tow. We confirm the final number on your quote.</div>
+          <div class="bar"><i id="b-transport" style="width:5.56%"></i></div>
+        </div>
+        <div class="line" data-line="prep"><div class="row"><span class="name">Prep</span><span class="amt" id="a-prep">600.00</span></div><div class="sub" id="s-prep"></div><div class="bar"><i id="b-prep" style="width:13.43%"></i></div></div>
+        <div class="line" data-line="support"><div class="row"><span class="name">Trackside Support</span><span class="amt" id="a-support">1,200.00</span></div><div class="sub" id="s-support"></div><div class="bar"><i id="b-support" style="width:26.86%"></i></div></div>
+        <div class="line" data-line="tires"><div class="row"><span class="name">Tires <span class="est">EST</span></span><span class="amt" id="a-tires">347.94</span></div><div class="sub" id="s-tires"></div><div class="bar"><i id="b-tires" style="width:7.79%"></i></div></div>
+        <div class="line" data-line="fuel"><div class="row"><span class="name">Fuel <span class="est">EST</span></span><span class="amt" id="a-fuel">273.00</span></div><div class="sub" id="s-fuel"></div><div class="bar"><i id="b-fuel" style="width:6.11%"></i></div></div>
+        <div class="line" data-line="car"><div class="row"><span class="name">Car Rental</span><span class="amt" id="a-car">1,798.52</span></div><div class="sub" id="s-car"></div><div class="bar"><i id="b-car" style="width:40.25%"></i></div></div>
+        <div class="line cardfee hidden" data-line="cardfee" id="line-cardfee"><div class="row"><span class="name" id="cardfeeName">Card convenience fee</span><span class="amt" id="a-cardfee">0</span></div><div class="bar"><i id="b-cardfee"></i></div></div>
+
+        <div class="total">
+          <div class="lbl">Estimated total<span id="ctx"></span></div>
+          <div class="big" id="grandTotal">4,468</div>
+        </div>
+        <p class="calc-note"><b>This is an estimate, not a final invoice.</b> Tires and fuel settle on actual usage. We confirm car fit before quoting — large drivers are no problem (we've fit 6'7"/275).</p>
+        <button class="towercta" id="reqBtn" type="button">Request this quote &rarr;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Deposit, payment & next steps</h2></div>
+    <div class="two">
+      <div class="panel">
+        <h3>Deposit, contract & payment</h3>
+        <div class="kv"><span class="k">Crash-damage deposit</span><span class="v amber">$6,000</span></div>
+        <div class="kv"><span class="k">Returned if undamaged</span><span class="v">Yes — in full</span></div>
+        <div class="kv"><span class="k">Agreement</span><span class="v">DocuSign</span></div>
+        <div class="kv"><span class="k">Pay by ACH or check</span><span class="v">No fee</span></div>
+        <div class="kv"><span class="k">Pay by credit card</span><span class="v amber" id="ccFeeRow">Convenience fee</span></div>
+      </div>
+      <div class="panel">
+        <h3>Once you're in</h3>
+        <ol class="steps">
+          <li><b>Driver registration</b> — a short form we send you.</li>
+          <li><b>Intro to the Spec Racer</b> — start-up, transmission, over-rev, data.</li>
+          <li><b>DocuSign contract</b> — sign and return.</li>
+          <li><b>Deposit + rental</b> — settled at hand-off.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <h2>Ready for a real number?</h2>
+    <p>Send us your event and a few fit measurements — height, weight, seated height, shoulder width — and we'll turn the estimate above into a firm, itemized quote.</p>
+    <button class="bigcta" id="reqBtn2" type="button">Request your quote</button>
+    <p class="fineprint">Look for the white truck, trailer, and canopy at the track.</p>
+    <p class="related">More on the program: <a href="/the-cars/">the Spec Racer Ford itself</a> &middot; <a href="/2026-race-calendar-spec-racer-ford-rentals-trackside-support/">2026 race calendar</a> &middot; <a href="/race-with-us/">arrive-and-drive services</a> &middot; <a href="/srf3-fit-check/">the SRF3 fit check</a></p>
+  </div>
+</section>
+
+<div class="overlay" id="quoteOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="qTitle">
+    <h3 id="qTitle">Request your quote</h3>
+    <p class="msub">We'll confirm exact tires, fuel, and distance, then follow up personally. No automated pricing.</p>
+    <div class="sum" id="quoteSummary"></div>
+    <div id="hsFormTarget"></div>
+    <div id="nativeForm">
+      <label class="fld">Name<input id="qName" type="text" autocomplete="name"></label>
+      <label class="fld">Email<input id="qEmail" type="email" autocomplete="email"></label>
+      <label class="fld">Phone (optional)<input id="qPhone" type="tel" autocomplete="tel"></label>
+      <label class="consent"><input id="qConsent" type="checkbox">
+        <span>By submitting a phone number, I consent to receive automated texts and/or phone calls at the phone number used above. &middot; By checking this box, I opt-in and agree to receive text messages from B2 Motorsports. Message and data rates may apply. &middot; By clicking &quot;Submit&quot;, I am consenting to receive text messages from B2 Motorsports to the phone number I provided. &middot; I understand these texts may be automated and that my consent to texting is not required as a condition to purchase. &middot; By submitting your information, you consent to receive all forms of communication including but not limited to; phone, text, email, mail, etc. Message and data rates may apply. Consent to these terms is not a condition of purchase. You may opt out at any time.</span></label>
+      <div class="actions">
+        <button class="cancel" type="button" id="qCancel">Cancel</button>
+        <button class="submit" type="button" id="qSubmit">Send request</button>
+      </div>
+    </div>
+    <div class="done" id="quoteDone" hidden>
+      <div class="big">Thanks!</div>
+      <p class="msub">Your estimate is on its way to the B2 crew. We'll reach out to lock in the details.</p>
+      <div class="actions"><button class="cancel" type="button" id="qClose2">Close</button></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — rate constants + integration.
+   Every rate traces to "SRF3 Prep, Preventative, Travel, Estimator.xlsx" on the B2
+   SharePoint. This page reproduces that workbook's Customer Quote to ~1%; the only
+   deliberate difference is fuel, which stays at the page's higher $68.25/hr.
+   ============================================================ */
+const CONFIG = {
+  // Rates below trace to "SRF3 Prep, Preventative, Travel, Estimator.xlsx" on the B2
+  // SharePoint (Customer Quote + Used Tire Calculator + Transportation Costs sheets).
+  supportPerDay: 600.00,          // Trackside Support, flat per EVENT DAY
+  prepPerEvent:  600.00,          // PREP, flat per event — alignment, wash, nut & bolt,
+                                  // driver fitment, trailer loading. Was buried inside the
+                                  // car rental hourly rate; broken out Sept 2026.
+  carPerHour:    449.63,          // SRF3 chassis per HOUR of track time. This is the
+                                  // workbook's $623.33/hr LESS the $173.70/hr Prep share.
+  fuelPerHour:   68.25,           // fuel per HOUR of track time (workbook uses 47.25)
+
+  // --- transport: see docs/reference/transport-cost-model.md --------------------------
+  // Real fleet, bought cash. Capital recovered by straight-line depreciation so the
+  // replacement is funded; cash does not make the rig free.
+  //   2017 F350 DRW XL $25k/8yr + 2019 F350 DRW Platinum $50k/10yr
+  //   2001 42ft 3-axle 5-car $45k/15yr + 2011 40ft 2-axle 3-car $20k/15yr
+  //   depreciation $1,038/mo + insurance 325 ($3,900/yr) + permits 200 + office 300
+  //   = $1,863/mo over 1,450 tow mi/month (30 events x 580 avg) = $1.29/mi
+  //   + fuel $0.50 ($5.00/gal at 10 MPG) + repair $0.33 (revised PM + axle reserve)
+  rigCostPerMile: 2.11,
+  towMph:         60,             // the workbook's own basis: drive hours = miles / 60
+  crewLeadPerHour:   28.85,       // $60,000 / 2,080 hr
+  crewSecondPerHour: 16.83,       // $35,000 / 2,080 hr
+  crewSecondFromCars: 3,          // 1 crew at 1-2 cars, 2 crew at 3+
+  hotelPerNight:      171.00,     // one room, split between crew
+  hotelOutboundHours: 8,          // one-way drive at/over this => stay, nights = event days
+  hotelReturnHours:   10,         // extra night homeward only when one-way exceeds this
+  trailerCapacity:    5,          // 2001 42ft carries 5; the 2011 40ft carries 3
+  marginMin: 1.15,                // solo tow
+  marginMax: 1.50,                // full trailer — scales linearly, so filling it pays
+
+  // --- tires ----------------------------------------------------------------
+  // Logarithmic depreciation over a 16 heat-cycle life, straight from the
+  // Used Tire Calculator sheet:  V(n) = P - (P / log10(life+1)) * log10(n+1)
+  //   P = (270 + 40) * 4 * 1.25 = 1550   (4 tires, $270 + $40 each, x1.25)
+  // A session IS a heat cycle. New starts the set; used picks it up half worn.
+  tireSetPrice:   1550.00,
+  tireLifeCycles: 16,             // cycles 0..15; V(16) = exactly 0
+  tireUsedStart:  8,              // new = cycles 0-7, used = 8-15, no overlap
+  // Rate decision (Sept 2026, Cliff): a FLAT $1.50 per mile each way, at every distance —
+  // deliberately no baseTripFee.
+  //
+  // DO NOT DOUBLE THIS. tracks[].miles are already ROUND TRIP (verified against coordinates:
+  // stored/straight-line holds at ~1.20 across all 46 tracks, the normal road-detour factor).
+  // So miles * perMile already charges $1.50 for each mile travelled in BOTH directions.
+  // PTC = 53 mi out + 53 mi back = 106 mi billed = $159.00.
+  //
+  // That sits under the $335.16 transport line on the Chris Wood PTC quote, which works out to
+  // $3.16/round-trip mi. The gap is intentional and is closed at quoting time, not on this page:
+  // the UI presents the rate as indicative and says multi-car loads are discounted. A full
+  // transport cost calculator replaces this constant shortly — then perMile stops being one number.
+  ccFeePct:      3.0,                           // credit-card convenience fee (%)
+
+  /* --- Google Maps distance integration ---
+     The shop is the trip ORIGIN. Set B2's real shop address/place below.
+     IMPORTANT: do NOT ship a Maps API key in this page. Stand up a tiny endpoint on the B2 server
+     that takes {origin, destinationPlaceId} and returns round-trip miles, and point distanceProxyUrl at it.
+     When distanceProxyUrl (or googleMapsApiKey) is set, the track search resolves live; until then the
+     built-in TRACKS list below drives the prototype. */
+  origin: { label: "2919A Bob Wallace Ave, Huntsville, AL 35805", placeId: "", coords: null },
+  googleMapsApiKey: "",     // leave empty in client code; prefer the proxy
+  distanceProxyUrl: "",     // e.g. "/api/track-distance"  (recommended)
+  // The race-weekend picker fetches the CALENDAR page and parses its table, so the dropdown
+  // always matches what the calendar shows. Same origin, no CORS. Set "" to disable the picker.
+  calendarUrl: "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/",
+
+  // -- TRACK LIST ------------------------------------------------------------
+  // Universe = the 2026 SCCA U.S. Majors Tour schedule (SRF3 is a listed class in every Majors
+  // event) + the club/regional tracks B2 actually runs. Sorted nearest-first.
+  // Every track carries lat/lng so the Maps proxy resolves exact door-to-door road miles with no
+  // place-ID lookup needed.
+  //
+  // miles = ROUND TRIP from 2919A Bob Wallace Ave, Huntsville AL 35805.
+  //   src "road"     = confirmed driving distance from lookup (authoritative)
+  //   src "computed" = great-circle x 1.20 circuity factor. Calibrated against confirmed points,
+  //                    but real circuity runs 1.03 (due north) to 1.33 (southeast diagonal), so
+  //                    treat these as +/-15%. THE PROXY REPLACES THESE WITH EXACT MILES.
+  tracks: [
+    { name:"PTC / Polecat Training Center \u2014 Fayetteville TN", reg:"club", lat:35.330, lng:-86.380, miles:106,  alias:"ptc polecat fayetteville", src:"computed" },
+    { name:"Barber Motorsports Park \u2014 Leeds AL",              reg:"SE",   lat:33.531, lng:-86.622, miles:196,  alias:"barber birmingham leeds", src:"road" },
+    { name:"Talladega Gran Prix Raceway \u2014 Munford AL",        reg:"club", lat:33.523, lng:-86.056, miles:212,  alias:"tgpr talladega gran prix munford", src:"computed" },
+    { name:"Nashville Superspeedway \u2014 Lebanon TN",            reg:"club", lat:36.108, lng:-86.409, miles:232,  alias:"nashville superspeedway lebanon", src:"computed" },
+    { name:"Atlanta Motorsports Park \u2014 Dawsonville GA",       reg:"club", lat:34.416, lng:-84.108, miles:346,  alias:"amp atlanta motorsports park dawsonville", src:"computed" },
+    { name:"NCM Motorsports Park \u2014 Bowling Green KY",         reg:"club", lat:36.986, lng:-86.382, miles:378,  alias:"ncm national corvette museum bowling green", src:"computed" },
+    { name:"Michelin Raceway Road Atlanta \u2014 Braselton GA",    reg:"SE",   lat:34.148, lng:-83.812, miles:436,  alias:"road atlanta michelin braselton", src:"road" },
+    { name:"Memphis Int'l Raceway \u2014 Millington TN",           reg:"club", lat:35.353, lng:-89.899, miles:459,  alias:"memphis international raceway millington", src:"computed" },
+    { name:"Putnam Park Road Course \u2014 Mt Meridian IN",        reg:"club", lat:39.683, lng:-86.803, miles:790,  alias:"putnam park mt meridian", src:"computed" },
+    { name:"World Wide Technology Raceway \u2014 Madison IL",      reg:"Mid-States", lat:38.650, lng:-90.134, miles:803, alias:"wwt gateway world wide technology raceway madison", src:"computed" },
+    { name:"Indianapolis Motor Speedway (road) \u2014 Speedway IN", reg:"club", lat:39.795, lng:-86.235, miles:812, alias:"ims indy brickyard indianapolis motor speedway road course", src:"computed" },
+    { name:"Carolina Motorsports Park \u2014 Kershaw SC",          reg:"SE",   lat:34.611, lng:-80.512, miles:832,  alias:"cmp carolina motorsports park kershaw", src:"computed" },
+    { name:"Roebling Road Raceway \u2014 Bloomingdale GA",         reg:"SE",   lat:32.148, lng:-81.343, miles:844,  alias:"roebling road raceway savannah bloomingdale", src:"computed" },
+    { name:"NOLA Motorsports Park \u2014 Avondale LA",             reg:"club", lat:29.879, lng:-90.203, miles:947,  alias:"nola new orleans motorsports park avondale", src:"computed" },
+    { name:"Ozarks Int'l Raceway \u2014 Gravois Mills MO",         reg:"Mid-States", lat:38.268, lng:-92.894, miles:1023, alias:"ozarks international raceway gravois mills", src:"computed" },
+    { name:"VIRginia Int'l Raceway \u2014 Alton VA",               reg:"SE/NE", lat:36.560, lng:-79.205, miles:1044, alias:"vir virginia international raceway alton danville", src:"computed" },
+    { name:"The FIRM \u2014 Starke FL",                            reg:"club", lat:29.930, lng:-82.150, miles:1050, alias:"the firm florida international rally motorsport park starke", src:"computed" },
+    { name:"Mid-Ohio Sports Car Course \u2014 Lexington OH",       reg:"North", lat:40.690, lng:-82.634, miles:1119, alias:"mid ohio midohio sportscar sports car course lexington", src:"computed" },
+    { name:"Daytona Int'l Speedway (road) \u2014 Daytona FL",      reg:"club", lat:29.185, lng:-81.070, miles:1180, alias:"daytona international speedway raceway road course dis", src:"computed" },
+    { name:"Gingerman Raceway \u2014 South Haven MI",              reg:"North", lat:42.406, lng:-86.143, miles:1276, alias:"gingerman raceway south haven", src:"computed" },
+    { name:"Nelson Ledges Road Course \u2014 Garrettsville OH",    reg:"NE",   lat:41.297, lng:-81.032, miles:1312, alias:"nelson ledges road course garrettsville", src:"computed" },
+    { name:"Blackhawk Farms Raceway \u2014 S. Beloit IL",          reg:"North", lat:42.483, lng:-89.050, miles:1326, alias:"blackhawk farms raceway beloit", src:"computed" },
+    { name:"Hallett Motor Racing Circuit \u2014 Jennings OK",      reg:"South", lat:36.230, lng:-96.581, miles:1369, alias:"hallett motor racing circuit jennings", src:"computed" },
+    { name:"Summit Point Motorsports Park \u2014 Summit Point WV", reg:"NE",   lat:39.238, lng:-77.960, miles:1369, alias:"summit point raceway motorsports park shenandoah jefferson", src:"computed" },
+    { name:"Grattan Raceway \u2014 Belding MI",                    reg:"North", lat:43.020, lng:-85.323, miles:1387, alias:"grattan raceway belding", src:"computed" },
+    { name:"Pittsburgh Int'l Race Complex \u2014 Wampum PA",       reg:"club", lat:40.850, lng:-80.322, miles:1400, alias:"pitt race pittsburgh international race complex wampum beaver run", src:"computed" },
+    { name:"Sebring Int'l Raceway \u2014 Sebring FL",              reg:"SE",   lat:27.454, lng:-81.348, miles:1417, alias:"sebring international raceway", src:"computed" },
+    { name:"Heartland Motorsports Park \u2014 Topeka KS",          reg:"club", lat:38.962, lng:-95.664, miles:1440, alias:"heartland motorsports park topeka", src:"computed" },
+    { name:"Road America \u2014 Elkhart Lake WI",                  reg:"North", lat:43.798, lng:-87.990, miles:1516, alias:"road america elkhart lake", src:"computed" },
+    { name:"Eagles Canyon Raceway \u2014 Decatur TX",              reg:"South", lat:33.286, lng:-97.545, miles:1521, alias:"ecr eagles canyon raceway decatur", src:"computed" },
+    { name:"MSR Houston \u2014 Angleton TX",                       reg:"South", lat:29.201, lng:-95.442, miles:1542, alias:"msr motorsport ranch houston angleton", src:"computed" },
+    { name:"MSR Cresson \u2014 Cresson TX",                        reg:"South", lat:32.526, lng:-97.616, miles:1561, alias:"msr motorsport ranch cresson", src:"computed" },
+    { name:"Circuit of the Americas \u2014 Austin TX",             reg:"club", lat:30.135, lng:-97.636, miles:1690, alias:"cota circuit of the americas austin", src:"computed" },
+    { name:"New Jersey Motorsports Park \u2014 Millville NJ",      reg:"NE",   lat:39.422, lng:-75.073, miles:1713, alias:"njmp new jersey motorsports park millville thunderbolt lightning", src:"computed" },
+    { name:"Palm Beach Int'l Raceway \u2014 Jupiter FL",           reg:"club", lat:26.930, lng:-80.240, miles:1730, alias:"pbir palm beach international raceway jupiter", src:"computed" },
+    { name:"Homestead-Miami Speedway \u2014 Homestead FL",         reg:"SE",   lat:25.452, lng:-80.409, miles:1775, alias:"homestead miami speedway raceway hms", src:"computed" },
+    { name:"Watkins Glen Int'l \u2014 Watkins Glen NY",            reg:"NE",   lat:42.337, lng:-76.927, miles:1780, alias:"watkins glen international the glen wgi", src:"computed" },
+    { name:"Brainerd Int'l Raceway \u2014 Brainerd MN",            reg:"North", lat:46.417, lng:-94.271, miles:2164, alias:"bir brainerd international raceway", src:"computed" },
+    { name:"Thompson Speedway \u2014 Thompson CT",                 reg:"NE",   lat:41.984, lng:-71.822, miles:2265, alias:"thompson speedway motorsports park", src:"computed" },
+    { name:"High Plains Raceway \u2014 Deer Trail CO",             reg:"Mid-States", lat:39.529, lng:-104.062, miles:2436, alias:"hpr high plains raceway deer trail", src:"computed" },
+    { name:"Pueblo Motorsports Park \u2014 Pueblo CO",             reg:"Mid-States", lat:38.257, lng:-104.688, miles:2476, alias:"pueblo motorsports park", src:"computed" },
+    { name:"The Podium Club at Attessa \u2014 Casa Grande AZ",     reg:"West", lat:32.879, lng:-111.679, miles:3459, alias:"podium club attessa casa grande", src:"computed" },
+    { name:"Buttonwillow Raceway Park \u2014 Buttonwillow CA",     reg:"West", lat:35.487, lng:-119.549, miles:4449, alias:"cvr buttonwillow raceway park", src:"computed" },
+    { name:"Thunderhill Raceway Park \u2014 Willows CA",           reg:"West", lat:39.537, lng:-122.331, miles:4758, alias:"thunderhill raceway park willows", src:"computed" },
+    { name:"Pacific Raceways \u2014 Kent WA",                      reg:"West", lat:47.323, lng:-122.147, miles:4858, alias:"pacific raceways kent seattle", src:"computed" },
+    { name:"Portland Int'l Raceway \u2014 Portland OR",            reg:"West", lat:45.596, lng:-122.690, miles:4865, alias:"pir portland international raceway", src:"computed" },
+  ],
+
+  daysRange:     { min:1, max:4, step:1 },
+  hoursRange:    { min:0.5, max:12, step:0.5 },   // WEEKEND TOTAL, not per day
+  sessionsRange: { min:1, max:16, step:1 },      // WEEKEND TOTAL = heat cycles used
+  carsRange:     { min:1, max:6, step:1 },       // cars sharing the trailer
+
+  // -- ANALYTICS + CRM -------------------------------------------------------
+  // Fill these to go live. Until then, events are console-logged (debug:true) so you can watch the
+  // funnel fire in DevTools without any accounts wired up. NOTHING is sent anywhere until these are set.
+  analytics: {
+    ga4Id:        "",          // "G-XXXXXXXXXX"  Google Analytics 4 Measurement ID
+    hubspotHubId: "",          // "1234567"       HubSpot Hub/account ID -> loads the tracking code
+    hubspot: { portalId:"", formId:"", region:"na1" },   // embedded quote form (HubSpot Forms)
+    injectScripts: true,       // set FALSE on a HubSpot-hosted page, or if GA is added at the host level
+    debug: true,               // console.log every event (leave on until live)
+  },
+};
+
+/* ---- live-distance hook (no-op until configured) -------------------------
+   In production this calls B2's proxy (which calls Google Distance Matrix server-side
+   with the API key) and returns round-trip miles. Shape shown for reference. */
+async function resolveLiveMiles(track) {
+  if (!CONFIG.distanceProxyUrl) return null;
+  try {
+    const r = await fetch(CONFIG.distanceProxyUrl, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        origin: CONFIG.origin.label,                       // shop address
+        destination: { lat: track.lat, lng: track.lng },   // track coords
+        name: track.name
+      })
+    });
+    const data = await r.json();      // expected: { roundTripMiles: <number> }
+    return typeof data.roundTripMiles === "number" ? data.roundTripMiles : null;
+  } catch { return null; }
+}
+/* Places Autocomplete (for searching ANY track) would similarly run through the proxy or the
+   Maps JS API once a key/library is loaded. The prototype below filters the built-in TRACKS list. */
+
+const state = { miles:CONFIG.tracks[1].miles, distLabel:CONFIG.tracks[1].name, distSrc:CONFIG.tracks[1].src,
+                days:2, hours:4, sessions:8, cars:3, tire:"used", pay:"ach" };
+const EVENT = { name:"", date:"", type:"" };   // set from the picker or ?event=&date=&type= — see "calendar handoff"
+const money = new Intl.NumberFormat("en-US",{ minimumFractionDigits:2, maximumFractionDigits:2 });
+const whole = new Intl.NumberFormat("en-US",{ maximumFractionDigits:0 });
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const hrTxt = v => (Number.isInteger(v) ? String(v) : v.toFixed(1));
+
+/* config-driven labels */
+document.getElementById("rateLabel").textContent = "$" + money.format(CONFIG.rigCostPerMile) + "/mi";
+document.getElementById("cardFeeHint").textContent = "+ " + CONFIG.ccFeePct + "% fee";
+document.getElementById("cardfeeName").textContent = "Card convenience fee (" + CONFIG.ccFeePct + "%)";
+document.getElementById("ccFeeRow").textContent = "+ " + CONFIG.ccFeePct + "% fee";
+
+/* ---------- track search combobox ---------- */
+const search = document.getElementById("trackSearch");
+const list = document.getElementById("trackList");
+const distStatus = document.getElementById("distStatus");
+const milesField = document.getElementById("milesField");
+const milesInput = document.getElementById("milesInput");
+let activeIdx = -1, matches = [];
+
+function openList(items) {
+  matches = items;
+  list.innerHTML = "";
+  if (!items.length) {
+    const li = document.createElement("li");
+    li.className = "empty";
+    li.innerHTML = `No match in the demo list. <b id="manualLink">Enter distance manually →</b>`;
+    list.appendChild(li);
+    li.querySelector("#manualLink").addEventListener("click", enableManual);
+  } else {
+    items.forEach((t, i) => {
+      const li = document.createElement("li");
+      li.setAttribute("role","option");
+      li.dataset.i = i;
+      li.innerHTML = `<span>${t.name}<em class="reg">${t.reg || ""}</em></span>` +
+                     `<span class="d">${whole.format(Math.round(t.miles))} mi rt` +
+                     `<i class="${t.src === "road" ? "ok" : "est"}">${t.src === "road" ? "\u25CF" : "\u25CB"}</i></span>`;
+      li.addEventListener("click", () => pickTrack(t));
+      list.appendChild(li);
+    });
+  }
+  list.hidden = false; search.setAttribute("aria-expanded","true"); activeIdx = -1;
+}
+function closeList() { list.hidden = true; search.setAttribute("aria-expanded","false"); }
+
+/* Search the name AND the alias list, word by word, ignoring punctuation.
+   Racers type "COTA", "National Corvette Museum", "Mid-Ohio Sportscar"; the official
+   names are "Circuit of the Americas", "NCM Motorsports Park", "Mid-Ohio Sports Car
+   Course". Matching the name alone hid tracks that were in the list all along.
+   Every track carries an alias field — keep it populated when adding tracks. */
+const normalize = (s) => String(s).toLowerCase()
+  .replace(/int'?l\b/g, "international")
+  .replace(/[^a-z0-9]+/g, " ")
+  .trim();
+function filterTracks(q) {
+  const words = normalize(q).split(" ").filter(Boolean);
+  if (!words.length) return CONFIG.tracks.slice();
+  return CONFIG.tracks.filter(t => {
+    const hay = normalize(t.name + " " + (t.alias || ""));
+    return words.every(w => hay.includes(w));
+  });
+}
+
+async function pickTrack(t) {
+  search.value = t.name;
+  closeList();
+  milesField.classList.add("hidden");
+  // try live distance first; fall back to the built-in mileage
+  let live = null;
+  if (CONFIG.distanceProxyUrl && t.lat != null) {
+    distStatus.innerHTML = "<b>Measuring road distance…</b>";
+    live = await resolveLiveMiles(t);
+  }
+  state.miles = live != null ? live : t.miles;
+  state.distLabel = t.name;
+  state.distSrc = live != null ? "exact · via Google Maps"
+                : t.src === "road" ? "confirmed road distance"
+                : "estimated \u00B115% — exact on quote";
+  render();
+}
+
+function enableManual() {
+  closeList();
+  milesField.classList.remove("hidden");
+  state.distLabel = search.value || "Custom";
+  state.distSrc = "manual";
+  state.miles = parseFloat(milesInput.value) || 0;
+  render();
+  milesInput.focus();
+}
+
+search.addEventListener("input", () => openList(filterTracks(search.value)));
+// Focus opens the FULL list, not the list filtered by the track already chosen.
+// init sets search.value to tracks[0], so filtering on focus left the dropdown
+// showing only PTC. Selecting the text means the first keystroke replaces it and
+// filtering resumes as normal.
+search.addEventListener("focus", () => { search.select(); openList(CONFIG.tracks.slice()); });
+search.addEventListener("keydown", e => {
+  if (list.hidden) return;
+  const opts = [...list.querySelectorAll("li[data-i]")];
+  if (e.key === "ArrowDown") { e.preventDefault(); activeIdx = Math.min(activeIdx+1, opts.length-1); }
+  else if (e.key === "ArrowUp") { e.preventDefault(); activeIdx = Math.max(activeIdx-1, 0); }
+  else if (e.key === "Enter" && activeIdx >= 0) { e.preventDefault(); pickTrack(matches[activeIdx]); return; }
+  else if (e.key === "Escape") { closeList(); return; }
+  opts.forEach((o,i) => o.classList.toggle("active", i === activeIdx));
+});
+document.addEventListener("click", e => { if (!e.target.closest(".combo")) closeList(); });
+milesInput.addEventListener("input", () => { state.miles = parseFloat(milesInput.value) || 0; render(); });
+
+/* ---------- steppers ---------- */
+const STEP = {
+  days:     { ...CONFIG.daysRange,     out:"daysVal",  key:"days" },
+  hours:    { ...CONFIG.hoursRange,    out:"hoursVal", key:"hours" },
+  sessions: { ...CONFIG.sessionsRange, out:"sessVal",  key:"sessions" },
+  cars:     { ...CONFIG.carsRange,     out:"carsVal",  key:"cars" },
+};
+document.querySelectorAll(".stepper").forEach(st => {
+  const cfg = STEP[st.dataset.step];
+  st.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    const next = +(state[cfg.key] + (+b.dataset.dir) * cfg.step).toFixed(2);
+    if (next < cfg.min || next > cfg.max) return;
+    state[cfg.key] = next;
+    document.getElementById(cfg.out).textContent = cfg.key === "hours" ? hrTxt(next) : next;
+    render();
+  }));
+});
+
+/* ---------- toggles ---------- */
+document.querySelectorAll("#tireToggle button").forEach(b => b.addEventListener("click", () => {
+  state.tire = b.dataset.tire;
+  document.querySelectorAll("#tireToggle button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  render();
+}));
+document.querySelectorAll("#payToggle button").forEach(b => b.addEventListener("click", () => {
+  state.pay = b.dataset.pay;
+  document.querySelectorAll("#payToggle button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  render();
+}));
+
+/* ---------- tire depreciation ----------
+   Straight from the Used Tire Calculator sheet. Remaining set value after n heat
+   cycles is logarithmic, reaching exactly $0 at n = life:
+       V(n) = P - (P / log10(life + 1)) * log10(n + 1)
+   The value of cycle n is V(n) - V(n+1), so early cycles cost far more than late
+   ones: on a $1,550 set the first cycle is $379.21 and the sixteenth is $33.17.
+   A renter is charged for the cycles they actually consume. */
+const log10 = (x) => Math.log(x) / Math.LN10;
+function tireSetValue(n) {
+  const P = CONFIG.tireSetPrice, L = CONFIG.tireLifeCycles;
+  return P - (P / log10(L + 1)) * log10(n + 1);
+}
+const heatCycleCost = (n) => tireSetValue(n) - tireSetValue(n + 1);
+
+// Cost of `cycles` consecutive heat cycles starting at `start`. If the set runs
+// out mid-weekend, the next set of the SAME grade is started, so a used renter
+// never silently gets charged new-tire money.
+function tireCost(start, cycles) {
+  let total = 0, c = start;
+  for (let i = 0; i < cycles; i++) {
+    if (c >= CONFIG.tireLifeCycles) c = start;
+    total += heatCycleCost(c);
+    c++;
+  }
+  return total;
+}
+const tireStartCycle = () => (state.tire === "new" ? 0 : CONFIG.tireUsedStart);
+
+/* ---------- transport ----------
+   The rig costs the same to run whoever is aboard, so the trip is costed once and
+   then shared. Crew is billed on DRIVE HOURS only — their time at the track is the
+   Trackside Support line, and billing it here too would charge for the same people
+   twice. Margin scales with occupancy so filling the trailer actually pays. */
+function transportDetail() {
+  const miles    = Math.max(0, state.miles);
+  const driveHrs = miles / CONFIG.towMph;
+  const oneWay   = driveHrs / 2;
+  const cars     = Math.min(Math.max(1, state.cars), CONFIG.trailerCapacity);
+
+  const crewCount = cars >= CONFIG.crewSecondFromCars ? 2 : 1;
+  const crewRate  = CONFIG.crewLeadPerHour + (crewCount === 2 ? CONFIG.crewSecondPerHour : 0);
+  const crew      = driveHrs * crewRate;
+
+  // stay out when the run is long; only add a night homeward when it is very long
+  const nights = oneWay >= CONFIG.hotelOutboundHours
+    ? state.days + (oneWay > CONFIG.hotelReturnHours ? 1 : 0)
+    : 0;
+  const hotel = nights * CONFIG.hotelPerNight;
+
+  const tripCost = CONFIG.rigCostPerMile * miles + crew + hotel;
+  const margin = CONFIG.marginMin +
+    (CONFIG.marginMax - CONFIG.marginMin) * (cars - 1) / (CONFIG.trailerCapacity - 1);
+
+  return { miles, driveHrs, oneWay, cars, crewCount, crew, nights, hotel, tripCost, margin,
+           perCar: tripCost * margin / cars };
+}
+
+/* ---------- compute + render ---------- */
+function compute() {
+  // sessions and hours are WEEKEND TOTALS; days drives only support
+  const sub = {
+    transport: transportDetail().perCar,
+    prep:      CONFIG.prepPerEvent,
+    support:   CONFIG.supportPerDay * state.days,
+    tires:     tireCost(tireStartCycle(), state.sessions),
+    fuel:      CONFIG.fuelPerHour * state.hours,
+    car:       CONFIG.carPerHour * state.hours,
+  };
+  const subtotal = sub.transport + sub.prep + sub.support + sub.tires + sub.fuel + sub.car;
+  sub.cardfee = state.pay === "card" ? subtotal * (CONFIG.ccFeePct/100) : 0;
+  return sub;
+}
+
+const prev = {};
+function writeAmount(el, val) {
+  const from = prev[el.id] ?? val; prev[el.id] = val;
+  if (reduce || from === val) { el.textContent = money.format(val); return; }
+  const t0 = performance.now(), dur = 420;
+  (function tick(now){ const p = Math.min(1,(now-t0)/dur), e = 1-Math.pow(1-p,3);
+    el.textContent = money.format(from + (val-from)*e); if (p<1) requestAnimationFrame(tick); })(performance.now());
+}
+
+function render() {
+  const c = compute();
+  const total = c.transport + c.prep + c.support + c.tires + c.fuel + c.car + c.cardfee;
+  ["transport","prep","support","tires","fuel","car","cardfee"].forEach(k => {
+    writeAmount(document.getElementById("a-"+k), c[k]);
+    document.getElementById("b-"+k).style.width = (total ? (c[k]/total)*100 : 0) + "%";
+  });
+  writeAmount(document.getElementById("grandTotal"), total);
+
+  const td = transportDetail();
+  const startC = tireStartCycle(), endC = startC + state.sessions - 1;
+  document.getElementById("s-transport").textContent =
+    whole.format(Math.round(td.miles)) + " mi round trip · " + hrTxt(td.driveHrs) + " drive hrs · " +
+    td.crewCount + " crew" + (td.nights ? " · " + td.nights + " night" + (td.nights>1?"s":"") : "") +
+    " · shared by " + td.cars + " car" + (td.cars>1?"s":"");
+  document.getElementById("s-prep").textContent =
+    "flat per event — alignment, fitment, wash, loading";
+  document.getElementById("s-support").textContent =
+    state.days + " day" + (state.days>1?"s":"") + " × $" + money.format(CONFIG.supportPerDay) + "/day";
+  document.getElementById("s-tires").textContent =
+    state.sessions + " heat cycle" + (state.sessions>1?"s":"") + " (" + (startC+1) + "–" + (endC+1) + " of " +
+    CONFIG.tireLifeCycles + ") · avg $" + money.format(c.tires / Math.max(1,state.sessions)) + "/cycle";
+  document.getElementById("s-fuel").textContent =
+    hrTxt(state.hours) + " hrs × $" + money.format(CONFIG.fuelPerHour) + "/hr";
+  document.getElementById("s-car").textContent =
+    hrTxt(state.hours) + " hrs × $" + money.format(CONFIG.carPerHour) + "/hr of track time";
+
+  document.getElementById("line-cardfee").classList.toggle("hidden", state.pay !== "card");
+
+  distStatus.innerHTML = state.miles > 0
+    ? `<b>${whole.format(Math.round(state.miles))} mi round trip</b> · <span class="src">${state.distSrc}</span>`
+    : "Pick a track or enter a distance.";
+
+  const payLabel = state.pay === "card" ? "card +" + CONFIG.ccFeePct + "%" : state.pay.toUpperCase();
+  document.getElementById("ctx").textContent =
+    `${state.days}d · ${hrTxt(state.hours)}hr · ${state.sessions} sessions · ${state.distLabel} · ${payLabel}`;
+}
+
+/* init: select Barber — the 14 Sep anchor benchmark (2 days, 4h, 8 sessions, 3 cars, used tires) */
+search.value = CONFIG.tracks[1].name;
+render();
+
+/* ---------- "Start from this example" (anchor band) ---------- */
+const anchorStartBtn = document.getElementById("anchorStart");
+if (anchorStartBtn) anchorStartBtn.addEventListener("click", async function () {
+  EVENT.name = ""; EVENT.date = ""; EVENT.type = ""; showEventBanner();
+  await pickTrack(CONFIG.tracks[1]);
+  setStep("days", 2); setStep("hours", 4); setStep("sessions", 8); setStep("cars", 3);
+  state.tire = "used";
+  document.querySelectorAll("#tireToggle button").forEach(b => b.setAttribute("aria-pressed", b.dataset.tire === "used" ? "true" : "false"));
+  render();
+  document.getElementById("quote").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+});
+
+
+/* ============================ ANALYTICS + CRM ============================== */
+const A = CONFIG.analytics;
+
+// inject GA4 + HubSpot loader only when configured and allowed by the host
+if (A.injectScripts && A.ga4Id) {
+  const s = document.createElement("script"); s.async = true;
+  s.src = "https://www.googletagmanager.com/gtag/js?id=" + A.ga4Id; document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+  gtag("js", new Date()); gtag("config", A.ga4Id);
+}
+if (A.injectScripts && A.hubspotHubId) {
+  const h = document.createElement("script");
+  h.type = "text/javascript"; h.async = true; h.defer = true; h.id = "hs-script-loader";
+  h.src = "https://js.hs-scripts.com/" + A.hubspotHubId + ".js"; document.head.appendChild(h);
+  window._hsq = window._hsq || [];
+}
+
+// one helper fans every event out to GA4, HubSpot, and (in debug) the console
+function track(name, params) {
+  const p = params || {};
+  if (A.debug) console.log("[track]", name, p);
+  if (window.gtag) gtag("event", name, p);
+  if (window._hsq) window._hsq.push(["trackCustomBehavioralEvent", { name: name, properties: p }]);
+}
+
+// flat, GA4-friendly snapshot of the current estimate
+function snapshot() {
+  const c = compute();
+  const total = c.transport + c.prep + c.support + c.tires + c.fuel + c.car + c.cardfee;
+  return {
+    track_name: state.distLabel,
+    round_trip_miles: Math.round(state.miles),
+    distance_source: state.distSrc,
+    days: state.days, track_hours: state.hours, sessions: state.sessions,
+    cars_in_trailer: state.cars,
+    tires: state.tire, payment_method: state.pay,
+    event_name: EVENT.name, event_date: EVENT.date, event_type: EVENT.type,
+    estimate_total: Math.round(total)
+  };
+}
+
+// debounced "estimate_configured" fires after any input settles
+let cfgT;
+function scheduleConfigEvent() { clearTimeout(cfgT); cfgT = setTimeout(function(){ track("estimate_configured", snapshot()); }, 700); }
+
+// wrap the existing render + pickTrack so all input changes are observed without touching their bodies
+const _render = render;
+render = function () { _render(); scheduleConfigEvent(); };
+const _pick = pickTrack;
+pickTrack = async function (t) {
+  await _pick(t);
+  track("estimate_track_selected", { track_name: t.name, track_region: t.reg || "", round_trip_miles: Math.round(t.miles), distance_source: t.src });
+};
+document.querySelectorAll("#payToggle button").forEach(function (b) {
+  b.addEventListener("click", function () { track("payment_method_selected", { payment_method: b.dataset.pay }); });
+});
+
+/* ---- quote modal ---- */
+const overlay = document.getElementById("quoteOverlay");
+const nativeForm = document.getElementById("nativeForm");
+const quoteDone = document.getElementById("quoteDone");
+
+function fillSummary() {
+  const s = snapshot();
+  const esc = (v) => String(v).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+  const evt = (s.event_name || s.event_date)
+    ? "<b>" + [s.event_name, s.event_date].filter(Boolean).map(esc).join(" &middot; ") + "</b><br>"
+    : "";
+  document.getElementById("quoteSummary").innerHTML =
+    evt +
+    esc(s.track_name) + "<br>" +
+    s.days + " day" + (s.days > 1 ? "s" : "") + " &middot; " + hrTxt(s.track_hours) + " hr &middot; " +
+    s.sessions + " sessions &middot; " + s.tires + " tires &middot; " + s.payment_method.toUpperCase() + "<br>" +
+    "<b>Est. $" + s.estimate_total.toLocaleString() + "</b> &middot; " + s.round_trip_miles + " mi rt (" + s.distance_source + ")";
+}
+
+function buildHsForm() {
+  nativeForm.hidden = true;
+  const create = function () {
+    hbspt.forms.create({
+      portalId: A.hubspot.portalId, formId: A.hubspot.formId, region: A.hubspot.region || "na1",
+      target: "#hsFormTarget",
+      onFormReady: function (form) {
+        const s = snapshot();
+        const set = function (n, v) {
+          const el = form.querySelector('[name="' + n + '"]');
+          if (el) { el.value = v; el.dispatchEvent(new Event("input", { bubbles: true })); }
+        };
+        // these map to HubSpot contact/form properties you create (see notes)
+        set("estimate_total", s.estimate_total); set("estimate_track", s.track_name);
+        set("estimate_round_trip_miles", s.round_trip_miles); set("estimate_days", s.days);
+        set("estimate_hours", s.track_hours); set("estimate_sessions", s.sessions);
+        set("estimate_tires", s.tires); set("estimate_payment", s.payment_method);
+        set("estimate_cars_in_trailer", s.cars_in_trailer);
+        set("estimate_event_name", s.event_name); set("estimate_event_date", s.event_date);
+        set("estimate_event_type", s.event_type);
+      },
+      onFormSubmitted: function () { track("quote_submitted", snapshot()); }
+    });
+  };
+  if (window.hbspt) create();
+  else { const s = document.createElement("script"); s.src = "https://js.hsforms.net/forms/embed/v2.js"; s.onload = create; document.head.appendChild(s); }
+}
+
+function openQuote() {
+  track("quote_requested", snapshot());
+  fillSummary();
+  nativeForm.hidden = false; quoteDone.hidden = true;
+  document.getElementById("quoteSummary").hidden = false;
+  overlay.hidden = false; document.body.style.overflow = "hidden";
+  if (A.hubspot.portalId && A.hubspot.formId) buildHsForm();
+}
+function closeQuote() { overlay.hidden = true; document.body.style.overflow = ""; }
+
+document.getElementById("reqBtn").addEventListener("click", openQuote);
+document.getElementById("reqBtn2").addEventListener("click", openQuote);
+document.getElementById("qCancel").addEventListener("click", closeQuote);
+document.getElementById("qClose2").addEventListener("click", closeQuote);
+document.getElementById("qClose2").addEventListener("click", function(){ nativeForm.hidden=false; quoteDone.hidden=true; document.getElementById("quoteSummary").hidden=false; });
+overlay.addEventListener("click", function (e) { if (e.target === overlay) closeQuote(); });
+document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !overlay.hidden) closeQuote(); });
+
+// native fallback submit (prototype capture — real capture is the HubSpot embed above)
+document.getElementById("qSubmit").addEventListener("click", function () {
+  const email = document.getElementById("qEmail").value.trim();
+  if (!email || !/.+@.+\..+/.test(email)) { const f = document.getElementById("qEmail"); f.focus(); f.style.borderColor = "var(--signal)"; return; }
+  const snap = snapshot();
+  snap.name = document.getElementById("qName").value.trim();
+  snap.email = email;
+  snap.phone = document.getElementById("qPhone").value.trim();
+  snap.consent = document.getElementById("qConsent").checked;
+  track("quote_submitted", snap);
+  nativeForm.hidden = true; document.getElementById("quoteSummary").hidden = true; quoteDone.hidden = false;
+});
+
+/* ---------- calendar handoff ----------
+   The 2026 Race Calendar links in with, for example:
+     /rental-pricing-calculator/?event=Just+Track+It&track=Atlanta+Motorsports+Park&date=Sep+12-13&days=2
+   `track` resolves through the SAME alias-aware matcher the dropdown uses, so the calendar
+   can say "AMP" or the full official name and either one lands.
+   `event` and `date` are display-only in the calculator but travel with the quote into
+   HubSpot as estimate_event_name / estimate_event_date. */
+
+function setStep(key, value) {
+  const cfg = STEP[key];
+  if (!cfg || !isFinite(value)) return;
+  const v = Math.min(Math.max(value, cfg.min), cfg.max);
+  state[cfg.key] = v;
+  document.getElementById(cfg.out).textContent = key === "hours" ? hrTxt(v) : v;
+}
+
+function showEventBanner() {
+  const el = document.getElementById("eventBanner");
+  if (!EVENT.name && !EVENT.date && !EVENT.type) { el.hidden = true; return; }
+  document.getElementById("eventName").textContent = EVENT.name || "Selected event";
+  document.getElementById("eventDate").textContent = EVENT.date || "";
+  document.getElementById("eventType").textContent = EVENT.type || "";
+  el.hidden = false;
+}
+
+async function applyEventFromUrl() {
+  const p = new URLSearchParams(location.search);
+  EVENT.name = (p.get("event") || "").trim().slice(0, 120);
+  EVENT.date = (p.get("date")  || "").trim().slice(0, 40);
+  EVENT.type = (p.get("type")  || "").trim().slice(0, 60);
+  const qTrack = p.get("track"), qDays = p.get("days");
+  if (qTrack) {
+    const hit = filterTracks(qTrack);
+    if (hit.length) await pickTrack(hit[0]);
+  }
+  if (qDays) setStep("days", parseInt(qDays, 10));
+  showEventBanner();
+  render();
+  if (EVENT.name || EVENT.date) {
+    track("event_handoff", { event_name: EVENT.name, event_date: EVENT.date, track_name: state.distLabel });
+  }
+}
+
+document.getElementById("eventClear").addEventListener("click", function (e) {
+  e.preventDefault();
+  EVENT.name = ""; EVENT.date = ""; EVENT.type = "";
+  const sel = document.getElementById("eventSelect");
+  if (sel) sel.value = "";          // keep the picker and the banner in step
+  showEventBanner();
+});
+
+
+/* ---------- race-weekend picker, read live from the calendar page ----------
+   Rather than hard-coding event links into the calendar (an Elementor widget on a
+   published page that would drift the moment an event is added), the calculator fetches
+   the calendar page and parses its table. One source of truth: edit the calendar, the
+   dropdown follows. Verified against the live table — 20 events, all tracks resolved.
+   Every failure path is silent: the field stays hidden and the calculator is unaffected. */
+
+let CAL_EVENTS = [];
+
+// generic racing words carry no signal when matching a track name
+const TRACK_STOP = new Set("international intl raceway speedway park motorsports motorsport motor racing complex the of and at circuit".split(" "));
+const trackTokens = (s) => normalize(s).split(" ").filter(Boolean);
+
+// the calendar writes "Event — Track (City, ST) NEW" with free-text notes after a "·"
+function cleanTrackText(s) {
+  return String(s).split("·")[0]
+    .replace(/\([^)]*\)/g, " ")
+    .replace(/\s+(NEW|REG CLOSES.*)$/i, " ")
+    .replace(/\s+/g, " ").trim();
+}
+
+// score each track by how many of its distinctive words appear in the cell text
+function matchTrackLoose(text) {
+  const hay = new Set(trackTokens(text));
+  let best = null, bestScore = 0;
+  for (const t of CONFIG.tracks) {
+    const words = [...new Set([...trackTokens(t.name), ...trackTokens(t.alias || "")])]
+      .filter(w => !TRACK_STOP.has(w) && w.length > 1);
+    let score = 0;
+    for (const w of words) if (hay.has(w)) score++;
+    if (score > bestScore) { bestScore = score; best = t; }
+  }
+  return bestScore > 0 ? best : null;
+}
+
+const CAL_MON = { Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11 };
+function parseEventDays(date) {
+  const m = String(date).match(/([A-Z][a-z]{2})\s*(\d{1,2})(?:\s*[-–]\s*(?:([A-Z][a-z]{2})\s*)?(\d{1,2}))?/);
+  if (!m) return 1;
+  const y = new Date().getFullYear();
+  const a = new Date(y, CAL_MON[m[1]], +m[2]);
+  if (!m[4]) return 1;
+  const b = new Date(y, CAL_MON[m[3] || m[1]], +m[4]);
+  const n = Math.round((b - a) / 86400000) + 1;
+  return n > 0 && n < 15 ? n : 1;
+}
+
+// <br> inside a header must become a space or "Track<br>Day" reads as "TrackDay"
+function cellText(el) {
+  const c = el.cloneNode(true);
+  c.querySelectorAll("br").forEach(br => br.replaceWith(" "));
+  return c.textContent.replace(/\s+/g, " ").trim();
+}
+const CHECKED = /[✓✔]/;          // ✓ / ✔ mark the event types that apply
+const shortTrack = (t) => t.name.split("—")[0].trim();
+
+async function loadCalendarEvents() {
+  if (!CONFIG.calendarUrl) return null;
+  try {
+    const res = await fetch(CONFIG.calendarUrl, { credentials: "same-origin" });
+    if (!res.ok) return null;
+    const doc = new DOMParser().parseFromString(await res.text(), "text/html");
+    // identify the calendar table by its headers, not by position or styling
+    const table = [...doc.querySelectorAll("table")].find(t => {
+      const ths = [...t.querySelectorAll("th")].map(h => cellText(h).toLowerCase());
+      return ths.some(h => h === "date") && ths.some(h => h.indexOf("event") >= 0);
+    });
+    if (!table) return null;
+
+    const headers = [...table.querySelectorAll("th")].map(cellText);
+    const dateIdx  = headers.findIndex(h => h.toLowerCase() === "date");
+    const eventIdx = headers.findIndex(h => h.toLowerCase().indexOf("event") >= 0);
+    if (dateIdx < 0 || eventIdx < 0) return null;
+    // every column after the event column that isn't License/Register is an event type
+    const SKIP = ["license", "register"];
+    const typeCols = headers.map((h, i) => ({ h: h, i: i }))
+      .filter(c => c.i > eventIdx && SKIP.indexOf(c.h.toLowerCase()) < 0);
+
+    const out = [];
+    for (const tr of table.querySelectorAll("tr")) {
+      const tds = [...tr.querySelectorAll("td")];
+      if (tds.length < 2) continue;
+      const date = cellText(tds[dateIdx] || tds[0]);
+      const cell = cellText(tds[eventIdx] || tds[1]);
+      if (!date || !cell) continue;
+      const parts = cell.split("—");
+      const trackText = cleanTrackText(parts[1] || cell);
+      const trk = matchTrackLoose(trackText);
+      const types = typeCols
+        .filter(c => tds[c.i] && CHECKED.test(cellText(tds[c.i])))
+        .map(c => c.h);
+      out.push({
+        date:  date,
+        name:  (parts[0] || cell).trim(),
+        track: trk,
+        types: types,
+        type:  types.join(" + "),
+        days:  parseEventDays(date),
+        // what the dropdown shows: Date | Track | Type
+        label: [date, trk ? shortTrack(trk) : trackText, types.join(" + ") || "—"].join("  |  "),
+      });
+    }
+    return out.length ? out : null;
+  } catch (e) { return null; }
+}
+
+async function initEventPicker() {
+  const field = document.getElementById("eventField");
+  const sel = document.getElementById("eventSelect");
+  const status = document.getElementById("eventStatus");
+  const events = await loadCalendarEvents();
+  if (!events) return;                       // stays hidden; nothing else changes
+  CAL_EVENTS = events;
+  events.forEach((e, i) => {
+    const o = document.createElement("option");
+    o.value = String(i);
+    o.textContent = e.label + (e.track ? "" : "  (pick a track below)");
+    sel.appendChild(o);
+  });
+  field.classList.remove("hidden");
+  status.innerHTML = "<b>" + events.length + " events</b> · <span class='src'>live from the calendar</span>";
+
+  sel.addEventListener("change", async () => {
+    const e = CAL_EVENTS[+sel.value];
+    if (!e) { EVENT.name = ""; EVENT.date = ""; EVENT.type = ""; showEventBanner(); render(); return; }
+    EVENT.name = e.name; EVENT.date = e.date; EVENT.type = e.type;
+    if (e.track) await pickTrack(e.track);
+    setStep("days", e.days);
+    showEventBanner(); render();
+    track("event_selected", { event_name: e.name, event_date: e.date, event_type: e.type, track_name: state.distLabel });
+  });
+
+  // if the URL already named an event, show it selected rather than blank
+  if (EVENT.name || EVENT.date) {
+    const i = events.findIndex(x => x.name === EVENT.name && x.date === EVENT.date);
+    if (i >= 0) sel.value = String(i);
+  }
+}
+
+applyEventFromUrl().then(initEventPicker);
+</script>
