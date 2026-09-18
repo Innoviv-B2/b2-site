@@ -67,7 +67,6 @@
 
 ## /simulator-and-sim-training/ — `sim-training.html`
 - 722 words · H1: "Racing simulator training and coaching, from people who race." · 2 images · 8 internal links
-- warn: description is 165 chars (aim 140–159)
 
 ## /product-development/ — `product-development.html`
 - 472 words · H1: "Custom race car parts, built by racers" · 3 images · 4 internal links
@@ -76,4 +75,4 @@
 - 2448 words · H1: "Privacy Policy" · 1 images · 1 internal links
 - warn: title is 31 chars (aim 50–65)
 
-**0 errors, 11 warnings.**
+**0 errors, 10 warnings.**
