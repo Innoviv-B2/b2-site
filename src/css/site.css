@@ -137,7 +137,10 @@ h1 em, h2 em { font-style: inherit; color: var(--blaze); }
 /* ---------- header ---------- */
 .hdr { position: sticky; top: 0; z-index: 40; background: var(--ink); border-bottom: 1px solid var(--ink-line); }
 .hdr__in { display: flex; align-items: center; gap: 18px; min-height: 76px; }
-.logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+.logo { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-decoration: none; flex-shrink: 0; }
+.hdr__tag { font-style: italic; font-weight: 800; font-size: 11.5px; letter-spacing: .2px; color: var(--blaze); line-height: 1; white-space: nowrap; }
+.hdr__tag b { color: var(--purple-tint); font-weight: inherit; }
+.foot .hdr__tag { display: none; }
 .lockup { display: flex; align-items: center; gap: 12px; }
 .lockup__mark { font-style: italic; font-weight: 900; font-size: 34px; line-height: .8; letter-spacing: -2px; }
 .lockup__mark i { color: var(--purple); font-style: inherit; }
