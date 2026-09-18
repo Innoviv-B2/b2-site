@@ -3,7 +3,7 @@
 21 pages.
 
 ## / — `home.html`
-- 842 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 18 internal links
+- 872 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 19 internal links
 
 ## /race-with-us/ — `race-with-us.html`
 - 1442 words · H1: "Arrive and drive a Spec Racer Ford." · 8 images · 11 internal links
