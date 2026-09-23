@@ -24,6 +24,13 @@
 }
 -->
 
+<style>
+.pg-media-packages .video { margin: 0; }
+.pg-media-packages .video__frame { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--border); background: var(--ink); }
+.pg-media-packages .video__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.pg-media-packages .video figcaption { margin-top: 12px; }
+</style>
+
 <!-- 1. Hero -->
 <section class="hero hero--short">
   <img class="hero__img" src="/assets/img/hero-car59-on-track.jpg" alt="B2 Motorsports Spec Racer Ford car 59 mid-corner on track" width="1600" height="816" fetchpriority="high">
@@ -32,7 +39,7 @@
     <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li>Media &amp; Amateur Racer</li></ol></nav>
     <p class="eyebrow">Media · Amateur Racer on YouTube · Ready To Air</p>
     <h1>Club racing, on camera. <em>Amateur Racer on YouTube.</em></h1>
-    <p class="lede">B2 Motorsports partners with the production company Ready To Air to make Amateur Racer, a documentary series about the people who race SCCA club events on their own time and their own dime. If you race with us, you may end up in it.</p>
+    <p class="lede">B2 Motorsports partners with the production company Ready To Air to make Amateur Racer, a documentary series about the people who race SCCA club events on their own time and their own dime. Racing with us, you can add a film of your own weekend.</p>
     <div class="btns">
       <a class="btn" href="https://www.youtube.com/channel/UCpZ-GeNruxcubijblpTMxtA" rel="noopener" target="_blank"><span>Watch Amateur Racer</span></a>
       <a class="btn btn--ghost" href="#photos"><span>Race weekend photos</span></a>
@@ -50,7 +57,7 @@
       <ul class="rail" style="margin-top:26px">
         <li><span class="rail__t">Jan 2025</span><p><b>Sebring</b> · the Hoosier Super Tour opener, filmed as the pilot</p></li>
         <li><span class="rail__t">2025–26</span><p><b>Super Tour weekends</b> across the Southeast with the B2 cars and crew</p></li>
-        <li><span class="rail__t">2026</span><p><b>The SCCA Runoffs</b> · the plan is to film the entire week <span class="note">needs Cliff: confirm what to say publicly about Runoffs coverage and any partners</span></p></li>
+        <li><span class="rail__t">2026</span><p><b>The SCCA Runoffs</b> · we are filming the week. Partners will be announced when it airs.</p></li>
       </ul>
       <p style="margin-top:22px"><a class="more" href="https://www.youtube.com/channel/UCpZ-GeNruxcubijblpTMxtA" rel="noopener" target="_blank">Amateur Racer on YouTube</a> · <a class="more" href="https://www.readytoair.tv" rel="noopener" target="_blank">readytoair.tv</a></p>
     </div>
@@ -61,25 +68,50 @@
   </div>
 </section>
 
-<!-- 3. What being in it means for a B2 driver -->
-<section class="sec sec--raised">
+<!-- 3. Watch -->
+<section class="sec sec--raised" id="watch">
   <div class="wrap">
     <div class="sec__head">
-      <p class="eyebrow">If you race with B2</p>
+      <p class="eyebrow">Watch</p>
+      <h2>Three episodes to start with.</h2>
+      <p class="sub">What the Spec Racer Ford is and why a sealed, equal car makes the best racing, then two Super Tour feature races from the grid.</p>
+    </div>
+    <div class="grid grid--3">
+      <figure class="video">
+        <div class="video__frame"><iframe src="https://www.youtube-nocookie.com/embed/n7qSg67-ErE" title="Skill Beats Money: The Spec Racer Ford (Amateur Racer)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+        <figcaption><a class="more" href="https://youtu.be/n7qSg67-ErE" rel="noopener" target="_blank">Skill Beats Money: The Spec Racer Ford</a></figcaption>
+      </figure>
+      <figure class="video">
+        <div class="video__frame"><iframe src="https://www.youtube-nocookie.com/embed/LwDLZCODEfs" title="SRF3 Madness at Road Atlanta, Super Tour feature race (Amateur Racer)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+        <figcaption><a class="more" href="https://youtu.be/LwDLZCODEfs" rel="noopener" target="_blank">SRF3 Madness at Road Atlanta</a></figcaption>
+      </figure>
+      <figure class="video">
+        <div class="video__frame"><iframe src="https://www.youtube-nocookie.com/embed/OjnOjtFuHS8" title="Spec Racer Ford showdown, Hallett Hoosier Super Tour feature race (Amateur Racer)" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+        <figcaption><a class="more" href="https://youtu.be/OjnOjtFuHS8" rel="noopener" target="_blank">Spec Racer Ford showdown at Hallett</a></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Driver story add-on -->
+<section class="sec" id="your-story">
+  <div class="wrap">
+    <div class="sec__head">
+      <p class="eyebrow">Add-on · your weekend on film</p>
       <h2>Your weekend, told properly.</h2>
-      <p class="sub">Drivers who rent with us or run with the team at a filmed event can be part of an episode. It is a documentary, not an advertisement, so the camera follows the weekend as it happens.</p>
+      <p class="sub">Add driver-specific content to any weekend with us. We have partnered with Ready To Air to produce it: we bring the cameras and capture your weekend, and Ready To Air edits the raw footage into your story. <span class="note">needs Cliff: price, or "quoted per weekend"</span></p>
     </div>
     <ul class="check">
-      <li><span class="check__tick">✓</span><span class="check__k">On camera</span><p>Interviews, in-car and trackside footage from the weekends Ready To Air covers. An appearance release is signed beforehand.</p></li>
-      <li><span class="check__tick">✓</span><span class="check__k">Shareable</span><p>A published episode is something to send to a sponsor, a family, or an employer who wonders what you do on weekends.</p></li>
-      <li><span class="check__tick">✓</span><span class="check__k">Sponsor exposure</span><p>A partner's name on a B2 car appears in the episodes the car is in. See <a href="/sponsors/">business &amp; hospitality</a>.</p></li>
-      <li class="you"><span class="check__tick">·</span><span class="check__k">Not every weekend</span><p>Filming follows the production schedule, not the calendar. Ask which events are being covered when you book.</p></li>
+      <li><span class="check__tick">✓</span><span class="check__k">The kit</span><p>A DJI Osmo 3 <span class="note">needs Cliff: Osmo Pocket 3 or Osmo Action 3?</span>, Meta smart glasses, Insta360 GO 3S cameras and the AiM SmartyCams in the cars. In-car, on the driver, in the paddock and on the grid.</p></li>
+      <li><span class="check__tick">✓</span><span class="check__k">We capture it</span><p>The crew runs the cameras through the weekend alongside the normal job, so you drive and we film.</p></li>
+      <li><span class="check__tick">✓</span><span class="check__k">Ready To Air edits it</span><p>The raw footage goes to Ready To Air, who cut it to match your story: a first race, a license weekend, a season in the car.</p></li>
+      <li><span class="check__tick">✓</span><span class="check__k">Yours to share</span><p>Something to send to a sponsor, a family, or an employer who wonders what you do on weekends. A partner's name on your car is in every frame. See <a href="/sponsors/">business &amp; hospitality</a>.</p></li>
     </ul>
   </div>
 </section>
 
-<!-- 4. Photos: Appleton Automotive Images -->
-<section class="sec" id="photos">
+<!-- 5. Photos: Appleton Automotive Images -->
+<section class="sec sec--raised" id="photos">
   <div class="wrap split split--rev">
     <figure class="figure">
       <img src="/assets/img/hero-car58-checkered-flag.jpg" alt="B2 Motorsports Spec Racer Ford car 58 taking the checkered flag on track" loading="lazy" width="1440" height="770">
@@ -106,7 +138,7 @@
         <label class="field">Name<input type="text" name="fullname" id="media-name" required autocomplete="name"></label>
         <label class="field">Email<input type="email" name="email" id="media-email" required autocomplete="email"></label>
         <label class="field">Phone<input type="tel" name="phone" id="media-phone" autocomplete="tel"></label>
-        <label class="field">Interested in<select name="media_interest" id="media-interest"><option>Amateur Racer episode</option><option>Race weekend photos</option><option>Both</option><option>Sponsor content</option></select></label>
+        <label class="field">Interested in<select name="media_interest" id="media-interest"><option>Film my weekend (add-on)</option><option>Race weekend photos</option><option>Both</option><option>Sponsor content</option></select></label>
         <label class="field field--full">Event, dates and what you'd like covered<textarea name="inquiry_message" id="media-message" required></textarea></label>
         <label class="consent"><input type="checkbox" name="consent" id="media-consent"><span>By submitting a phone number, I consent to receive automated texts and/or phone calls at the phone number used above. &middot; By checking this box, I opt-in and agree to receive text messages from B2 Motorsports. Message and data rates may apply. &middot; By clicking &quot;Submit&quot;, I am consenting to receive text messages from B2 Motorsports to the phone number I provided. &middot; I understand these texts may be automated and that my consent to texting is not required as a condition to purchase. &middot; By submitting your information, you consent to receive all forms of communication including but not limited to; phone, text, email, mail, etc. Message and data rates may apply. Consent to these terms is not a condition of purchase. You may opt out at any time.</span></label>
         <div class="form__actions"><button class="btn" type="submit"><span>Send</span></button><span class="form__note">No obligation.</span></div>

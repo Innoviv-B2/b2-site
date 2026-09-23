@@ -27,19 +27,19 @@
 - warn: keyphrase never appears verbatim in body
 
 ## /services/storage/equipment/ — `storage-equipment.html`
-- 576 words · H1: "The equipment in the DIY garage." · 9 images · 5 internal links
+- 588 words · H1: "The equipment in the DIY garage." · 9 images · 5 internal links
 - warn: description is 176 chars (aim 140–159)
 - warn: keyphrase "DIY garage Huntsville" not in title
 - warn: keyphrase not in H1 ("The equipment in the DIY garage.")
 
 ## /services/storage/membership/ — `storage-membership.html`
-- 577 words · H1: "How membership works." · 2 images · 12 internal links
+- 713 words · H1: "How membership works." · 2 images · 13 internal links
 - warn: description is 171 chars (aim 140–159)
 - warn: keyphrase "garage membership Huntsville" not in title
 - warn: keyphrase not in H1 ("How membership works.")
 
 ## /services/storage/sign-up/ — `storage-sign-up.html`
-- 539 words · H1: "Sign me up." · 1 images · 3 internal links
+- 602 words · H1: "Sign me up." · 1 images · 4 internal links
 - warn: description is 162 chars (aim 140–159)
 - warn: keyphrase not in H1 ("Sign me up.")
 - warn: keyphrase never appears verbatim in body
@@ -79,7 +79,7 @@
 - warn: keyphrase not in description
 
 ## /media-packages/ — `media-packages.html`
-- 653 words · H1: "Club racing, on camera. Amateur Racer on YouTube." · 3 images · 3 internal links
+- 748 words · H1: "Club racing, on camera. Amateur Racer on YouTube." · 3 images · 3 internal links
 
 ## /driver-development-program/ — `driver-development.html`
 - 760 words · H1: "The B2 Motorsports Driver Development Program" · 2 images · 7 internal links
