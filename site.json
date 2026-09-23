@@ -30,6 +30,8 @@
       "fit-check": "",
       "fit-check-short": "",
       "storage-inquiry": "",
+      "storage-tour": "",
+      "storage-signup": "",
       "owner-services": "",
       "street-car": "",
       "corporate": "",
@@ -40,7 +42,7 @@
   "ogDefault": "/assets/img/og-default.jpg",
   "plannedPaths": [
     "/", "/race-with-us/", "/the-cars/", "/srf3-fit-check/", "/rental-pricing-calculator/",
-    "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/", "/services/storage/",
+    "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/", "/services/storage/", "/services/storage/equipment/", "/services/storage/membership/", "/services/storage/sign-up/",
     "/services/performance-shop/", "/about-us/", "/faq/", "/contact-us/", "/blog/",
     "/blog/buying-safety-gear/", "/how-to-get-a-racing-license/", "/paths-into-racing/",
     "/driver-development-program/", "/simulator-and-sim-training/", "/sponsors/",
@@ -55,7 +57,11 @@
       { "label": "How to Get a Racing License", "href": "/how-to-get-a-racing-license/" },
       { "label": "Paths Into Racing", "href": "/paths-into-racing/" }
     ]},
-    { "key": "storage", "label": "Storage", "href": "/services/storage/" },
+    { "key": "storage", "label": "Storage &amp; DIY Garage", "menuName": "Storage", "href": "/services/storage/", "children": [
+      { "label": "The Equipment", "href": "/services/storage/equipment/" },
+      { "label": "How Membership Works", "href": "/services/storage/membership/" },
+      { "label": "Sign Me Up", "href": "/services/storage/sign-up/" }
+    ]},
     { "key": "owner", "label": "Owner Services", "href": "/services/performance-shop/" },
     { "key": "calendar", "label": "Calendar", "href": "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/" },
     { "key": "about", "label": "About", "href": "/about-us/", "children": [
@@ -76,6 +82,7 @@
       ["FAQ", "/faq/"]
     ],
     "more": [
+      ["Storage &amp; DIY Garage", "/services/storage/"],
       ["Driver Development", "/driver-development-program/"],
       ["Coaches & Simulator", "/simulator-and-sim-training/"],
       ["Business & Hospitality", "/sponsors/"],

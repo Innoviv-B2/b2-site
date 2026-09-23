@@ -54,7 +54,7 @@ function navHtml(activeKey) {
   return nav.map((item) => {
     const here = item.key === activeKey ? " nav__item--here" : "";
     if (!item.children) return `<div class="nav__item${here}"><a class="nav__link" href="${item.href}">${item.label}</a></div>`;
-    return `<div class="nav__item nav__item--has-menu${here}" aria-expanded="false"><a class="nav__link" href="${item.href}">${item.label}<button class="caret" type="button" aria-label="Open ${item.label} menu">&#9662;</button></a><ul class="nav__menu">${item.children.map((c) => `<li><a href="${c.href}">${c.label}</a></li>`).join("")}</ul></div>`;
+    return `<div class="nav__item nav__item--has-menu${here}" aria-expanded="false"><a class="nav__link" href="${item.href}">${item.label}<button class="caret" type="button" aria-label="Open ${item.menuName || item.label} menu">&#9662;</button></a><ul class="nav__menu">${item.children.map((c) => `<li><a href="${c.href}">${c.label}</a></li>`).join("")}</ul></div>`;
   }).join("\n      ");
 }
 const headerTpl = read(path.join(SRC, "partials", "header.html"));
@@ -296,7 +296,7 @@ ${js}
     var hdr = document.getElementById("hdr"); if (hdr) { hdr.classList.remove("hdr--open"); var mb = hdr.querySelector("[data-menu]"); if (mb) { mb.setAttribute("aria-expanded", "false"); mb.textContent = "Menu"; } }
     document.querySelectorAll(".nav__item[aria-expanded='true']").forEach(function (o) { o.setAttribute("aria-expanded", "false"); });
     var navKey = page.dataset.nav;
-    if (navKey) document.querySelectorAll(".nav__item").forEach(function (n) { var a = n.querySelector(".nav__link"); if (a && a.getAttribute("href") === keyHref(navKey)) n.classList.add("nav__item--here"); });
+    if (navKey) document.querySelectorAll(".nav__item").forEach(function (n) { var a = n.querySelector(".nav__link"); if (a && a.getAttribute("href") === "#" + keyHref(navKey)) n.classList.add("nav__item--here"); });
     var t = page.dataset.title.length, d = page.dataset.desc.length;
     var issues = page.dataset.issues ? page.dataset.issues.split(" | ") : [];
     seo.innerHTML = [

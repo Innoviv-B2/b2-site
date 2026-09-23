@@ -1,0 +1,173 @@
+<!--meta
+{
+  "path": "/services/storage/sign-up/",
+  "order": 73,
+  "nav": "storage",
+  "navLabel": "Storage: Sign Me Up",
+  "title": "Sign Up for Storage or Garage Membership | B2 Motorsports",
+  "description": "Sign up for B2 Motorsports storage or DIY garage membership in Huntsville: pick a space, we confirm availability, sign by DocuSign, pay by ACH, get the door code.",
+  "keyphrase": "storage membership sign up",
+  "ogImage": "/assets/img/shop-storage-stacked-cars.jpg",
+  "breadcrumb": [
+    [
+      "Storage & DIY Garage",
+      "/services/storage/"
+    ],
+    [
+      "Sign Me Up",
+      "/services/storage/sign-up/"
+    ]
+  ],
+  "pageType": "WebPage"
+}
+-->
+
+<style>
+.pg-storage-sign-up .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; grid-column: 1 / -1; }
+.pg-storage-sign-up .choice { display: flex; gap: 12px; align-items: flex-start; background: var(--ink); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 12px 14px; cursor: pointer; font-family: var(--font-display); text-transform: none; letter-spacing: 0; color: var(--paper); font-size: 15px; }
+.pg-storage-sign-up .choice input { margin-top: 4px; width: 16px; height: 16px; flex: none; min-height: 0; }
+.pg-storage-sign-up .choice b { display: block; font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 13.5px; }
+.pg-storage-sign-up .choice span { color: var(--muted); font-size: 13px; }
+.pg-storage-sign-up .choice:has(input:checked) { border-color: var(--purple); }
+@media (max-width: 760px) { .pg-storage-sign-up .choices { grid-template-columns: 1fr; } }
+/* the hall map */
+.pg-storage-sign-up .hall { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin-top: 26px; }
+.pg-storage-sign-up .bay { border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--ink-raised); padding: 8px 8px 10px; text-align: center; }
+.pg-storage-sign-up .bay__n { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
+.pg-storage-sign-up .pos { display: block; width: 100%; font: 800 12px/1 var(--font-display); font-style: italic; text-transform: uppercase; letter-spacing: .3px; padding: 11px 4px; border-radius: 3px; border: 1px solid transparent; cursor: pointer; margin-top: 6px; color: var(--paper); }
+.pg-storage-sign-up .pos--open { background: rgba(124,47,240,.18); border-color: var(--purple-deep); }
+.pg-storage-sign-up .pos--open:hover { background: var(--purple); }
+.pg-storage-sign-up .pos--taken { background: var(--ink); color: var(--muted); border-color: var(--border); cursor: not-allowed; text-decoration: line-through; }
+.pg-storage-sign-up .pos--held { background: rgba(255,106,0,.14); border-color: var(--blaze); color: var(--blaze); cursor: not-allowed; }
+.pg-storage-sign-up .pos--picked { background: var(--purple); border-color: var(--paper); }
+.pg-storage-sign-up .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 16px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.pg-storage-sign-up .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; border: 1px solid var(--border); }
+.pg-storage-sign-up .hall-pick { margin-top: 16px; font-size: 15px; color: var(--body); min-height: 1.5em; }
+.pg-storage-sign-up .hall-pick b { color: var(--purple-tint); }
+.pg-storage-sign-up .lot { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+@media (max-width: 980px) { .pg-storage-sign-up .hall { grid-template-columns: repeat(4, minmax(0, 1fr)); } .pg-storage-sign-up .lot { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .pg-storage-sign-up .hall { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pg-storage-sign-up .lot { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>
+
+<!-- 1. Hero -->
+<section class="hero hero--short">
+  <img class="hero__img" src="/assets/img/shop-exterior-2919-door.jpg" alt="B2 Motorsports building exterior in Huntsville showing the address by the door" width="1600" height="1200" fetchpriority="high">
+  <div class="hero__shade"></div>
+  <div class="wrap hero__in">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/services/storage/">Storage &amp; DIY Garage</a></li><li>Sign Me Up</li></ol></nav>
+    <p class="eyebrow">Storage &amp; garage membership · sign-up</p>
+    <h1>Sign me up.</h1>
+    <p class="lede">Four steps, none of them on paper. Pick the space you want below and we take it from there.</p>
+  </div>
+</section>
+
+<!-- 2. The four steps -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec__head">
+      <p class="eyebrow">How it goes</p>
+      <h2>From this form to the door code.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step__n">Step 1</div><h3>Pick a space</h3><p>Choose an open position on the hall map below, or a trailer or RV space, or the garage on its own. Tell us when you want to start.</p></div>
+      <div class="step"><div class="step__n">Step 2</div><h3>We confirm it is yours</h3><p>The map shows what is open right now. We hold the space you picked while the paperwork goes through and confirm within a business day. <span class="note">needs Cliff: map is demo data until the QBO link is built</span></p></div>
+      <div class="step"><div class="step__n">Step 3</div><h3>Sign by DocuSign</h3><p>The membership agreement arrives by email. Read it, sign it on your phone, nothing to print. <span class="note">needs Cliff: embed the DocuSign flow here, or keep it as an emailed envelope?</span></p></div>
+      <div class="step"><div class="step__n">Step 4</div><h3>Pay, then the door code</h3><p>First month by ACH. Once it clears you get the door code and the gate access, and the space is yours.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2b. The hall map -->
+<section class="sec sec--raised" id="hall">
+  <div class="wrap">
+    <div class="sec__head">
+      <p class="eyebrow">What's open</p>
+      <h2>The hall, space by space.</h2>
+      <p class="sub">Fourteen indoor spaces, each with a top and a bottom position on the stacking lift. Purple is open: click one to pick it. <span class="note">needs Cliff: the layout (two rows of seven, 1–7 nearest the door) is a placeholder until you tell me how the hall actually runs, and the open/taken status is demo data until the QuickBooks link is built</span></p>
+    </div>
+    <div class="hall" id="hall-map" role="group" aria-label="Indoor spaces"></div>
+    <div class="legend">
+      <span><i style="background:rgba(124,47,240,.18);border-color:var(--purple-deep)"></i>Open</span>
+      <span><i style="background:var(--ink)"></i>Taken</span>
+      <span><i style="background:rgba(255,106,0,.14);border-color:var(--blaze)"></i>On hold, paperwork in progress</span>
+      <span><i style="background:var(--purple);border-color:var(--paper)"></i>Your pick</span>
+    </div>
+    <p class="hall-pick" id="hall-pick" aria-live="polite">No space picked yet.</p>
+    <p class="mono" style="margin-top:14px">Updated <span id="hall-updated">—</span> · demo data</p>
+  </div>
+</section>
+
+<!-- 3. The form -->
+<section class="sec" id="form">
+  <div class="wrap wrap--narrow">
+    <form class="form b2-form" data-form="storage-signup" data-email="storage@b2motorsports.com" id="storage-signup-form" novalidate>
+      <div class="form__head"><h3>Step 1 · Pick a space</h3><span class="mono">We reply within a business day</span></div>
+      <div class="fields">
+        <input type="hidden" name="inquiry_type" value="storage_signup">
+        <input type="hidden" name="storage_space_id" id="su-space-id" value="">
+        <div class="choices" role="group" aria-label="Which space">
+          <label class="choice"><input type="radio" name="storage_space" value="indoor_lift"><div><b>Indoor · lift position</b><span>Shared space, from $200/mo, garage included</span></div></label>
+          <label class="choice"><input type="radio" name="storage_space" value="indoor_floor"><div><b>Indoor · floor space</b><span>$250/mo, garage included</span></div></label>
+          <label class="choice"><input type="radio" name="storage_space" value="indoor_private"><div><b>Indoor · private space, own four-post lift</b><span>Price on request, garage included</span></div></label>
+          <label class="choice"><input type="radio" name="storage_space" value="trailer"><div><b>Outdoor · trailer space, 10×24</b><span>$60/mo</span></div></label>
+          <label class="choice"><input type="radio" name="storage_space" value="rv"><div><b>Outdoor · RV or oversize, 40×10</b><span>$100/mo</span></div></label>
+          <label class="choice"><input type="radio" name="storage_space" value="garage_only"><div><b>Garage membership only</b><span>$75/mo, no car stored</span></div></label>
+          <label class="choice"><input type="radio" name="storage_space" value="private_bay_list"><div><b>Private long-term bay</b><span>Phase 2: put me on the list</span></div></label>
+        </div>
+        <label class="field">Name<input type="text" name="fullname" id="su-name" required autocomplete="name"></label>
+        <label class="field">Email<input type="email" name="email" id="su-email" required autocomplete="email"></label>
+        <label class="field">Phone<input type="tel" name="phone" id="su-phone" autocomplete="tel"></label>
+        <label class="field">Start date<input type="text" name="storage_start" id="su-start" placeholder="e.g. 1 Nov, or as soon as possible"></label>
+        <label class="field">What is the car, trailer or RV?<input type="text" name="storage_vehicle" id="su-vehicle" placeholder="Year, make, model (chassis # if a race car)"></label>
+        <label class="field">Add garage membership? <select name="storage_add_garage" id="su-garage"><option value="">Choose one</option><option value="included">Included with my space</option><option value="add">Yes, add it ($75/mo)</option><option value="no">No</option></select></label>
+        <label class="field">Discount? <select name="storage_discount" id="su-discount"><option value="">None</option><option value="scca">SCCA member</option><option value="veteran">Veteran</option><option value="both">Both</option></select><span class="help">Discounts available for SCCA members and veterans.</span></label>
+        <label class="field field--full">Anything else<textarea name="inquiry_message" id="su-msg" placeholder="Term you have in mind, second vehicle, questions"></textarea></label>
+        <label class="consent"><input type="checkbox" name="consent" id="su-consent"><span>By submitting a phone number, I consent to receive automated texts and/or phone calls at the phone number used above. &middot; By checking this box, I opt-in and agree to receive text messages from B2 Motorsports. Message and data rates may apply. &middot; By clicking &quot;Submit&quot;, I am consenting to receive text messages from B2 Motorsports to the phone number I provided. &middot; I understand these texts may be automated and that my consent to texting is not required as a condition to purchase. &middot; By submitting your information, you consent to receive all forms of communication including but not limited to; phone, text, email, mail, etc. Message and data rates may apply. Consent to these terms is not a condition of purchase. You may opt out at any time.</span></label>
+        <div class="form__actions"><button class="btn" type="submit"><span>Send my sign-up</span></button><span class="form__note">Nothing is charged until you have signed.</span></div>
+        <p class="form__status" aria-live="polite"></p>
+      </div>
+    </form>
+    <p class="contact-line" style="margin-top:22px">Rather talk first? <a href="/services/storage/equipment/#tour">Schedule a tour</a>, email <a href="mailto:storage@b2motorsports.com">storage@b2motorsports.com</a>, or call or text <a href="tel:+12569100658">256-910-0658</a>.</p>
+  </div>
+</section>
+<script>
+/* Hall map. SPACES is the shape the QBO feed will return: one row per position,
+   status open | taken | held. Until the feed exists this is demo data; in production
+   replace the constant with a fetch of /api/storage/availability (see the site docs). */
+(function () {
+  var SPACES = { updated: "2026-09-20", positions: [] };
+  var demoTaken = { "3T":1, "3B":1, "5B":1, "8T":1, "9T":1, "9B":1, "12B":1 }, demoHeld = { "6T":1 };
+  for (var n = 1; n <= 14; n++) ["T", "B"].forEach(function (p) {
+    var id = n + p; SPACES.positions.push({ id: id, space: n, pos: p, status: demoTaken[id] ? "taken" : demoHeld[id] ? "held" : "open" });
+  });
+  var map = document.getElementById("hall-map"), pick = document.getElementById("hall-pick"), hid = document.getElementById("su-space-id"), upd = document.getElementById("hall-updated");
+  if (!map) return;
+  upd.textContent = SPACES.updated;
+  var picked = null;
+  function label(p) { return "Space " + p.space + ", " + (p.pos === "T" ? "top" : "bottom"); }
+  function render() {
+    map.innerHTML = "";
+    for (var n = 1; n <= 14; n++) {
+      var bay = document.createElement("div"); bay.className = "bay";
+      bay.innerHTML = "<div class='bay__n'>Space " + n + "</div>";
+      ["T", "B"].forEach(function (pos) {
+        var p = SPACES.positions.find(function (x) { return x.space === n && x.pos === pos; });
+        var b = document.createElement("button"); b.type = "button";
+        b.className = "pos pos--" + (picked === p.id ? "picked" : p.status);
+        b.textContent = pos === "T" ? "Top" : "Bottom";
+        b.disabled = p.status !== "open";
+        b.setAttribute("aria-label", label(p) + ": " + (picked === p.id ? "your pick" : p.status));
+        b.addEventListener("click", function () {
+          picked = p.id; hid.value = p.id;
+          var r = document.querySelector("input[name='storage_space'][value='indoor_lift']"); if (r) r.checked = true;
+          pick.innerHTML = "You picked <b>" + label(p) + "</b>. Finish the form below and we hold it for you.";
+          render();
+        });
+        bay.appendChild(b);
+      });
+      map.appendChild(bay);
+    }
+  }
+  render();
+})();
+</script>
