@@ -57,51 +57,16 @@
     <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/services/storage/">Storage &amp; DIY Garage</a></li><li>Sign Me Up</li></ol></nav>
     <p class="eyebrow">Storage &amp; garage membership · sign-up</p>
     <h1>Sign me up.</h1>
-    <p class="lede">Four steps, none of them on paper. Pick the space you want below and we take it from there.</p>
-  </div>
-</section>
-
-<!-- 2. The four steps -->
-<section class="sec">
-  <div class="wrap">
-    <div class="sec__head">
-      <p class="eyebrow">How it goes</p>
-      <h2>From this form to the door code.</h2>
-    </div>
-    <div class="steps">
-      <div class="step"><div class="step__n">Step 1</div><h3>Pick a space</h3><p>Choose an open position on the hall map below, or a trailer or RV space, or the garage on its own. Tell us when you want to start.</p></div>
-      <div class="step"><div class="step__n">Step 2</div><h3>We confirm it is yours</h3><p>The map shows what is open right now. We hold the space you picked while the paperwork goes through and confirm within a business day. <span class="note">needs Cliff: map is demo data until the QBO link is built</span></p></div>
-      <div class="step"><div class="step__n">Step 3</div><h3>Sign by DocuSign</h3><p>The membership agreement arrives by email. Read it, sign it on your phone, nothing to print. <span class="note">needs Cliff: embed the DocuSign flow here, or keep it as an emailed envelope?</span></p></div>
-      <div class="step"><div class="step__n">Step 4</div><h3>Pay, then the door code</h3><p>First month by ACH. Once it clears you get the door code and the gate access, and the space is yours.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- 2b. The hall map -->
-<section class="sec sec--raised" id="hall">
-  <div class="wrap">
-    <div class="sec__head">
-      <p class="eyebrow">What's open</p>
-      <h2>The hall, space by space.</h2>
-      <p class="sub">Fourteen indoor spaces, each with a top and a bottom position on the stacking lift. Purple is open: click one to pick it. <span class="note">needs Cliff: the layout (two rows of seven, 1–7 nearest the door) is a placeholder until you tell me how the hall actually runs, and the open/taken status is demo data until the QuickBooks link is built</span></p>
-    </div>
-    <div class="hall" id="hall-map" role="group" aria-label="Indoor spaces"></div>
-    <div class="legend">
-      <span><i style="background:rgba(124,47,240,.18);border-color:var(--purple-deep)"></i>Open</span>
-      <span><i style="background:var(--ink)"></i>Taken</span>
-      <span><i style="background:rgba(255,106,0,.14);border-color:var(--blaze)"></i>On hold, paperwork in progress</span>
-      <span><i style="background:var(--purple);border-color:var(--paper)"></i>Your pick</span>
-    </div>
-    <p class="hall-pick" id="hall-pick" aria-live="polite">No space picked yet.</p>
-    <p class="mono" style="margin-top:14px">Updated <span id="hall-updated">—</span> · demo data</p>
+    <p class="lede">Tell us which space you want, or that you only want the garage, and we take it from there: we confirm availability, send the agreement by DocuSign, and you pay the first month by ACH. Then you get the door code.</p>
+    <div class="btns"><a class="btn" href="#form"><span>Sign me up</span></a><a class="btn btn--ghost" href="/services/storage/equipment/#tour"><span>Schedule a tour first</span></a></div>
   </div>
 </section>
 
 <!-- 3. The form -->
-<section class="sec" id="form">
+<section class="sec sec--raised" id="form">
   <div class="wrap wrap--narrow">
     <form class="form b2-form" data-form="storage-signup" data-email="storage@b2motorsports.com" id="storage-signup-form" novalidate>
-      <div class="form__head"><h3>Step 1 · Pick a space</h3><span class="mono">We reply within a business day</span></div>
+      <div class="form__head"><h3>Sign me up</h3><span class="mono">We reply within a business day</span></div>
       <div class="fields">
         <input type="hidden" name="inquiry_type" value="storage_signup">
         <input type="hidden" name="storage_space_id" id="su-space-id" value="">
@@ -130,6 +95,43 @@
     <p class="contact-line" style="margin-top:22px">Rather talk first? <a href="/services/storage/equipment/#tour">Schedule a tour</a>, email <a href="mailto:storage@b2motorsports.com">storage@b2motorsports.com</a>, or call or text <a href="tel:+12569100658">256-910-0658</a>.</p>
   </div>
 </section>
+<!-- 2. The four steps -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec__head">
+      <p class="eyebrow">Backlog · prototype, not for launch</p>
+      <h2>The self-service flow, as it could work.</h2>
+      <p class="sub">This section and the hall map below are a prototype of a backlog item, kept in the draft so the design can be reviewed. It is not wired up and does not ship until the workflow is designed: someone picks a specific space and registers for that space, or registers for garage membership alone, with availability, DocuSign and payment behind it. <span class="note">backlog: storage sign-up workflow (see thread)</span></p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step__n">Step 1</div><h3>Pick a space</h3><p>Choose an open position on the hall map below, or a trailer or RV space, or the garage on its own. Tell us when you want to start.</p></div>
+      <div class="step"><div class="step__n">Step 2</div><h3>We confirm it is yours</h3><p>The map shows what is open right now. We hold the space you picked while the paperwork goes through and confirm within a business day.</p></div>
+      <div class="step"><div class="step__n">Step 3</div><h3>Sign by DocuSign</h3><p>The membership agreement arrives by email. Read it, sign it on your phone, nothing to print.</p></div>
+      <div class="step"><div class="step__n">Step 4</div><h3>Pay, then the door code</h3><p>First month by ACH. Once it clears you get the door code and the gate access, and the space is yours.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2b. The hall map -->
+<section class="sec" id="hall">
+  <div class="wrap">
+    <div class="sec__head">
+      <p class="eyebrow">Backlog · prototype, demo data</p>
+      <h2>The hall, space by space.</h2>
+      <p class="sub">Fourteen indoor spaces, each with a top and a bottom position on the stacking lift. Purple is open: click one to pick it. The layout is a placeholder and the open/taken status is demo data; the real feed depends on the QuickBooks decision in the thread.</p>
+    </div>
+    <div class="hall" id="hall-map" role="group" aria-label="Indoor spaces"></div>
+    <div class="legend">
+      <span><i style="background:rgba(124,47,240,.18);border-color:var(--purple-deep)"></i>Open</span>
+      <span><i style="background:var(--ink)"></i>Taken</span>
+      <span><i style="background:rgba(255,106,0,.14);border-color:var(--blaze)"></i>On hold, paperwork in progress</span>
+      <span><i style="background:var(--purple);border-color:var(--paper)"></i>Your pick</span>
+    </div>
+    <p class="hall-pick" id="hall-pick" aria-live="polite">No space picked yet.</p>
+    <p class="mono" style="margin-top:14px">Updated <span id="hall-updated">—</span> · demo data · prototype</p>
+  </div>
+</section>
+
 <script>
 /* Hall map. SPACES is the shape the QBO feed will return: one row per position,
    status open | taken | held. Until the feed exists this is demo data; in production
@@ -160,7 +162,7 @@
         b.addEventListener("click", function () {
           picked = p.id; hid.value = p.id;
           var r = document.querySelector("input[name='storage_space'][value='indoor_lift']"); if (r) r.checked = true;
-          pick.innerHTML = "You picked <b>" + label(p) + "</b>. Finish the form below and we hold it for you.";
+          pick.innerHTML = "You picked <b>" + label(p) + "</b>. Put it in the form above and we hold it for you.";
           render();
         });
         bay.appendChild(b);
