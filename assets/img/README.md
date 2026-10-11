@@ -12,10 +12,10 @@ Generated for the standalone B2 Motorsports website. Every photo has a full (max
 | tile-corporate-tent-road-atlanta.jpg | 600x800 | The B2 fleet under the canopy at Road Atlanta, a guest relaxing in a paddock chair. | homepage mockup (orig: 02-cars-under-the-tent.jpg) | tile |
 | faces-crew-car59.jpg | 1600x1678 | Two B2 crew in purple team shirts either side of car 59, driver belted in. | homepage mockup (orig: b2photos_Page_7) | about |
 | hero-car59-on-track.jpg | 1600x816 | Car 59 mid-corner on track at a Spec Racer Ford event. | A&D mockup | hero |
-| seat-standard-srf3.jpg | 520x391 | The standard seat fitted in a Spec Racer Ford SRF3 cockpit. | A&D mockup | any |
-| seat-custom-insert.jpg | 520x389 | A custom foam or bead seat insert used to fit a driver. | A&D mockup | any |
-| pedal-rack-adjustable.jpg | 520x388 | The adjustable pedal rack in the SRF3 cockpit. | A&D mockup | any |
-| steering-column-adjustable.jpg | 520x389 | The adjustable steering column in the SRF3 cockpit. | A&D mockup | any |
+| seat-standard-srf3.jpg | 1600x1200 | The standard SRF3 seat shell fitted in the cockpit, harness belts laid in. | SharePoint Do you Fit - Cockpit Photos: IMG_3172.JPG | any |
+| seat-custom-insert.jpg | 1600x1200 | A seatinserts.com Carbon X custom seat insert, out of the car on the shop floor. | SharePoint Do you Fit - Cockpit Photos: IMG_3176.JPG | any |
+| pedal-rack-adjustable.jpg | 1600x1200 | The SRF3 footbox: three pedals on the bolted pedal rack. | SharePoint Do you Fit - Cockpit Photos: IMG_3171.JPG | any |
+| steering-column-adjustable.jpg | 1600x1200 | The SRF3 steering column at its mount, adjustment holes drilled along the shaft. | SharePoint Do you Fit - Cockpit Photos: IMG_3181.JPG | any |
 | car57-paddock-crew.jpg | 600x800 | Car 57 in the paddock with the B2 crew. | A&D mockup | any |
 | tile-storage-indoor-hall.jpg | 1600x1200 | The indoor storage hall in Huntsville, covered cars along the far wall. | OneDrive zip: 20230116_093628.jpg | tile |
 | band-storage-lift-bay.jpg | 1600x1200 | The lift bay in the B2 shop with the purple accent wall. | OneDrive zip: 20230418_105239.jpg | band |
