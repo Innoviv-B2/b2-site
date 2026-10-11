@@ -27,17 +27,18 @@
 -->
 
 <style>
-.pg-license .ladder { display: flex; flex-direction: column; gap: 20px; margin: 36px 0 8px; }
-.pg-license .ladder__req { background: var(--ink-raised); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 18px 22px; text-align: center; font-family: var(--font-mono); font-size: 13px; letter-spacing: .4px; line-height: 1.6; color: var(--paper); }
-.pg-license .ladder__arrow { text-align: center; color: var(--muted); font-family: var(--font-mono); font-size: 22px; line-height: 1; }
-.pg-license .lanes { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-@media (max-width: 760px) { .pg-license .lanes { grid-template-columns: 1fr; } }
-.pg-license .lane { background: var(--ink-raised); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 24px; display: flex; flex-direction: column; gap: 14px; }
-.pg-license .lane__title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--blaze); margin: 0; }
-.pg-license .lane__step { border-top: 1px solid var(--border); padding-top: 12px; margin: 0; font-size: 15px; line-height: 1.55; }
-.pg-license .lane__step b { color: var(--paper); }
-.pg-license .ladder__result { background: var(--purple); border-radius: var(--radius-card); padding: 18px 22px; text-align: center; font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 18px; color: var(--paper); }
-.pg-license .rules-src { margin-top: 22px; }
+.pg-how-to-get-a-racing-license .ladder { display: flex; flex-direction: column; gap: 20px; margin: 36px 0 8px; }
+.pg-how-to-get-a-racing-license .ladder__req { background: var(--ink-raised); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 18px 22px; text-align: center; font-family: var(--font-mono); font-size: 13px; letter-spacing: .4px; line-height: 1.6; color: var(--paper); }
+.pg-how-to-get-a-racing-license .ladder__arrow { text-align: center; color: var(--muted); font-family: var(--font-mono); font-size: 22px; line-height: 1; }
+.pg-how-to-get-a-racing-license .lanes { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+@media (max-width: 760px) { .pg-how-to-get-a-racing-license .lanes { grid-template-columns: 1fr; } }
+.pg-how-to-get-a-racing-license .lane { background: var(--ink-raised); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+.pg-how-to-get-a-racing-license .lane__title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--blaze); margin: 0; }
+.pg-how-to-get-a-racing-license .lane__step { border-top: 1px solid var(--border); padding-top: 12px; margin: 0; font-size: 15px; line-height: 1.55; }
+.pg-how-to-get-a-racing-license .lane__step b { color: var(--paper); }
+.pg-how-to-get-a-racing-license .ladder__result { background: var(--purple); border-radius: var(--radius-card); padding: 18px 22px; text-align: center; font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 18px; color: var(--paper); }
+.pg-how-to-get-a-racing-license .rules-src { margin-top: 22px; }
+.pg-how-to-get-a-racing-license .no-license { margin: 56px 0 24px; }
 </style>
 
 <!-- 1. Hero -->
@@ -68,17 +69,43 @@
         <div class="lane">
           <p class="lane__title">Lane 1 &mdash; school direct</p>
           <p class="lane__step">An accredited school whose course SCCA credits with a <b>Full Competition License</b> in one go.</p>
+          <p class="lane__step"><a class="more" href="#schools">See which schools</a></p>
         </div>
         <div class="lane">
           <p class="lane__title">Lane 2 &mdash; school credit + race</p>
           <p class="lane__step">An accredited school at a lower credit level, or an SCCA Club Racing Experience, earns a <b>Novice Permit</b> ($150).</p>
           <p class="lane__step">Then <b>three successful race weekends</b> (one may be a Time Trial &mdash; and only after you already hold the permit).</p>
+          <p class="lane__step"><a class="more" href="#schools">See which schools, including SCCA region schools</a></p>
         </div>
       </div>
       <div class="ladder__arrow">&darr;</div>
       <div class="ladder__result">Full Competition License ($125)</div>
     </div>
     <p class="mono" style="text-align:center;margin-top:18px">You have 365 days from finishing a school to claim the permit or license it earned you.</p>
+
+    <div class="sec__head no-license">
+      <p class="eyebrow">No license yet?</p>
+      <h3>What you can do today, without one</h3>
+      <p class="sub">The license only gates wheel-to-wheel racing. Plenty of real track time needs nothing more than a driver's license, and all of it counts toward getting ready.</p>
+    </div>
+    <div class="grid grid--3">
+      <div class="card">
+        <span class="card__k">No membership</span>
+        <h3>Track days and open lapping</h3>
+        <p>Track Night in America runs about $160, and organizers like Chin Track Days and the Talladega GP track events take you with nothing but a driver's license. No clock, no passing pressure: laps.</p>
+      </div>
+      <div class="card">
+        <span class="card__k">SCCA membership</span>
+        <h3>Time Trials</h3>
+        <p>Membership and a driver's license get you a Time Trials Novice license and a real clock, still with no wheel-to-wheel. In a purpose-built race car like the SRF3 you wear the full kit; <a href="/blog/buying-safety-gear/">the gear post</a> has the details.</p>
+      </div>
+      <div class="card">
+        <span class="card__k">Membership only</span>
+        <h3>The drivers' school itself</h3>
+        <p>Since September 2025 you no longer need a permit to attend a school. Book one first and decide about the license after.</p>
+      </div>
+    </div>
+    <p style="margin-top:22px">We rent the SRF3 for track days, Time Trials and region schools. See the weekends on the <a href="/2026-race-calendar-spec-racer-ford-rentals-trackside-support/">2026 calendar</a>, or the no-license rungs on <a href="/paths-into-racing/">Paths Into Racing</a>.</p>
   </div>
 </section>
 
@@ -116,7 +143,7 @@
 </section>
 
 <!-- 4. Schools sorted by what they give you -->
-<section class="sec">
+<section class="sec" id="schools">
   <div class="wrap">
     <div class="sec__head">
       <p class="eyebrow">Where to go</p>
@@ -137,6 +164,7 @@
     </div>
     <p class="callout"><b>Lucas Oil BasicPLUS</b> ($6,999) is not on SCCA's accreditation table, despite the course page stating it &ldquo;qualifies you for you SCCA Full Competition License.&rdquo; Lucas Oil's Advanced 2-day and 2-day Basic are both listed and both real; BasicPLUS is not. Confirm directly with SCCA before you book it expecting a license.</p>
     <p class="callout"><b>Hallett Race School</b> is not on the table either &mdash; and we say that reluctantly, because at $1,850 day one / $1,750 day two in a Spec Racer Ford, genuinely all-in including fuel, tires, gear and lunch, it is the cheapest SRF seat time in the United States and we would happily send anyone there for the driving. Their own language points toward licensing in various licensing organizations, including Hallett's own COMMA series. Treat it as excellent cheap practice, not as an SCCA license path. <span class="note">needs Cliff: how hard to go at Hallett &mdash; drafted as &ldquo;great value, wrong credential.&rdquo; Softer or harder?</span></p>
+    <p class="callout"><b>SCCA region schools count too.</b> The table lists commercial schools; SCCA regions also run their own drivers' schools, usually for your own car, and they are the classic club-lane start. The one that fits our SRF3 best is the <b>Buccaneer Region school at Roebling Road</b>, 20&ndash;21 February, with a SARRC race the same weekend that accepts freshly signed-off Novice Permits. School, first race weekend and a Novice Permit in one trip, in the car you will keep racing. It runs once a year. We price it end to end as &ldquo;Every hour in the same car&rdquo; on <a href="/paths-into-racing/#four-paths">Paths Into Racing</a>. <span class="note">needs Cliff: confirm the 2027 Buccaneer school dates and fee</span></p>
     <p>Bertil Roos closed in October 2022 and its successor is gone too &mdash; if a forum post recommends it, that post is at least four years old. Simraceway closed in 2019. The Mid-Ohio School has no competition-license course.</p>
   </div>
 </section>

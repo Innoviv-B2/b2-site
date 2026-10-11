@@ -1,4 +1,4 @@
-# Build check — 2026-09-23
+# Build check — 2026-10-11
 
 24 pages.
 
@@ -12,7 +12,7 @@
 - 1267 words · H1: "The Spec Racer Ford rental. Sealed, equal, ready to drive." · 8 images · 10 internal links
 
 ## /srf3-fit-check/ — `srf3-fit-check.html`
-- 737 words · H1: "Do you fit?" · 6 images · 3 internal links
+- 771 words · H1: "Do you fit?" · 6 images · 3 internal links
 - warn: keyphrase not in H1 ("Do you fit?")
 
 ## /rental-pricing-calculator/ — `rental-pricing-calculator.html`
@@ -57,10 +57,10 @@
 - 1409 words · H1: "Spec Racer Ford rental FAQ" · 1 images · 15 internal links
 
 ## /how-to-get-a-racing-license/ — `how-to-get-a-racing-license.html`
-- 2337 words · H1: "How to get a racing license: the SCCA route, step by step" · 3 images · 10 internal links
+- 2635 words · H1: "How to get a racing license: the SCCA route, step by step" · 3 images · 14 internal links
 
 ## /paths-into-racing/ — `paths-into-racing.html`
-- 2192 words · H1: "Four ways into racing, costed end to end" · 2 images · 11 internal links
+- 2352 words · H1: "Four ways into racing, costed end to end" · 2 images · 11 internal links
 - warn: keyphrase "how much does it cost to start racing" not in title
 - warn: keyphrase not in description
 - warn: keyphrase not in H1 ("Four ways into racing, costed end to end")
@@ -72,7 +72,7 @@
 - 487 words · H1: "The B2 Motorsports blog: road racing in Huntsville, from the shop floor." · 0 images · 5 internal links
 
 ## /blog/buying-safety-gear/ — `blog-buying-safety-gear.html`
-- 2380 words · H1: "Buying Safety Gear: The SCCA Requirements, the Real Costs, and Where We Buy Ours" · 1 images · 4 internal links
+- 2568 words · H1: "Buying Safety Gear: The SCCA Requirements, the Real Costs, and Where We Buy Ours" · 1 images · 4 internal links
 
 ## /sponsors/ — `sponsors.html`
 - 817 words · H1: "Motorsports hospitality that puts your brand at the track." · 2 images · 4 internal links
