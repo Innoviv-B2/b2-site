@@ -34,7 +34,7 @@ sitemap entry and the review artifact. **Exactly one `<h1>` per page.**
 ## 2. What the site is
 
 A static site for **B2 Motorsports, Huntsville, AL**: Spec Racer Ford (SRF3) arrive-and-drive
-rentals, storage, coaching, owner services. Brand: ink ground `#0F0E13`, brand purple `#7C2FF0`
+rentals, storage, coaching, member services. Brand: ink ground `#0F0E13`, brand purple `#7C2FF0`
 for actions, blaze orange `#FF6A00` for the one number/word that matters, Saira italic 800/900
 headings, Saira 400 body, Space Mono labels. **All of that is already in `src/css/site.css`.**
 Use its classes; add page-specific CSS only in one `<style>` block at the top of your body, with
@@ -70,7 +70,7 @@ every selector scoped under `.pg-<yourfile>` (e.g. `.pg-storage .tiers { â€¦ }`)
 
 Every form is a plain HTML form the site posts to HubSpot. Copy this shape and change the fields
 and `data-form` key (`general-inquiry`, `quote-request`, `fit-check`, `fit-check-short`,
-`storage-inquiry`, `owner-services`, `street-car`, `corporate`, `safety-gear`):
+`storage-inquiry`, `member-services`, `corporate`, `safety-gear`):
 
 ```html
 <form class="form b2-form" data-form="storage-inquiry" data-email="storage@b2motorsports.com" id="storage-form" novalidate>
@@ -118,7 +118,7 @@ where the deck gives them (`inquiry_message`, `storage_vehicle`, `fit_height`, â
 - Images: descriptive `alt` (name Spec Racer Ford / B2 Motorsports / Huntsville where true),
   `width`/`height` attributes if you know them, `loading="lazy"`.
 - Body â‰¥ 300 words for pages meant to rank. Schema in `meta.schema` where the type is obvious:
-  `Service` (rentals, storage, owner services), `FAQPage`, `Event` list (calendar), `AboutPage`,
+  `Service` (rentals, storage, member services), `FAQPage`, `Event` list (calendar), `AboutPage`,
   `ContactPage`, `BlogPosting`, `HowTo` (licence path).
 
 ## 7. Pages that exist (link only to these)
@@ -129,7 +129,7 @@ where the deck gives them (`inquiry_message`, `storage_vehicle`, `fit_height`, â
 `/blog/buying-safety-gear/` `/how-to-get-a-racing-license/` `/paths-into-racing/`
 `/driver-development-program/` `/simulator-and-sim-training/` `/sponsors/` `/media-packages/`
 `/product-development/` `/privacy-policy/`. Anchors: `/contact-us/#quote` is the general form,
-`/services/performance-shop/#street` the street-car form.
+`/services/performance-shop/#member-form` the member-services form.
 
 ## 8. Photos
 

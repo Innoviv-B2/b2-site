@@ -32,8 +32,12 @@ Race With Us ▾
   /2026-race-calendar-…/            2026 Calendar                 (Sonnet)
   /how-to-get-a-racing-license/     Licence path                  (Sonnet)
   /paths-into-racing/               Paths Into Racing             (Sonnet)
-/services/storage/                  Storage                       (Sonnet)
-/services/performance-shop/         Owner Services                (Sonnet)
+Storage & DIY Garage ▾
+  /services/storage/                Storage landing               (Sonnet)
+  /services/storage/equipment/      The Equipment
+  /services/storage/membership/     How Membership Works
+  /services/performance-shop/       Member Services (was top-level Owner Services; see note)
+  /services/storage/sign-up/        Sign Me Up
 About ▾
   /about-us/  /faq/  /blog/         About, FAQ, Blog index        (Sonnet ×2)
   /blog/buying-safety-gear/         Safety gear post              (with Blog)
@@ -41,6 +45,16 @@ About ▾
 Secondary (footer + homepage tiles): /driver-development-program/ /simulator-and-sim-training/
   /sponsors/ /media-packages/ /product-development/ /privacy-policy/   (Sonnet, one agent)
 ```
+
+**Member Services, decided 11 Oct 2026 (Cliff).** The old Owner Services page repeated the rental
+price list ($600 prep, $600/day trackside, transport per mile) for people who own their own SRF.
+There is no price difference between the two, so the list now lives in one place: the calculator,
+whose "Whose car?" switch drops the car-rental line for an owner's SRF. `/services/performance-shop/`
+became Member Services under Storage & DIY Garage: exclusive access to the race mechanics for
+garage and storage members (alignment, track prep to their checklist, track-day inspections, dyno,
+repair, parts through MotorState/PGP, Lane, Sabelt America, SCCA Enterprises), quoted per car, no
+posted prices. Dyno and alignment are members only, so the street-car section and form are gone.
+The slug stays so no redirect is needed; page file is `member-services.html`.
 
 URLs keep the live site's slugs so nothing Google already knows is orphaned. The old
 `/services/` hub, `/store/`, `/storage-form/` and `/sitemap` page are not rebuilt.

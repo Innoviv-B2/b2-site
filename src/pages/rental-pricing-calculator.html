@@ -391,6 +391,14 @@
         </div>
 
         <div class="field">
+          <label>Whose car? <span class="opt">same crew, same lines &mdash; your own SRF drops the car rental</span></label>
+          <div class="toggle" id="carToggle">
+            <button type="button" data-car="rental" aria-pressed="true"><span class="t1">Rent our SRF3</span><span class="t2">arrive &amp; drive</span></button>
+            <button type="button" data-car="own" aria-pressed="false"><span class="t1">Your own SRF</span><span class="t2">we prep &amp; crew it</span></button>
+          </div>
+        </div>
+
+        <div class="field">
           <label>Tires</label>
           <div class="toggle" id="tireToggle">
             <button type="button" data-tire="new" aria-pressed="false"><span class="t1">New set</span><span class="t2">heat cycles 1-8</span></button>
@@ -464,7 +472,7 @@
 <section class="closing">
   <div class="wrap">
     <h2>That is the number. Book this weekend.</h2>
-    <p>The calculator is not a teaser: it is the same arithmetic we bill from, line by line. Tires and fuel settle on what you actually use, and the only other things that change it are a multi-race discount or bringing your own car. Elsewhere you call or fill in a form and wait for a price that moves with the days and the towing distance. Here you see it first.</p>
+    <p>The calculator is not a teaser: it is the same arithmetic we bill from, line by line. Tires and fuel settle on what you actually use, and the only other things that change it are a multi-race discount or bringing your own car. Own a Spec Racer? Flip "Whose car?" above: same crew, same lines, same rates, no car rental. Elsewhere you call or fill in a form and wait for a price that moves with the days and the towing distance. Here you see it first.</p>
     <button class="bigcta" id="reqBtn2" type="button">Book this weekend</button>
     <p class="fineprint">Look for the white truck, trailer, and canopy at the track.</p>
     <p class="related">More on the program: <a href="/the-cars/">the Spec Racer Ford itself</a> &middot; <a href="/2026-race-calendar-spec-racer-ford-rentals-trackside-support/">2026 race calendar</a> &middot; <a href="/race-with-us/">arrive-and-drive services</a> &middot; <a href="/srf3-fit-check/">the SRF3 fit check</a></p>
@@ -669,7 +677,7 @@ async function resolveLiveMiles(track) {
    Maps JS API once a key/library is loaded. The prototype below filters the built-in TRACKS list. */
 
 const state = { miles:CONFIG.tracks[1].miles, distLabel:CONFIG.tracks[1].name, distSrc:CONFIG.tracks[1].src,
-                days:2, hours:4, sessions:8, cars:3, tire:"used", pay:"ach" };
+                days:2, hours:4, sessions:8, cars:3, tire:"used", pay:"ach", car:"rental" };
 const EVENT = { name:"", date:"", type:"" };   // set from the picker or ?event=&date=&type= — see "calendar handoff"
 const money = new Intl.NumberFormat("en-US",{ minimumFractionDigits:2, maximumFractionDigits:2 });
 const whole = new Intl.NumberFormat("en-US",{ maximumFractionDigits:0 });
@@ -803,6 +811,12 @@ document.querySelectorAll("#tireToggle button").forEach(b => b.addEventListener(
   document.querySelectorAll("#tireToggle button").forEach(x => x.setAttribute("aria-pressed", x === b));
   render();
 }));
+// Owners of their own SRF pay the same lines at the same rates; only the car rental drops out.
+document.querySelectorAll("#carToggle button").forEach(b => b.addEventListener("click", () => {
+  state.car = b.dataset.car;
+  document.querySelectorAll("#carToggle button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  render();
+}));
 document.querySelectorAll("#payToggle button").forEach(b => b.addEventListener("click", () => {
   state.pay = b.dataset.pay;
   document.querySelectorAll("#payToggle button").forEach(x => x.setAttribute("aria-pressed", x === b));
@@ -875,7 +889,7 @@ function compute() {
     support:   CONFIG.supportPerDay * state.days,
     tires:     tireCost(tireStartCycle(), state.sessions),
     fuel:      CONFIG.fuelPerHour * state.hours,
-    car:       CONFIG.carPerHour * state.hours,
+    car:       state.car === "own" ? 0 : CONFIG.carPerHour * state.hours,
   };
   const subtotal = sub.transport + sub.prep + sub.support + sub.tires + sub.fuel + sub.car;
   sub.cardfee = state.pay === "card" ? subtotal * (CONFIG.ccFeePct/100) : 0;
@@ -915,8 +929,9 @@ function render() {
     CONFIG.tireLifeCycles + ") · avg $" + money.format(c.tires / Math.max(1,state.sessions)) + "/cycle";
   document.getElementById("s-fuel").textContent =
     hrTxt(state.hours) + " hrs × $" + money.format(CONFIG.fuelPerHour) + "/hr";
-  document.getElementById("s-car").textContent =
-    hrTxt(state.hours) + " hrs × $" + money.format(CONFIG.carPerHour) + "/hr of track time";
+  document.getElementById("s-car").textContent = state.car === "own"
+    ? "your own Spec Racer — no rental"
+    : hrTxt(state.hours) + " hrs × $" + money.format(CONFIG.carPerHour) + "/hr of track time";
 
   document.getElementById("line-cardfee").classList.toggle("hidden", state.pay !== "card");
 
@@ -926,7 +941,8 @@ function render() {
 
   const payLabel = state.pay === "card" ? "card +" + CONFIG.ccFeePct + "%" : state.pay.toUpperCase();
   document.getElementById("ctx").textContent =
-    `${state.days}d · ${hrTxt(state.hours)}hr · ${state.sessions} sessions · ${state.distLabel} · ${payLabel}`;
+    `${state.days}d · ${hrTxt(state.hours)}hr · ${state.sessions} sessions · ${state.distLabel} · ${payLabel}` +
+    (state.car === "own" ? " · your car" : "");
 }
 
 /* init: select Barber — the 14 Sep anchor benchmark (2 days, 4h, 8 sessions, 3 cars, used tires) */
@@ -939,8 +955,9 @@ if (anchorStartBtn) anchorStartBtn.addEventListener("click", async function () {
   EVENT.name = ""; EVENT.date = ""; EVENT.type = ""; showEventBanner();
   await pickTrack(CONFIG.tracks[1]);
   setStep("days", 2); setStep("hours", 4); setStep("sessions", 8); setStep("cars", 3);
-  state.tire = "used";
+  state.tire = "used"; state.car = "rental";
   document.querySelectorAll("#tireToggle button").forEach(b => b.setAttribute("aria-pressed", b.dataset.tire === "used" ? "true" : "false"));
+  document.querySelectorAll("#carToggle button").forEach(b => b.setAttribute("aria-pressed", b.dataset.car === "rental" ? "true" : "false"));
   render();
   document.getElementById("quote").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
 });
@@ -982,7 +999,7 @@ function snapshot() {
     distance_source: state.distSrc,
     days: state.days, track_hours: state.hours, sessions: state.sessions,
     cars_in_trailer: state.cars,
-    tires: state.tire, payment_method: state.pay,
+    tires: state.tire, payment_method: state.pay, car: state.car,
     event_name: EVENT.name, event_date: EVENT.date, event_type: EVENT.type,
     estimate_total: Math.round(total)
   };
@@ -1019,7 +1036,8 @@ function fillSummary() {
     evt +
     esc(s.track_name) + "<br>" +
     s.days + " day" + (s.days > 1 ? "s" : "") + " &middot; " + hrTxt(s.track_hours) + " hr &middot; " +
-    s.sessions + " sessions &middot; " + s.tires + " tires &middot; " + s.payment_method.toUpperCase() + "<br>" +
+    s.sessions + " sessions &middot; " + s.tires + " tires &middot; " + s.payment_method.toUpperCase() +
+    (s.car === "own" ? " &middot; your own SRF" : "") + "<br>" +
     "<b>Est. $" + s.estimate_total.toLocaleString() + "</b> &middot; " + s.round_trip_miles + " mi rt (" + s.distance_source + ")";
 }
 
@@ -1040,7 +1058,7 @@ function buildHsForm() {
         set("estimate_round_trip_miles", s.round_trip_miles); set("estimate_days", s.days);
         set("estimate_hours", s.track_hours); set("estimate_sessions", s.sessions);
         set("estimate_tires", s.tires); set("estimate_payment", s.payment_method);
-        set("estimate_cars_in_trailer", s.cars_in_trailer);
+        set("estimate_cars_in_trailer", s.cars_in_trailer); set("estimate_car", s.car);
         set("estimate_event_name", s.event_name); set("estimate_event_date", s.event_date);
         set("estimate_event_type", s.event_type);
       },

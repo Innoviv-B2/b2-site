@@ -32,8 +32,7 @@
       "storage-inquiry": "",
       "storage-tour": "",
       "storage-signup": "",
-      "owner-services": "",
-      "street-car": "",
+      "member-services": "",
       "corporate": "",
       "safety-gear": ""
     }
@@ -61,9 +60,9 @@
     { "key": "storage", "label": "Storage &amp; DIY Garage", "menuName": "Storage", "href": "/services/storage/", "children": [
       { "label": "The Equipment", "href": "/services/storage/equipment/" },
       { "label": "How Membership Works", "href": "/services/storage/membership/" },
+      { "label": "Member Services", "href": "/services/performance-shop/" },
       { "label": "Sign Me Up", "href": "/services/storage/sign-up/" }
     ]},
-    { "key": "owner", "label": "Owner Services", "href": "/services/performance-shop/" },
     { "key": "calendar", "label": "Calendar", "href": "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/" },
     { "key": "about", "label": "About", "href": "/about-us/", "children": [
       { "label": "Our Team", "href": "/about-us/" },
@@ -86,6 +85,7 @@
     ],
     "more": [
       ["Storage &amp; DIY Garage", "/services/storage/"],
+      ["Member Services", "/services/performance-shop/"],
       ["Driver Development", "/driver-development-program/"],
       ["Coaches & Simulator", "/simulator-and-sim-training/"],
       ["Business & Hospitality", "/sponsors/"],
