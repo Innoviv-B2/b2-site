@@ -14,7 +14,10 @@ Generated for the standalone B2 Motorsports website. Every photo has a full (max
 | hero-car59-on-track.jpg | 1600x816 | Car 59 mid-corner on track at a Spec Racer Ford event. | A&D mockup | hero |
 | seat-standard-srf3.jpg | 1600x1200 | The standard SRF3 seat shell fitted in the cockpit, harness belts laid in. | SharePoint Do you Fit - Cockpit Photos: IMG_3172.JPG | any |
 | seat-custom-insert.jpg | 1600x1200 | A seatinserts.com Carbon X custom seat insert, out of the car on the shop floor. | SharePoint Do you Fit - Cockpit Photos: IMG_3176.JPG | any |
-| pedal-rack-adjustable.jpg | 1600x1200 | The SRF3 footbox: three pedals on the bolted pedal rack. | SharePoint Do you Fit - Cockpit Photos: IMG_3171.JPG | any |
+| seat-shell-srf3.jpg | 1600x1200 | A bare SRF3 seat shell out of the car, before an insert is fitted. | SharePoint Do you Fit - Cockpit Photos: IMG_3175.JPG | any |
+| seat-shell-srf3-tall.jpg | 900x1200 | Portrait bare seat shell for the shell → insert pair (no -800 copy). | IMG_3175.JPG | img-pair |
+| seat-custom-insert-tall.jpg | 900x1200 | Portrait seatinserts.com insert for the shell → insert pair (no -800 copy). | IMG_3176.JPG | img-pair |
+| pedal-rack-adjustable.jpg | 1600x1200 | The SRF3 pedal box from above: pedals and master cylinders on the bolted pedal rack. | SharePoint Do you Fit - Cockpit Photos: IMG_3180.JPG | any |
 | steering-column-adjustable.jpg | 1600x1200 | The SRF3 steering column at its mount, adjustment holes drilled along the shaft. | SharePoint Do you Fit - Cockpit Photos: IMG_3181.JPG | any |
 | car57-paddock-crew.jpg | 600x800 | Car 57 in the paddock with the B2 crew. | A&D mockup | any |
 | tile-storage-indoor-hall.jpg | 1600x1200 | The indoor storage hall in Huntsville, covered cars along the far wall. | OneDrive zip: 20230116_093628.jpg | tile |

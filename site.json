@@ -46,7 +46,8 @@
     "/services/performance-shop/", "/about-us/", "/faq/", "/contact-us/", "/blog/",
     "/blog/buying-safety-gear/", "/how-to-get-a-racing-license/", "/paths-into-racing/",
     "/driver-development-program/", "/simulator-and-sim-training/", "/sponsors/",
-    "/media-packages/", "/product-development/", "/privacy-policy/"
+    "/media-packages/", "/product-development/", "/privacy-policy/",
+    "/crash-damage/", "/about-us/drivers/"
   ],
   "nav": [
     { "key": "race", "label": "Race With Us", "href": "/race-with-us/", "children": [
@@ -66,6 +67,7 @@
     { "key": "calendar", "label": "Calendar", "href": "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/" },
     { "key": "about", "label": "About", "href": "/about-us/", "children": [
       { "label": "Our Team", "href": "/about-us/" },
+      { "label": "Our Drivers", "href": "/about-us/drivers/" },
       { "label": "FAQ", "href": "/faq/" },
       { "label": "Blog", "href": "/blog/" }
     ]},
@@ -76,6 +78,7 @@
       ["The Cars", "/the-cars/"],
       ["Do You Fit?", "/srf3-fit-check/"],
       ["What It Costs", "/rental-pricing-calculator/"],
+      ["What a Crash Costs", "/crash-damage/"],
       ["2026 Calendar", "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/"],
       ["How to Get a Racing License", "/how-to-get-a-racing-license/"],
       ["Paths Into Racing", "/paths-into-racing/"],

@@ -234,6 +234,24 @@ h1 em, h2 em { font-style: inherit; color: var(--blaze); }
 .figure--square img { aspect-ratio: 1; }
 .figure figcaption { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
 .photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+/* two photos in one slot, e.g. stock seat shell → custom insert; the pair takes the slot's shape */
+.img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; aspect-ratio: 4/3; border-radius: var(--radius-card); overflow: hidden; }
+.img-pair > span { position: relative; min-width: 0; min-height: 0; }
+.img-pair img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; border-radius: 0; }
+.img-pair i { position: absolute; left: 6px; bottom: 6px; font: 400 9.5px/1 var(--font-mono); font-style: normal; letter-spacing: 1px; text-transform: uppercase; color: var(--paper); background: rgba(15,14,19,.8); padding: 4px 6px; border-radius: 2px; }
+.card .img-pair { aspect-ratio: 16/9; margin: -4px 0 6px; border-radius: calc(var(--radius-card) - 2px); }
+.figure--square .img-pair { aspect-ratio: 1; }
+
+/* ---------- YouTube tiles (site.js swaps in the player on click) ---------- */
+.yt, .yt__frame { position: relative; display: block; width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--border); background: var(--ink); }
+.yt__frame { border: 0; }
+.yt img { width: 100%; height: 100%; object-fit: cover; opacity: .7; transition: opacity var(--dur) var(--ease); }
+.yt:hover img { opacity: .9; }
+.yt::before { content: ""; position: absolute; left: 50%; top: 50%; width: 68px; height: 48px; margin: -24px 0 0 -34px; border-radius: 12px; background: var(--purple); z-index: 1; }
+.yt::after { content: ""; position: absolute; left: 50%; top: 50%; margin: -11px 0 0 -6px; border-style: solid; border-width: 11px 0 11px 19px; border-color: transparent transparent transparent var(--paper); z-index: 2; }
+.yt__t { position: absolute; left: 0; right: 0; bottom: 0; padding: 28px 14px 12px; background: linear-gradient(transparent, rgba(15,14,19,.92)); font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 15px; line-height: 1.2; color: var(--paper); z-index: 1; }
+.video { margin: 0; }
+.video figcaption { margin-top: 12px; color: var(--body); font-size: 15.5px; }
 
 /* ---------- lists ---------- */
 .check { list-style: none; border-top: 1px solid var(--border); }

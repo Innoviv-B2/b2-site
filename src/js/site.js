@@ -76,6 +76,23 @@
     function say(msg, isErr) { if (!status) return; status.textContent = msg; status.classList.toggle("form__status--error", !!isErr); }
   });
 
+  /* ---- YouTube tiles: a link with our own poster until clicked, then the real player ----
+     Keeps pages fast and works where frames are blocked (the review build just opens YouTube). */
+  document.querySelectorAll("a.yt[data-yt]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      if (window.B2_REVIEW) return;
+      e.preventDefault();
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube-nocookie.com/embed/" + a.getAttribute("data-yt") + "?autoplay=1";
+      f.title = a.getAttribute("aria-label") || "Video";
+      f.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      f.className = "yt__frame";
+      a.replaceWith(f);
+    });
+  });
+
   /* ---- footer year ---- */
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
 })();

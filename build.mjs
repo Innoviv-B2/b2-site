@@ -33,6 +33,18 @@ function parsePage(file) {
 }
 const pageFiles = fs.existsSync(path.join(SRC, "pages")) ? fs.readdirSync(path.join(SRC, "pages")).filter((f) => f.endsWith(".html")).sort() : [];
 const pages = pageFiles.map((f) => parsePage(path.join(SRC, "pages", f)));
+
+/* ---------- event feed: the calendar page's Event schema is the one source of truth ----------
+   {{EVENTS_COUNT}} = events not yet finished as of the build date; {{EVENTS_NEXT}} = rail rows for the next four.
+   Rebuilding the site refreshes both, so nothing on other pages goes stale when the calendar changes. */
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const fmtDay = (d) => `${MON[+d.slice(5, 7) - 1]} ${+d.slice(8, 10)}`;
+const fmtRange = (s, e) => !e || e === s ? fmtDay(s) : s.slice(5, 7) === e.slice(5, 7) ? `${fmtDay(s)}–${+e.slice(8, 10)}` : `${fmtDay(s)}–${fmtDay(e)}`;
+const calPage = pages.find((p) => p.meta.nav === "calendar" && p.meta.schema);
+const upcoming = ((calPage && calPage.meta.schema[0].itemListElement) || []).map((x) => x.item)
+  .filter((e) => (e.endDate || e.startDate) >= today).sort((a, b) => a.startDate.localeCompare(b.startDate));
+const eventRow = (e) => { const [who, ...where] = e.name.split(" — "); return `<li><span class="rail__t">${fmtRange(e.startDate, e.endDate)}</span><p><b>${who}</b>${where.length ? ", " + where.join(" — ") : ""}</p></li>`; };
+for (const p of pages) p.body = p.body.replace(/{{EVENTS_COUNT}}/g, String(upcoming.length)).replace(/{{EVENTS_NEXT}}/g, upcoming.slice(0, 4).map(eventRow).join("\n        "));
 const knownPaths = new Set([...pages.map((p) => p.meta.path), ...(site.plannedPaths || [])]);
 const nav = site.nav;
 const orderKey = (p) => (p.meta.order ?? 500);

@@ -110,13 +110,46 @@
     "suggestedUse": "any"
   },
   {
+    "file": "seat-shell-srf3.jpg",
+    "webp": "seat-shell-srf3.webp",
+    "small": "seat-shell-srf3-800.jpg",
+    "width": 1600,
+    "height": 1200,
+    "source": "SharePoint Website Photos/Do you Fit - Cockpit Photos: IMG_3175.JPG (Michael, Sep 2026)",
+    "subject": "A bare SRF3 seat shell out of the car, before an insert is fitted.",
+    "suggestedAlt": "Bare Spec Racer Ford seat shell, before a custom insert is fitted",
+    "suggestedUse": "any"
+  },
+  {
+    "file": "seat-shell-srf3-tall.jpg",
+    "webp": "seat-shell-srf3-tall.webp",
+    "small": null,
+    "width": 900,
+    "height": 1200,
+    "source": "SharePoint Website Photos/Do you Fit - Cockpit Photos: IMG_3175.JPG (Michael, Sep 2026)",
+    "subject": "Portrait version of the bare seat shell, for the shell → insert pair.",
+    "suggestedAlt": "Bare Spec Racer Ford seat shell, before a custom insert is fitted",
+    "suggestedUse": "img-pair"
+  },
+  {
+    "file": "seat-custom-insert-tall.jpg",
+    "webp": "seat-custom-insert-tall.webp",
+    "small": null,
+    "width": 900,
+    "height": 1200,
+    "source": "SharePoint Website Photos/Do you Fit - Cockpit Photos: IMG_3176.JPG (Michael, Sep 2026)",
+    "subject": "Portrait version of the seatinserts.com insert, for the shell → insert pair.",
+    "suggestedAlt": "Finished seatinserts.com custom seat insert, molded to the driver",
+    "suggestedUse": "img-pair"
+  },
+  {
     "file": "pedal-rack-adjustable.jpg",
     "webp": "pedal-rack-adjustable.webp",
     "small": "pedal-rack-adjustable-800.jpg",
     "width": 1600,
     "height": 1200,
-    "source": "SharePoint Website Photos/Do you Fit - Cockpit Photos: IMG_3171.JPG (Michael, Sep 2026)",
-    "subject": "The SRF3 footbox: three pedals on the bolted pedal rack.",
+    "source": "SharePoint Website Photos/Do you Fit - Cockpit Photos: IMG_3180.JPG (Michael, Sep 2026)",
+    "subject": "The SRF3 pedal box from above: the three pedals and master cylinders on the bolted pedal rack.",
     "suggestedAlt": "Adjustable pedal rack in a B2 Motorsports Spec Racer Ford SRF3",
     "suggestedUse": "any"
   },
