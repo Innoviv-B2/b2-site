@@ -52,7 +52,7 @@
 - warn: keyphrase never appears verbatim in body
 
 ## /about-us/ — `about.html`
-- 1482 words · H1: "A family operation, thirty years in the paddock." · 4 images · 7 internal links
+- 1521 words · H1: "A family operation, thirty years in the paddock." · 4 images · 7 internal links
 - warn: keyphrase not in H1 ("A family operation, thirty years in the paddock.")
 
 ## /about-us/drivers/ — `drivers.html`
