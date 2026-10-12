@@ -1,9 +1,9 @@
-# Build check — 2026-10-11
+# Build check — 2026-10-12
 
 26 pages.
 
 ## / — `home.html`
-- 1009 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 20 internal links
+- 1010 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 20 internal links
 
 ## /race-with-us/ — `race-with-us.html`
 - 2114 words · H1: "Arrive and drive a Spec Racer Ford." · 11 images · 16 internal links
@@ -52,7 +52,7 @@
 - warn: keyphrase never appears verbatim in body
 
 ## /about-us/ — `about.html`
-- 1378 words · H1: "A family operation, thirty years in the paddock." · 4 images · 7 internal links
+- 1482 words · H1: "A family operation, thirty years in the paddock." · 4 images · 7 internal links
 - warn: keyphrase not in H1 ("A family operation, thirty years in the paddock.")
 
 ## /about-us/drivers/ — `drivers.html`
