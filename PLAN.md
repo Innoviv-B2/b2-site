@@ -63,13 +63,13 @@ URLs keep the live site's slugs so nothing Google already knows is orphaned. The
 
 Principle: **the expensive model does the first-of-kind work once; everything else copies it.**
 Every page agent reads exactly four things: `PAGE-SPEC.md`, `src/pages/home.html`, its own deck in
-`b2-wp-tools/docs/content/`, and `assets/img/manifest.json`. Nothing else. Reports are ~15 lines.
+`b2-wp-tools/website/pages/`, and `assets/img/manifest.json`. Nothing else. Reports are ~15 lines.
 
 | Wave | Who | Work | Reads | Runs alongside |
 |---|---|---|---|---|
 | 0 | Sonnet, 1 agent | Photo library: decode the mockup photos, resize the 17 shop photos, manifest with alt text | two mockup HTML files, the zip | wave 0 orchestrator |
 | 0 | Fable (orchestrator) | Repo, tokens, partials, build script, PAGE-SPEC, the Home page | plan of record, brand system, decks 01 | — |
-| 1 | Opus ×1, Sonnet ×12, in parallel | One page each (see map). Calculator agent ports `content/srf3-rental-estimate.html` region by region, keeping `CONFIG` and `compute()` byte-for-byte. Secondary-pages agent ports the live copy of five pages from the WordPress export outline. | PAGE-SPEC, home.html, one deck, manifest | all 13 at once |
+| 1 | Opus ×1, Sonnet ×12, in parallel | One page each (see map). Calculator agent ports `b2-wp-tools/website/wordpress/payloads/srf3-rental-estimate.html` region by region, keeping `CONFIG` and `compute()` byte-for-byte. Secondary-pages agent ports the live copy of five pages from the WordPress export outline. | PAGE-SPEC, home.html, one deck, manifest | all 13 at once |
 | 2 | Sonnet ×1 | Site QA: `node build.mjs --check`, fix mechanical defects in any page, cross-page keyphrase collisions, internal-link audit, alt-text audit, schema validity | build report, all pages | after wave 1 |
 | 2 | Fable | Review the QA report, spot-check the four money pages (Home, Arrive & Drive, What It Costs, Storage), build, publish the review artifact | — | — |
 | 3 | Cliff | Comments on the artifact (copy, photos, navigation) | the artifact | — |
@@ -102,6 +102,6 @@ only this plan, the reports, and the build output.
 
 - Hosting and DNS: Cliff's decision with McWilliams; `dist/` works on any static host.
 - HubSpot form GUIDs: eight of nine forms still have to be created in the HubSpot UI
-  (`b2-wp-tools/docs/plans/hubspot-forms.md`). Until then those forms fall back to email.
+  (`b2-wp-tools/integrations/hubspot/forms.md`). Until then those forms fall back to email.
 - The EasyCart store: stays on WordPress; the footer links to it.
 - Blog beyond the one drafted post: the index lists it and the existing prep-shop post as a link.
