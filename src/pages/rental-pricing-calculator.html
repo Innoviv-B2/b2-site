@@ -84,6 +84,11 @@
   .b2-calc .chan h3 { font-family:var(--display); font-weight:600; text-transform:uppercase; letter-spacing:.02em; font-size:19px; margin:8px 0 8px; }
   .b2-calc .chan p { color:var(--mid); font-size:13px; margin:0; line-height:1.45; }
   .b2-calc .chan p .rate { color:var(--signal); font-family:var(--mono); font-size:12px; }
+  .b2-calc .chan p.live { margin-top:12px; font-family:var(--mono); font-size:13px; }
+  .b2-calc .chan p.live a { color:var(--signal); font-weight:600; text-decoration:none; border-bottom:1px dotted var(--signal); }
+  .b2-calc .chan p.live a:hover { color:var(--signal-dim); }
+  .b2-calc .chan p.dl { margin-top:10px; font-size:12.5px; }
+  .b2-calc .chan p.dl a { color:var(--signal); text-decoration:underline; text-underline-offset:2px; }
 
   .b2-calc .calc { display:grid; grid-template-columns:1fr 1.05fr; gap:0; border:1px solid var(--edge); border-radius:6px; overflow:hidden; }
   .b2-calc .inputs { background:var(--carbon); padding:30px 30px 34px; }
@@ -265,7 +270,7 @@
   <div class="wrap">
     <p class="eyebrow">Spec Racer Ford · Gen 3 · Arrive & Drive</p>
     <h1>Spec Racer Ford rental cost<br><span class="out">Every line. Nothing hidden.</span></h1>
-    <p class="lede">A spec car is a level field — so we price like one. Here is what an SRF3 Spec Racer Ford rental costs, line by line: transport, tires, fuel, <a href="/the-cars/">the car itself</a>, and <a href="/race-with-us/">our trackside crew</a> — each its own line, so you see exactly what you pay for. Build your weekend below: the number you see is the number we bill from.</p>
+    <p class="lede">A spec car is a level field, so we price like one. Here is what an SRF3 Spec Racer Ford rental costs, line by line: transport, tires, fuel, <a href="/the-cars/">the car itself</a> and <a href="/race-with-us/">our trackside crew</a>, each on its own line so you see exactly what you pay for. Build your weekend below: the number you see is the number we bill from.</p>
     <img src="/assets/img/hero-car59-on-track.jpg" alt="Spec Racer Ford Gen 3 rental car at Barber Motorsports Park" width="1600" height="816" loading="lazy" style="display:block;width:100%;height:auto;border-radius:6px;margin-top:32px;">
   </div>
 </div>
@@ -284,7 +289,7 @@
       <div class="kv"><span class="k">Car rental</span><span class="v">$1,799</span></div>
       <div class="kv anchor-total"><span class="k">Total</span><span class="v">$4,468</span></div>
     </div>
-    <p class="anchor-note">Crash-damage deposit $6,000, returned in full if the car comes back undamaged &middot; Agreement by DocuSign &middot; ACH or check, no fee &middot; Credit card +3%.</p>
+    <p class="anchor-note">Agreement by DocuSign &middot; ACH or check, no fee &middot; Credit card +3%. The crash-damage deposit is separate, and comes back in full with an undamaged car (section 03).</p>
     <div class="anchor-actions">
       <button class="towercta anchor-cta" id="anchorStart" type="button">Start from this example</button>
       <a class="anchor-link" href="/race-with-us/">Or read how a weekend works &rarr;</a>
@@ -296,16 +301,16 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-num">01</span>
-      <h2 class="sec-title">What a Spec Racer Ford rental costs</h2>
-      <p class="sec-sub">Six line items. Tires and fuel are estimated, then settled on what you actually use.</p>
+      <h2 class="sec-title">How B2 Motorsports prices its race car rental and services for the Spec Racer Ford</h2>
+      <p class="sec-sub">Six line items. Tires and fuel are estimated, then settled on what you actually use. The figures in purple come straight from the calculator below, so they always match it.</p>
     </div>
     <div class="channels">
-      <div class="chan"><span class="tag">Logistics</span><h3>Transport</h3><p>Transport is priced per round-trip mile from our shop, and the trip is <b>split by the cars aboard</b> — set the number below and watch your share drop. One charge per trip, never per day.</p></div>
-      <div class="chan"><span class="tag">Service</span><h3>Prep</h3><p>Getting the car ready for your event: alignment, nut and bolt, wash, driver fitment and loading the trailer. One flat charge per event, however long the weekend runs.</p></div>
-      <div class="chan"><span class="tag">Service</span><h3>Trackside Support</h3><p>Crew, setup, between-session work, and coaching across the day.</p></div>
-      <div class="chan"><span class="tag">Consumable</span><h3>Tires</h3><p>One session is one heat cycle. A set lasts 16, and the early cycles are worth the most — so new costs more than scuffed.</p></div>
-      <div class="chan"><span class="tag">Consumable</span><h3>Fuel</h3><p>Estimated by hours of track time, then settled on actuals.</p></div>
-      <div class="chan"><span class="tag">Equipment</span><h3>Car Rental</h3><p>The SRF3 chassis, prepped and ready, charged by the hour of track time — not by the day you are parked.</p></div>
+      <div class="chan"><span class="tag">Logistics</span><h3>Transport</h3><p>Transport is priced per round-trip mile from our shop, and the trip is <b>split by the cars aboard</b>. Set the number of cars below and watch your share drop. One charge per trip, never per day.</p><p class="live"><a href="#quote">Your share right now: <span data-live="transport"></span></a></p></div>
+      <div class="chan"><span class="tag">Service</span><h3>Prep</h3><p>Getting the car ready for your event: alignment, nut and bolt, wash, driver fitment and loading the trailer. One flat charge per event, however long the weekend runs.</p><p class="live"><a href="#quote"><span data-live="prep"></span> per event</a></p><p class="dl"><a href="#quote">Download our standard SRF3 prep and preventative maintenance checklist</a> <span class="note">needs Cliff: send the checklist file to link here</span></p></div>
+      <div class="chan"><span class="tag">Service</span><h3>Trackside Support</h3><p>We set up and break down, bring the snacks and drinks, fuel the cars, and are in pit lane to respond to unknowns and during session changes as you progress. Coaching across the day is part of it.</p><p class="live"><a href="#quote"><span data-live="support"></span> per event day</a></p></div>
+      <div class="chan"><span class="tag">Consumable</span><h3>Tires</h3><p>The SRF3 runs a spec Hoosier race tire, and we can get as many as 20 heat cycles out of a set. One session is one heat cycle, and the early cycles are worth the most, so new costs more than scuffed. We also have Toyo R888R tires: harder, slightly treaded, and better for track days and non-SCCA events. Pricing is based on Hoosiers.</p><p class="live"><a href="#quote"><span data-live="tires"></span> a session at your current settings</a></p></div>
+      <div class="chan"><span class="tag">Consumable</span><h3>Fuel</h3><p>We buy the same fuel from the same station every time, and it has been tested on our dyno for power and consistency. We use these estimates to make sure we have enough fuel for our drivers all weekend, and we price for what we buy and use.</p><p class="live"><a href="#quote"><span data-live="fuel"></span> per hour of track time</a></p></div>
+      <div class="chan"><span class="tag">Equipment</span><h3>Car Rental</h3><p>The SRF3 chassis, prepped and ready, charged by the hour of track time, not by the day you are parked.</p><p class="live"><a href="#quote"><span data-live="car"></span> per hour of track time</a></p></div>
     </div>
   </div>
 </section>
@@ -328,15 +333,15 @@
     <div class="calc">
       <div class="inputs">
         <div class="field hidden" id="eventField">
-          <label for="eventSelect">Race weekend <span class="opt">optional &mdash; live from the 2026 calendar</span></label>
+          <label for="eventSelect">Pick your weekend <span class="opt">from the 2026 calendar; it fills in the track, days and track time</span></label>
           <select id="eventSelect">
-            <option value="">Not tied to an event &mdash; just pricing a day</option>
+            <option value="">Not tied to an event: just pricing a day</option>
           </select>
           <div class="dist" id="eventStatus"></div>
         </div>
 
         <div class="field">
-          <label for="trackSearch">Track / event</label>
+          <label for="trackSearch">Track</label>
           <div class="combo">
             <input class="txt" id="trackSearch" type="text" placeholder="Search a track…" autocomplete="off"
                    role="combobox" aria-expanded="false" aria-controls="trackList" aria-autocomplete="list" />
@@ -344,7 +349,7 @@
             <ul class="options" id="trackList" role="listbox" hidden></ul>
           </div>
           <div class="dist" id="distStatus"></div>
-          <div class="legend"><b>●</b> confirmed road distance · ○ estimated ±15% — we confirm exact miles on your quote</div>
+          <div class="legend"><b>●</b> confirmed road distance · ○ estimated ±15%; we confirm exact miles on your quote</div>
         </div>
 
         <div class="field hidden" id="milesField">
@@ -371,7 +376,7 @@
         </div>
 
         <div class="field">
-          <label>Sessions on track <span class="opt">weekend total &mdash; one session = one heat cycle</span></label>
+          <label>Sessions on track <span class="opt">weekend total; one session = one heat cycle</span></label>
           <div class="stepper" data-step="sessions">
             <button type="button" data-dir="-1" aria-label="Fewer sessions">&minus;</button>
             <div class="val"><span id="sessVal">8</span><small>sessions</small></div>
@@ -380,7 +385,7 @@
         </div>
 
         <div class="field">
-          <label>Cars in the trailer <span class="opt">transport is shared &mdash; more cars, less each</span></label>
+          <label>Cars in the trailer <span class="opt">transport is shared: more cars, less each</span></label>
           <div class="stepper" data-step="cars">
             <button type="button" data-dir="-1" aria-label="Fewer cars">&minus;</button>
             <div class="val"><span id="carsVal">3</span><small>cars</small></div>
@@ -390,7 +395,7 @@
         </div>
 
         <div class="field">
-          <label>Whose car? <span class="opt">same crew, same lines &mdash; your own SRF drops the car rental</span></label>
+          <label>Whose car? <span class="opt">same crew, same lines; your own SRF drops the car rental</span></label>
           <div class="toggle" id="carToggle">
             <button type="button" data-car="rental" aria-pressed="true"><span class="t1">Rent our SRF3</span><span class="t2">arrive &amp; drive</span></button>
             <button type="button" data-car="own" aria-pressed="false"><span class="t1">Your own SRF</span><span class="t2">we prep &amp; crew it</span></button>
@@ -420,7 +425,7 @@
         <div class="line" data-line="transport">
           <div class="row"><span class="name">Transport</span><span class="amt" id="a-transport">248.56</span></div>
           <div class="sub" id="s-transport"></div>
-          <div class="tnote">Indicative rate. <b>Transport is shared by the cars in the trailer</b> — at six cars your share is roughly a sixth of a solo tow. We confirm the final number on your quote.</div>
+          <div class="tnote">Indicative rate. <b>Transport is shared by the cars in the trailer.</b> At six cars your share is roughly a sixth of a solo tow. We confirm the final number on your quote.</div>
           <div class="bar"><i id="b-transport" style="width:5.56%"></i></div>
         </div>
         <div class="line" data-line="prep"><div class="row"><span class="name">Prep</span><span class="amt" id="a-prep">600.00</span></div><div class="sub" id="s-prep"></div><div class="bar"><i id="b-prep" style="width:13.43%"></i></div></div>
@@ -434,7 +439,7 @@
           <div class="lbl">Estimated total<span id="ctx"></span></div>
           <div class="big" id="grandTotal">4,468</div>
         </div>
-        <p class="calc-note"><b>This is an estimate, not a final invoice.</b> Tires and fuel settle on actual usage. We confirm car fit before quoting — large drivers are no problem (we've fit 6'7"/275).</p>
+        <p class="calc-note"><b>This is an estimate, not a final invoice.</b> Tires and fuel settle on actual usage. We confirm car fit before quoting. Large drivers are no problem: we've fit 6'7" and 275 lb.</p>
         <button class="towercta" id="reqBtn" type="button">Book this weekend &rarr;</button>
       </div>
     </div>
@@ -447,8 +452,8 @@
     <div class="two">
       <div class="panel">
         <h3>Deposit, contract & payment</h3>
-        <div class="kv"><span class="k">Crash-damage deposit</span><span class="v amber">$6,000</span></div>
-        <div class="kv"><span class="k">Returned if undamaged</span><span class="v">Yes — in full</span></div>
+        <div class="kv"><span class="k">Crash-damage deposit, refundable</span><span class="v">$6,000</span></div>
+        <div class="kv"><span class="k">Returned if undamaged</span><span class="v">Yes, in full</span></div>
         <div class="kv"><span class="k">Agreement</span><span class="v">DocuSign</span></div>
         <div class="kv"><span class="k">Payment due</span><span class="v">Before the event</span></div>
         <div class="kv"><span class="k">Cancellation</span><span class="v">14-day policy</span></div>
@@ -458,10 +463,10 @@
       <div class="panel">
         <h3>Four steps</h3>
         <ol class="steps">
-          <li><b>Pick a weekend</b> — choose it above and register with the organizer.</li>
-          <li><b>Sign up with B2</b> — a short driver registration form and the DocuSign agreement.</li>
-          <li><b>Pay before the event</b> — rental and deposit; 14-day cancellation policy.</li>
-          <li><b>Race</b> — we walk you through the car step by step. Our Intro to the Spec Racer binder is there if you want to read ahead.</li>
+          <li><b>Pick a weekend.</b> Choose it above and register with the organizer.</li>
+          <li><b>Sign up with B2.</b> A short driver registration form and the DocuSign agreement.</li>
+          <li><b>Pay before the event.</b> Rental and deposit; 14-day cancellation policy.</li>
+          <li><b>Race.</b> We walk you through the car step by step. Our Intro to the Spec Racer binder is there if you want to read ahead.</li>
         </ol>
       </div>
     </div>
@@ -727,7 +732,7 @@ async function pickTrack(t) {
   state.distLabel = t.name;
   state.distSrc = live != null ? "exact · via Google Maps"
                 : t.src === "road" ? "confirmed road distance"
-                : "estimated \u00B115% — exact on quote";
+                : "estimated \u00B115%, exact on quote";
   render();
 }
 
@@ -878,7 +883,7 @@ function render() {
     td.crewCount + " crew" + (td.nights ? " · " + td.nights + " night" + (td.nights>1?"s":"") : "") +
     " · shared by " + td.cars + " car" + (td.cars>1?"s":"");
   document.getElementById("s-prep").textContent =
-    "flat per event — alignment, fitment, wash, loading";
+    "flat per event: alignment, fitment, wash, loading";
   document.getElementById("s-support").textContent =
     state.days + " day" + (state.days>1?"s":"") + " × $" + money.format(CONFIG.supportPerDay) + "/day";
   document.getElementById("s-tires").textContent =
@@ -887,8 +892,19 @@ function render() {
   document.getElementById("s-fuel").textContent =
     hrTxt(state.hours) + " hrs × $" + money.format(CONFIG.fuelPerHour) + "/hr";
   document.getElementById("s-car").textContent = state.car === "own"
-    ? "your own Spec Racer — no rental"
+    ? "your own Spec Racer, no rental"
     : hrTxt(state.hours) + " hrs × $" + money.format(CONFIG.carPerHour) + "/hr of track time";
+
+  // the purple figures in the "How B2 Motorsports prices" cards read the same numbers
+  const live = {
+    transport: "$" + money.format(c.transport) + " (" + String(state.distLabel).split("—")[0].trim() + ", " + td.cars + " car" + (td.cars>1?"s":"") + ")",
+    prep:      "$" + money.format(CONFIG.prepPerEvent),
+    support:   "$" + money.format(CONFIG.supportPerDay),
+    tires:     "$" + money.format(c.tires / Math.max(1,state.sessions)),
+    fuel:      "$" + money.format(CONFIG.fuelPerHour),
+    car:       "$" + money.format(CONFIG.carPerHour),
+  };
+  document.querySelectorAll("[data-live]").forEach(el => { el.textContent = live[el.dataset.live] || ""; });
 
   document.getElementById("line-cardfee").classList.toggle("hidden", state.pay !== "card");
 
@@ -1082,17 +1098,35 @@ function showEventBanner() {
   el.hidden = false;
 }
 
+// The live site carries the handoff in location.search; the single-file review draft routes by
+// hash, so the same parameters arrive after a "?" inside the hash (#/rental-pricing-calculator/?event=…).
+function handoffParams() {
+  if (location.search) return new URLSearchParams(location.search);
+  const h = location.hash, q = h.indexOf("?");
+  if (q < 0) return new URLSearchParams("");
+  return new URLSearchParams(h.slice(q + 1).split("#")[0]);
+}
+
 async function applyEventFromUrl() {
-  const p = new URLSearchParams(location.search);
+  const p = handoffParams();
+  if (!p.get("event") && !p.get("track") && !p.get("date")) return;
   EVENT.name = (p.get("event") || "").trim().slice(0, 120);
   EVENT.date = (p.get("date")  || "").trim().slice(0, 40);
   EVENT.type = (p.get("type")  || "").trim().slice(0, 60);
-  const qTrack = p.get("track"), qDays = p.get("days");
+  const qTrack = p.get("track"), qDays = p.get("days"), qHours = p.get("hours"), qSessions = p.get("sessions");
   if (qTrack) {
     const hit = filterTracks(qTrack);
     if (hit.length) await pickTrack(hit[0]);
+    else { const loose = matchTrackLoose(qTrack); if (loose) await pickTrack(loose); }
   }
   if (qDays) setStep("days", parseInt(qDays, 10));
+  if (qHours) setStep("hours", parseFloat(qHours));
+  if (qSessions) setStep("sessions", parseInt(qSessions, 10));
+  const sel = document.getElementById("eventSelect");
+  if (sel && CAL_EVENTS.length) {
+    const i = CAL_EVENTS.findIndex(x => x.name === EVENT.name && x.date === EVENT.date);
+    sel.value = i >= 0 ? String(i) : "";
+  }
   showEventBanner();
   render();
   if (EVENT.name || EVENT.date) {
@@ -1165,12 +1199,26 @@ function cellText(el) {
 const CHECKED = /[✓✔]/;          // ✓ / ✔ mark the event types that apply
 const shortTrack = (t) => t.name.split("—")[0].trim();
 
+// A calendar row's "Price it" link already carries the event, track, date, days and the
+// estimated track time; read it first, and fall back to parsing the cells.
+function rowHandoff(tr) {
+  const a = tr.querySelector('a[href*="rental-pricing-calculator"]');
+  if (!a) return null;
+  const href = a.getAttribute("href"), q = href.indexOf("?");
+  return q < 0 ? null : new URLSearchParams(href.slice(q + 1).split("#")[0]);
+}
+
 async function loadCalendarEvents() {
   if (!CONFIG.calendarUrl) return null;
   try {
-    const res = await fetch(CONFIG.calendarUrl, { credentials: "same-origin" });
-    if (!res.ok) return null;
-    const doc = new DOMParser().parseFromString(await res.text(), "text/html");
+    // the single-file review draft holds every page in one document, so look here first
+    let doc = document;
+    const here = [...document.querySelectorAll("table")].some(t => t.querySelector('a[href*="rental-pricing-calculator"]'));
+    if (!here) {
+      const res = await fetch(CONFIG.calendarUrl, { credentials: "same-origin" });
+      if (!res.ok) return null;
+      doc = new DOMParser().parseFromString(await res.text(), "text/html");
+    }
     // identify the calendar table by its headers, not by position or styling
     const table = [...doc.querySelectorAll("table")].find(t => {
       const ths = [...t.querySelectorAll("th")].map(h => cellText(h).toLowerCase());
@@ -1185,30 +1233,35 @@ async function loadCalendarEvents() {
     // every column after the event column that isn't License/Register is an event type
     const SKIP = ["license", "register"];
     const typeCols = headers.map((h, i) => ({ h: h, i: i }))
-      .filter(c => c.i > eventIdx && SKIP.indexOf(c.h.toLowerCase()) < 0);
+      .filter(c => c.i > eventIdx && SKIP.indexOf(c.h.toLowerCase()) < 0 && c.h.toLowerCase().indexOf("track time") < 0);
 
     const out = [];
     for (const tr of table.querySelectorAll("tr")) {
       const tds = [...tr.querySelectorAll("td")];
       if (tds.length < 2) continue;
-      const date = cellText(tds[dateIdx] || tds[0]);
+      const hand = rowHandoff(tr);
+      const date = hand && hand.get("date") ? hand.get("date") : cellText(tds[dateIdx] || tds[0]);
       const cell = cellText(tds[eventIdx] || tds[1]);
       if (!date || !cell) continue;
       const parts = cell.split("—");
-      const trackText = cleanTrackText(parts[1] || cell);
+      const trackText = hand && hand.get("track") ? hand.get("track") : cleanTrackText(parts[1] || cell);
       const trk = matchTrackLoose(trackText);
       const types = typeCols
         .filter(c => tds[c.i] && CHECKED.test(cellText(tds[c.i])))
         .map(c => c.h);
+      const hrs = hand ? parseFloat(hand.get("hours")) : NaN, ses = hand ? parseInt(hand.get("sessions"), 10) : NaN;
       out.push({
         date:  date,
-        name:  (parts[0] || cell).trim(),
+        name:  hand && hand.get("event") ? hand.get("event") : (parts[0] || cell).trim(),
         track: trk,
         types: types,
         type:  types.join(" + "),
-        days:  parseEventDays(date),
-        // what the dropdown shows: Date | Track | Type
-        label: [date, trk ? shortTrack(trk) : trackText, types.join(" + ") || "—"].join("  |  "),
+        days:  hand && hand.get("days") ? parseInt(hand.get("days"), 10) : parseEventDays(date),
+        hours: isFinite(hrs) ? hrs : null,
+        sessions: isFinite(ses) ? ses : null,
+        // what the dropdown shows: Date | Track | Type | track time
+        label: [date, trk ? shortTrack(trk) : trackText, types.join(" + ") || "Track day",
+                isFinite(hrs) ? hrTxt(hrs) + " h on track" : ""].filter(Boolean).join("  |  "),
       });
     }
     return out.length ? out : null;
@@ -1237,6 +1290,8 @@ async function initEventPicker() {
     EVENT.name = e.name; EVENT.date = e.date; EVENT.type = e.type;
     if (e.track) await pickTrack(e.track);
     setStep("days", e.days);
+    if (e.hours != null) setStep("hours", e.hours);
+    if (e.sessions != null) setStep("sessions", e.sessions);
     showEventBanner(); render();
     track("event_selected", { event_name: e.name, event_date: e.date, event_type: e.type, track_name: state.distLabel });
   });
@@ -1248,5 +1303,15 @@ async function initEventPicker() {
   }
 }
 
-applyEventFromUrl().then(initEventPicker);
+// wait for the whole document: in the review draft the calendar section comes after this script
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { initEventPicker().then(applyEventFromUrl); });
+else initEventPicker().then(applyEventFromUrl);
+// the review draft changes pages by hash, so a "Price it" click arrives as a hashchange
+window.addEventListener("hashchange", function () {
+  if (location.hash.indexOf("rental-pricing-calculator") >= 0 && location.hash.indexOf("?") >= 0) {
+    applyEventFromUrl().then(function () {
+      const q = document.getElementById("quote"); if (q) q.scrollIntoView({ block: "start" });
+    });
+  }
+});
 </script>

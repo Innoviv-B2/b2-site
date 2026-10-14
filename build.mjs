@@ -292,6 +292,8 @@ ${js}
     var anchor = "";
     var i = raw.indexOf("#");
     if (i >= 0) { anchor = raw.slice(i + 1); raw = raw.slice(0, i); }
+    var q = raw.indexOf("?");            // the calendar's "Price it" links carry ?event=… for the calculator
+    if (q >= 0) raw = raw.slice(0, q);
     if (!raw.startsWith("/")) raw = "/" + raw;
     if (!raw.endsWith("/")) raw += "/";
     return { path: raw, anchor: anchor };
