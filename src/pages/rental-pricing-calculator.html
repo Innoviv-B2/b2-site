@@ -46,9 +46,8 @@
      deposit/fee warnings and #FF6A00 as --est for the tower's "EST" tags. Lato headings, Roboto
      body, 1200px container. Do not reintroduce bare body/html/* rules —
      they repaint the whole page. Class names are deliberately unchanged; the JS selects on IDs.
-     Transport = round-trip miles x $1.50/mi, i.e. $1.50 per mile EACH WAY (do not double it —
-     tracks[].miles are already round trip). Multi-car loads are discounted at quote time; a full
-     transport calculator is pending. Tires key off SESSIONS; fuel keys off HOURS.
+     Transport is priced per round-trip mile and shared by the cars in the trailer; tracks[].miles are
+     already round trip. Tires key off SESSIONS; fuel keys off HOURS.
      Track search is wired for Google Places/Distance Matrix via a server proxy (see CONFIG); the
      prototype works off a built-in track list until that proxy/key is supplied. -->
 <style>
@@ -301,7 +300,7 @@
       <p class="sec-sub">Six line items. Tires and fuel are estimated, then settled on what you actually use.</p>
     </div>
     <div class="channels">
-      <div class="chan"><span class="tag">Logistics</span><h3>Transport</h3><p>The truck and trailer cost <span class="rate" id="rateLabel"></span> per round-trip mile to run, and that is <b>split by the cars aboard</b> — set the number below and watch your share drop. One charge per trip, never per day.</p></div>
+      <div class="chan"><span class="tag">Logistics</span><h3>Transport</h3><p>Transport is priced per round-trip mile from our shop, and the trip is <b>split by the cars aboard</b> — set the number below and watch your share drop. One charge per trip, never per day.</p></div>
       <div class="chan"><span class="tag">Service</span><h3>Prep</h3><p>Getting the car ready for your event: alignment, nut and bolt, wash, driver fitment and loading the trailer. One flat charge per event, however long the weekend runs.</p></div>
       <div class="chan"><span class="tag">Service</span><h3>Trackside Support</h3><p>Crew, setup, between-session work, and coaching across the day.</p></div>
       <div class="chan"><span class="tag">Consumable</span><h3>Tires</h3><p>One session is one heat cycle. A set lasts 16, and the early cycles are worth the most — so new costs more than scuffed.</p></div>
@@ -508,61 +507,35 @@
 <script>
 /* ============================================================
    CONFIG — rate constants + integration.
-   Every rate traces to "SRF3 Prep, Preventative, Travel, Estimator.xlsx" on the B2
-   SharePoint. This page reproduces that workbook's Customer Quote to ~1%; the only
-   deliberate difference is fuel, which stays at the page's higher $68.25/hr.
+   Prices only. Where each one comes from is documented in the b2-wp-tools repo, not here.
    ============================================================ */
 const CONFIG = {
-  // Rates below trace to "SRF3 Prep, Preventative, Travel, Estimator.xlsx" on the B2
-  // SharePoint (Customer Quote + Used Tire Calculator + Transportation Costs sheets).
   supportPerDay: 600.00,          // Trackside Support, flat per EVENT DAY
   prepPerEvent:  600.00,          // PREP, flat per event — alignment, wash, nut & bolt,
                                   // driver fitment, trailer loading. Was buried inside the
                                   // car rental hourly rate; broken out Sept 2026.
-  carPerHour:    449.63,          // SRF3 chassis per HOUR of track time. This is the
-                                  // workbook's $623.33/hr LESS the $173.70/hr Prep share.
-  fuelPerHour:   68.25,           // fuel per HOUR of track time (workbook uses 47.25)
+  carPerHour:    449.63,          // SRF3 chassis per HOUR of track time
+  fuelPerHour:   68.25,           // fuel per HOUR of track time
 
-  // --- transport: see docs/reference/transport-cost-model.md --------------------------
-  // Real fleet, bought cash. Capital recovered by straight-line depreciation so the
-  // replacement is funded; cash does not make the rig free.
-  //   2017 F350 DRW XL $25k/8yr + 2019 F350 DRW Platinum $50k/10yr
-  //   2001 42ft 3-axle 5-car $45k/15yr + 2011 40ft 2-axle 3-car $20k/15yr
-  //   depreciation $1,038/mo + insurance 325 ($3,900/yr) + permits 200 + office 300
-  //   = $1,863/mo over 1,450 tow mi/month (30 events x 580 avg) = $1.29/mi
-  //   + fuel $0.50 ($5.00/gal at 10 MPG) + repair $0.33 (revised PM + axle reserve)
-  rigCostPerMile: 2.11,
-  towMph:         60,             // the workbook's own basis: drive hours = miles / 60
-  crewLeadPerHour:   28.85,       // $60,000 / 2,080 hr
-  crewSecondPerHour: 16.83,       // $35,000 / 2,080 hr
-  crewSecondFromCars: 3,          // 1 crew at 1-2 cars, 2 crew at 3+
-  hotelPerNight:      171.00,     // one room, split between crew
-  hotelOutboundHours: 8,          // one-way drive at/over this => stay, nights = event days
-  hotelReturnHours:   10,         // extra night homeward only when one-way exceeds this
-  trailerCapacity:    5,          // 2001 42ft carries 5; the 2011 40ft carries 3
-  marginMin: 1.15,                // solo tow
-  marginMax: 1.50,                // full trailer — scales linearly, so filling it pays
+  // --- transport --------------------------------------------------------------
+  // Priced per trip from the shop and shared by the cars in the trailer. For 1 to 5 cars aboard:
+  // a price per round-trip mile, plus a price per night when the drive is long enough to stay out.
+  transportPerMile:  [2.9794583333, 3.20615625, 3.8045166667, 4.0557583333, 4.307],
+  transportPerNight: [196.65, 211.6125, 226.575, 241.5375, 256.5],
+  towMph:            60,             // drive hours shown on the estimate = miles / 60
+  crewSecondFromCars: 3,          // the estimate shows 1 crew at 1-2 cars, 2 crew at 3+
+  stayFromRoundTripMiles:       960,   // at or above: the crew stays out, nights = event days
+  extraNightOverRoundTripMiles: 1200,  // above: one more night on the way home
+  trailerCapacity:    5,
 
   // --- tires ----------------------------------------------------------------
-  // Logarithmic depreciation over a 16 heat-cycle life, straight from the
-  // Used Tire Calculator sheet:  V(n) = P - (P / log10(life+1)) * log10(n+1)
-  //   P = (270 + 40) * 4 * 1.25 = 1550   (4 tires, $270 + $40 each, x1.25)
+  // Logarithmic depreciation over a 16 heat-cycle life:
+  //  V(n) = P - (P / log10(life+1)) * log10(n+1)
   // A session IS a heat cycle. New starts the set; used picks it up half worn.
   tireSetPrice:   1550.00,
   tireLifeCycles: 16,             // cycles 0..15; V(16) = exactly 0
   tireUsedStart:  8,              // new = cycles 0-7, used = 8-15, no overlap
-  // Rate decision (Sept 2026, Cliff): a FLAT $1.50 per mile each way, at every distance —
-  // deliberately no baseTripFee.
-  //
-  // DO NOT DOUBLE THIS. tracks[].miles are already ROUND TRIP (verified against coordinates:
-  // stored/straight-line holds at ~1.20 across all 46 tracks, the normal road-detour factor).
-  // So miles * perMile already charges $1.50 for each mile travelled in BOTH directions.
-  // PTC = 53 mi out + 53 mi back = 106 mi billed = $159.00.
-  //
-  // That sits under the $335.16 transport line on the Chris Wood PTC quote, which works out to
-  // $3.16/round-trip mi. The gap is intentional and is closed at quoting time, not on this page:
-  // the UI presents the rate as indicative and says multi-car loads are discounted. A full
-  // transport cost calculator replaces this constant shortly — then perMile stops being one number.
+  // tracks[].miles are ROUND TRIP from the shop; do not double them.
   ccFeePct:      3.0,                           // credit-card convenience fee (%)
 
   /* --- Google Maps distance integration ---
@@ -685,7 +658,6 @@ const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const hrTxt = v => (Number.isInteger(v) ? String(v) : v.toFixed(1));
 
 /* config-driven labels */
-document.getElementById("rateLabel").textContent = "$" + money.format(CONFIG.rigCostPerMile) + "/mi";
 document.getElementById("cardFeeHint").textContent = "+ " + CONFIG.ccFeePct + "% fee";
 document.getElementById("cardfeeName").textContent = "Card convenience fee (" + CONFIG.ccFeePct + "%)";
 document.getElementById("ccFeeRow").textContent = "+ " + CONFIG.ccFeePct + "% fee";
@@ -852,32 +824,17 @@ function tireCost(start, cycles) {
 const tireStartCycle = () => (state.tire === "new" ? 0 : CONFIG.tireUsedStart);
 
 /* ---------- transport ----------
-   The rig costs the same to run whoever is aboard, so the trip is costed once and
-   then shared. Crew is billed on DRIVE HOURS only — their time at the track is the
-   Trackside Support line, and billing it here too would charge for the same people
-   twice. Margin scales with occupancy so filling the trailer actually pays. */
+   One price per trip, shared by the cars aboard. */
 function transportDetail() {
-  const miles    = Math.max(0, state.miles);
-  const driveHrs = miles / CONFIG.towMph;
-  const oneWay   = driveHrs / 2;
-  const cars     = Math.min(Math.max(1, state.cars), CONFIG.trailerCapacity);
-
+  const miles     = Math.max(0, state.miles);
+  const driveHrs  = miles / CONFIG.towMph;
+  const cars      = Math.min(Math.max(1, state.cars), CONFIG.trailerCapacity);
   const crewCount = cars >= CONFIG.crewSecondFromCars ? 2 : 1;
-  const crewRate  = CONFIG.crewLeadPerHour + (crewCount === 2 ? CONFIG.crewSecondPerHour : 0);
-  const crew      = driveHrs * crewRate;
-
-  // stay out when the run is long; only add a night homeward when it is very long
-  const nights = oneWay >= CONFIG.hotelOutboundHours
-    ? state.days + (oneWay > CONFIG.hotelReturnHours ? 1 : 0)
+  const nights = miles >= CONFIG.stayFromRoundTripMiles
+    ? state.days + (miles > CONFIG.extraNightOverRoundTripMiles ? 1 : 0)
     : 0;
-  const hotel = nights * CONFIG.hotelPerNight;
-
-  const tripCost = CONFIG.rigCostPerMile * miles + crew + hotel;
-  const margin = CONFIG.marginMin +
-    (CONFIG.marginMax - CONFIG.marginMin) * (cars - 1) / (CONFIG.trailerCapacity - 1);
-
-  return { miles, driveHrs, oneWay, cars, crewCount, crew, nights, hotel, tripCost, margin,
-           perCar: tripCost * margin / cars };
+  const trip = CONFIG.transportPerMile[cars - 1] * miles + CONFIG.transportPerNight[cars - 1] * nights;
+  return { miles, driveHrs, cars, crewCount, nights, trip, perCar: trip / cars };
 }
 
 /* ---------- compute + render ---------- */
