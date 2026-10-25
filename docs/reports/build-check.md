@@ -29,7 +29,7 @@
 - warn: keyphrase never appears verbatim in body
 
 ## /services/storage/equipment/ — `storage-equipment.html`
-- 432 words · H1: "The equipment in the DIY garage." · 9 images · 5 internal links
+- 427 words · H1: "The equipment in the DIY garage." · 9 images · 5 internal links
 - warn: description is 176 chars (aim 140–159)
 - warn: keyphrase "DIY garage Huntsville" not in title
 - warn: keyphrase not in H1 ("The equipment in the DIY garage.")

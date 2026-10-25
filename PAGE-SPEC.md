@@ -87,6 +87,9 @@ variants (`-calendar`, `-paths`, `-sim`, `-media`, `-race-with-us`), `fit-check`
 iframe's URL (`?storage_position=3T`). `src/js/site.js` turns a submit into a `form_submit`
 conversion for the tags in Zaraz. The calculator embeds `quote-request` (GoHighLevel's "SRF3 Estimate") with the
 estimate in its hidden `estimate_*` fields and, as text, in `inquiry_message`.
+A booking calendar is `{{GHL_CAL:<key>}}`, its slug in `site.json → ghl.calendars`: the storage tour
+is booked on the Storage Tour calendar (`storage-tour` → `storage-storage-tour`, Cliff, 25 Oct 2026),
+so the `storage-tour` form is no longer on a page.
 
 ## 5. Conventions that are checked mechanically (the build fails on these)
 
