@@ -28,9 +28,9 @@
 # The HTML sitemap page is replaced by sitemap.xml and the footer.
 /sitemap/ / 301
 /sitemap / 301
-# The old stand-alone storage form; the storage sign-up page is the form now.
-/storage-form/ /services/storage/sign-up/ 301
-/storage-form /services/storage/sign-up/ 301
+# The old stand-alone storage form; the storage inquiry form on the Storage page replaces it (sign-up held, 25 Oct).
+/storage-form/ /services/storage/ 301
+/storage-form /services/storage/ 301
 # Menu items that WordPress gave their own permalinks.
 /what-it-costs/ /rental-pricing-calculator/ 301
 /calendar/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301

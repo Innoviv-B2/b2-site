@@ -45,6 +45,8 @@ const upcoming = ((calPage && calPage.meta.schema[0].itemListElement) || []).map
   .filter((e) => (e.endDate || e.startDate) >= today).sort((a, b) => a.startDate.localeCompare(b.startDate));
 const eventRow = (e) => { const [who, ...where] = e.name.split(" — "); return `<li><span class="rail__t">${fmtRange(e.startDate, e.endDate)}</span><p><b>${who}</b>${where.length ? ", " + where.join(" — ") : ""}</p></li>`; };
 for (const p of pages) p.body = p.body.replace(/{{EVENTS_COUNT}}/g, String(upcoming.length)).replace(/{{EVENTS_NEXT}}/g, upcoming.slice(0, 4).map(eventRow).join("\n        "));
+// The privacy policy's effective date is the go-live date, set once in site.json on launch day.
+for (const p of pages) p.body = p.body.replace(/{{PRIVACY_EFFECTIVE}}/g, site.privacyEffective || "[set at launch]");
 const knownPaths = new Set([...pages.map((p) => p.meta.path), ...(site.plannedPaths || [])]);
 const nav = site.nav;
 const orderKey = (p) => (p.meta.order ?? 500);
@@ -269,6 +271,7 @@ function scanDist(DIST) {
     if (openNotes(s)) notes.push(`${rel} (${openNotes(s)})`);
   });
   walk(DIST);
+  if (!site.privacyEffective) found.push("privacy-policy/index.html: effective date not set (site.json → privacyEffective, on launch day)");
   return { found, notes };
 }
 
