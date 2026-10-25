@@ -65,31 +65,10 @@
 <!-- 3. The form -->
 <section class="sec sec--raised" id="form">
   <div class="wrap wrap--narrow">
-    <form class="form b2-form" data-form="storage-signup" data-email="storage@b2motorsports.com" id="storage-signup-form" novalidate>
+    <div class="form ghl-form" id="storage-signup-form" data-form="storage-signup">
       <div class="form__head"><h3>Sign me up</h3><span class="mono">We reply within a business day</span></div>
-      <div class="fields">
-        <input type="hidden" name="inquiry_type" value="storage_signup">
-        <input type="hidden" name="storage_space_id" id="su-space-id" value="">
-        <div class="choices" role="group" aria-label="Which space">
-          <label class="choice"><input type="radio" name="storage_space" value="indoor_lift"><div><b>Indoor · lift position</b><span>Shared space, from $200/mo, garage included</span></div></label>
-          <label class="choice"><input type="radio" name="storage_space" value="indoor_floor"><div><b>Indoor · floor space</b><span>$250/mo, garage included</span></div></label>
-          <label class="choice"><input type="radio" name="storage_space" value="indoor_private"><div><b>Indoor · private space, own four-post lift</b><span>$425/mo, garage included</span></div></label>
-          <label class="choice"><input type="radio" name="storage_space" value="trailer"><div><b>Outdoor · trailer space, 10×24</b><span>$60/mo · want the garage too? Say so below</span></div></label>
-          <label class="choice"><input type="radio" name="storage_space" value="rv"><div><b>Outdoor · RV or oversize, 40×10</b><span>$100/mo · want the garage too? Say so below</span></div></label>
-          <label class="choice"><input type="radio" name="storage_space" value="garage_only"><div><b>Garage membership only</b><span>$75/mo, no car stored</span></div></label>
-          <label class="choice"><input type="radio" name="storage_space" value="private_bay_list"><div><b>Private bay, long-term lease</b><span>Coming 2028: put me on the mailing list</span></div></label>
-        </div>
-        <label class="field">Name<input type="text" name="fullname" id="su-name" required autocomplete="name"></label>
-        <label class="field">Email<input type="email" name="email" id="su-email" required autocomplete="email"></label>
-        <label class="field">Phone<input type="tel" name="phone" id="su-phone" autocomplete="tel"></label>
-        <label class="field">Start date<input type="text" name="storage_start" id="su-start" placeholder="e.g. 1 Nov, or as soon as possible"></label>
-        <label class="field">What is the car, trailer or RV?<input type="text" name="storage_vehicle" id="su-vehicle" placeholder="Year, make, model (chassis # if a race car)"></label>
-        <label class="field field--full">Anything else<textarea name="inquiry_message" id="su-msg" placeholder="Term you have in mind, second vehicle, questions"></textarea></label>
-        <label class="consent"><input type="checkbox" name="consent" id="su-consent"><span>By submitting a phone number, I consent to receive automated texts and/or phone calls at the phone number used above. &middot; By checking this box, I opt-in and agree to receive text messages from B2 Motorsports. Message and data rates may apply. &middot; By clicking &quot;Submit&quot;, I am consenting to receive text messages from B2 Motorsports to the phone number I provided. &middot; I understand these texts may be automated and that my consent to texting is not required as a condition to purchase. &middot; By submitting your information, you consent to receive all forms of communication including but not limited to; phone, text, email, mail, etc. Message and data rates may apply. Consent to these terms is not a condition of purchase. You may opt out at any time.</span></label>
-        <div class="form__actions"><button class="btn" type="submit"><span>Send my sign-up</span></button><span class="form__note">Nothing is charged until you have signed.</span></div>
-        <p class="form__status" aria-live="polite"></p>
-      </div>
-    </form>
+      {{GHL_FORM:storage-signup}}
+    </div>
     <p class="contact-line" style="margin-top:22px">Rather talk first? <a href="/services/storage/equipment/#tour">Schedule a tour</a>, email <a href="mailto:storage@b2motorsports.com">storage@b2motorsports.com</a>, or call or text <a href="tel:+12569100658">256-910-0658</a>.</p>
   </div>
 </section>
@@ -140,7 +119,7 @@
   for (var n = 1; n <= 14; n++) ["T", "B"].forEach(function (p) {
     var id = n + p; SPACES.positions.push({ id: id, space: n, pos: p, status: demoTaken[id] ? "taken" : demoHeld[id] ? "held" : "open" });
   });
-  var map = document.getElementById("hall-map"), pick = document.getElementById("hall-pick"), hid = document.getElementById("su-space-id"), upd = document.getElementById("hall-updated");
+  var map = document.getElementById("hall-map"), pick = document.getElementById("hall-pick"), upd = document.getElementById("hall-updated");
   if (!map) return;
   upd.textContent = SPACES.updated;
   var picked = null;
@@ -158,9 +137,10 @@
         b.disabled = p.status !== "open";
         b.setAttribute("aria-label", label(p) + ": " + (picked === p.id ? "your pick" : p.status));
         b.addEventListener("click", function () {
-          picked = p.id; hid.value = p.id;
-          var r = document.querySelector("input[name='storage_space'][value='indoor_lift']"); if (r) r.checked = true;
-          pick.innerHTML = "You picked <b>" + label(p) + "</b>. Put it in the form above and we hold it for you.";
+          picked = p.id;
+          var fr = document.querySelector("#storage-signup-form iframe");
+          if (fr) fr.src = fr.src.split("?")[0] + "?storage_position=" + encodeURIComponent(p.id);
+          pick.innerHTML = "You picked <b>" + label(p) + "</b>. It is filled in on the form above, and we hold it for you once you send it.";
           render();
         });
         bay.appendChild(b);

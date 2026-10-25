@@ -52,29 +52,10 @@
       <iframe title="Map to B2 Motorsports" src="https://www.google.com/maps?q=2919A+Bob+Wallace+Ave,+Huntsville,+AL+35805&output=embed" width="100%" height="360" style="border:0;border-radius:6px;margin-top:22px" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <div>
-      <form class="form b2-form" data-form="general-inquiry" data-email="info@b2motorsports.com" id="contact-form" novalidate>
-        <div class="form__head"><h3>Send us a message</h3><span class="mono">We reply within a business day</span></div>
-        <div class="fields">
-          <label class="field">Name<input type="text" name="fullname" id="contact-name" required autocomplete="name"></label>
-          <label class="field">Email<input type="email" name="email" id="contact-email" required autocomplete="email"></label>
-          <label class="field">Phone<input type="tel" name="phone" id="contact-phone" autocomplete="tel"></label>
-          <label class="field">What is this about?
-            <select name="inquiry_type" id="contact-inquiry-type">
-              <option value="">Choose one</option>
-              <option value="Arrive & Drive rental">Arrive &amp; Drive rental</option>
-              <option value="Storage">Storage</option>
-              <option value="Member services">Member services</option>
-              <option value="Coaching">Coaching</option>
-              <option value="Business & hospitality">Business &amp; hospitality</option>
-              <option value="Something else">Something else</option>
-            </select>
-          </label>
-          <label class="field field--full">Message<textarea name="inquiry_message" id="contact-message" required></textarea></label>
-          <label class="consent"><input type="checkbox" name="consent" id="contact-consent"><span>By submitting a phone number, I consent to receive automated texts and/or phone calls at the phone number used above. &middot; By checking this box, I opt-in and agree to receive text messages from B2 Motorsports. Message and data rates may apply. &middot; By clicking &quot;Submit&quot;, I am consenting to receive text messages from B2 Motorsports to the phone number I provided. &middot; I understand these texts may be automated and that my consent to texting is not required as a condition to purchase. &middot; By submitting your information, you consent to receive all forms of communication including but not limited to; phone, text, email, mail, etc. Message and data rates may apply. Consent to these terms is not a condition of purchase. You may opt out at any time.</span></label>
-          <div class="form__actions"><button class="btn" type="submit"><span>Send</span></button><span class="form__note">No obligation.</span></div>
-          <p class="form__status" aria-live="polite"></p>
-        </div>
-      </form>
+      <div class="form ghl-form" id="contact-form" data-form="general-inquiry">
+      <div class="form__head"><h3>Send us a message</h3><span class="mono">We reply within a business day</span></div>
+      {{GHL_FORM:general-inquiry}}
+    </div>
     </div>
   </div>
 </section>

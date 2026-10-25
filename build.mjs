@@ -73,6 +73,10 @@ const headerTpl = read(path.join(SRC, "partials", "header.html"));
 const footerTpl = read(path.join(SRC, "partials", "footer.html"));
 const css = read(path.join(SRC, "css", "site.css"));
 const js = read(path.join(SRC, "js", "site.js"));
+const optional = (p) => fs.existsSync(p) ? read(p) : "";
+const themeInit = optional(path.join(SRC, "js", "theme-init.js")).trim();   // inlined in <head> so the first paint has the right theme
+const themeJs = optional(path.join(SRC, "js", "theme.js"));
+const redirects = optional(path.join(SRC, "redirects.txt"));                // Cloudflare Pages _redirects syntax
 const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,400;0,600;0,800;1,800;1,900&family=Space+Mono:wght@400;700&display=swap">`;
 
 /* ---------- SEO head ---------- */
@@ -107,6 +111,7 @@ function headHtml(meta) {
 <link rel="canonical" href="${url}">
 <meta name="robots" content="${meta.noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}">
 <meta name="theme-color" content="#0F0E13">
+${themeInit ? `<script>${themeInit}</script>` : ""}
 <meta property="og:type" content="${meta.ogType || "website"}">
 <meta property="og:site_name" content="${esc(site.name)}">
 <meta property="og:locale" content="en_US">
@@ -124,7 +129,22 @@ ${FONTS}
 <link rel="stylesheet" href="/assets/site.css">
 ${schemas.map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join("\n")}`;
 }
-const CONFIG_JS = `<script>window.B2_CONFIG=${JSON.stringify({ hubspot: site.hubspot, consentText: site.consentText, email: site.email, phoneDisplay: site.phoneDisplay })};</script>`;
+const CONFIG_JS = `<script>window.B2_CONFIG=${JSON.stringify({ consentText: site.consentText, email: site.email, phoneDisplay: site.phoneDisplay })};</script>`;
+
+/* ---------- GoHighLevel forms ----------
+   A page writes {{GHL_FORM:<key>}}; the key maps to a form id in site.json → ghl.forms. The live build
+   embeds the form; the review build shows a placeholder (frames from the CRM do not load in the artifact).
+   The call-or-text line under every form is the fallback if the embed does not load. */
+function ghlEmbed(key, review) {
+  const id = site.ghl.forms[key];
+  if (!id) throw new Error(`unknown GoHighLevel form "${key}" (add it to site.json → ghl.forms)`);
+  const email = /^(storage|member)/.test(key) ? site.storageEmail : site.email;
+  const fallback = `<p class="form__fallback">Form not loading? Call or text <a href="tel:${site.phoneTel}">${site.phoneDisplay}</a> or email <a href="mailto:${email}">${email}</a>.</p>`;
+  if (review) return `<div class="ghl-embed ghl-embed--review"><p class="mono">The GoHighLevel form “${key}” loads here on the live site.</p>${fallback}</div>`;
+  return `<div class="ghl-embed"><iframe src="${site.ghl.formBase}${id}" id="inline-${id}" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="${key}" data-layout-iframe-id="inline-${id}" data-form-id="${id}" data-b2-form="${key}" title="${key.replace(/-/g, " ")} form"></iframe>${fallback}</div>`;
+}
+const withForms = (body, review) => body.replace(/{{GHL_FORM:([a-z0-9-]+)}}/g, (_, k) => ghlEmbed(k, review));
+const usesGhl = (body) => /{{GHL_FORM:|leadconnectorhq\.com\/widget\/form\//.test(body);
 
 /* ---------- checks ---------- */
 const FORBIDDEN = [
@@ -178,6 +198,80 @@ function checkPage(p) {
   return { errs, warns, words, h1, imgs: (body.match(/<img\b/g) || []).length, internal };
 }
 
+/* ---------- Cloudflare Pages: headers, crawlers, llms.txt ---------- */
+// Hosts the pages load from: GoHighLevel's forms and embed script, YouTube's privacy-enhanced player,
+// Google Fonts. Zaraz is served from this origin (/cdn-cgi/zaraz/), so 'self' covers it.
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://link.msgsndr.com https://*.msgsndr.com https://*.leadconnectorhq.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: https:",
+  "frame-src https://api.leadconnectorhq.com https://*.leadconnectorhq.com https://link.msgsndr.com https://*.msgsndr.com https://www.youtube-nocookie.com",
+  "connect-src 'self' https:",
+  "form-action 'self' https://*.leadconnectorhq.com",
+  "frame-ancestors 'self'", "base-uri 'self'", "object-src 'none'", "upgrade-insecure-requests"
+].join("; ");
+const HEADERS = `/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Content-Security-Policy: ${CSP}
+
+/assets/img/*
+  Cache-Control: public, max-age=604800
+
+# The *.pages.dev addresses are previews and never indexed; only b2motorsports.com is.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
+`;
+// Search and AI answer engines are welcome (plan §Direction 25 Oct: "optimized for SEO AI").
+const AI_CRAWLERS = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Perplexity-User", "Google-Extended", "Applebot-Extended", "CCBot", "Amazonbot", "Meta-ExternalAgent", "Bytespider"];
+function robotsTxt() {
+  return `User-agent: *\nAllow: /\n\n# AI search and answer engines\n${AI_CRAWLERS.map((b) => `User-agent: ${b}`).join("\n")}\nAllow: /\n\nSitemap: ${site.baseUrl}/sitemap.xml\n`;
+}
+function llmsTxt() {
+  const line = (p) => `- [${p.meta.navLabel || p.meta.title.split("|")[0].trim()}](${site.baseUrl}${p.meta.path}): ${p.meta.description}`;
+  const live = pages.filter((p) => !p.meta.noindex);
+  const groups = [["Race With Us", (p) => p.meta.nav === "race" || p.meta.nav === "calendar"], ["Storage and DIY Garage", (p) => p.meta.nav === "storage"],
+    ["Blog", (p) => /^post-|^blog/.test(p.meta.file)], ["About and contact", () => true]];
+  const seen = new Set(), out = [];
+  for (const [h, test] of groups) {
+    const rows = live.filter((p) => p.meta.path !== "/" && !seen.has(p) && test(p));
+    rows.forEach((p) => seen.add(p));
+    if (rows.length) out.push(`## ${h}\n\n${rows.map(line).join("\n")}`);
+  }
+  const home = pages.find((p) => p.meta.path === "/");
+  return `# ${site.name}\n\n> ${home ? home.meta.description : site.tagline}\n\n${site.legalName}, ${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.postal}. Call or text ${site.phoneDisplay}; ${site.email} (storage: ${site.storageEmail}). ${site.hours}. Prices on these pages are B2's published rates; the calculator gives a line-item estimate.\n\n${out.join("\n\n")}\n`;
+}
+
+/* ---------- the built site, scanned for the 25 Oct audit's defects (slice 1 "done when") ---------- */
+const DIST_FORBIDDEN = [
+  [/256-692-3996|2566923996/, "old phone number"], [/2820 15th/i, "office address"], [/staging/i, "staging reference"],
+  [/\b(src|href)="http:\/\//i, "http:// asset or link"], [/debug\s*:\s*true/, "debug logging on"],
+  [/crewLeadPerHour|60,?000\s*\/\s*2,?080|1\.15\s*[–-]\s*1\.50|\bmargin(Range|Low|High|Min|Max|Pct)\b|margin range/i, "internal cost model in the source"],
+  [/hsforms|hubspot/i, "HubSpot leftovers (forms are GoHighLevel's)"], [/<!--\s*CLIFF/i, "internal note in the output"]
+];
+const OTHER_TEL = ["+18007702055"];   // SCCA's member line, linked on Paths Into Racing; every other phone link is B2's
+const openNotes = (s) => (s.match(/class="note"/g) || []).length;   // needs-Cliff flags still on a page; they ship if left
+function scanDist(DIST) {
+  const found = [], notes = [];
+  const walk = (d) => fs.readdirSync(d).forEach((f) => {
+    const p = path.join(d, f);
+    if (fs.statSync(p).isDirectory()) { if (f !== "img") walk(p); return; }
+    if (!/\.(html|js|txt)$/.test(f) && f !== "_headers" && f !== "_redirects") return;
+    const s = read(p), rel = path.relative(DIST, p).replace(/\\/g, "/");
+    for (const [re, why] of DIST_FORBIDDEN) if (re.test(s)) found.push(`${rel}: ${why}`);
+    for (const m of s.matchAll(/href="tel:([^"]*)"/g)) if (m[1] !== site.phoneTel && !OTHER_TEL.includes(m[1])) found.push(`${rel}: phone link tel:${m[1]}`);
+    if (openNotes(s)) notes.push(`${rel} (${openNotes(s)})`);
+  });
+  walk(DIST);
+  return { found, notes };
+}
+
 /* ---------- dist ---------- */
 function pageHtml(p) {
   const { meta, body } = p;
@@ -189,11 +283,14 @@ ${headHtml(meta)}
 <body>
 ${fill(headerTpl, meta.nav)}
 <main id="main" class="pg pg-${meta.file.replace(/\.html$/, "")}">
-${body}
+${withForms(body, false).replace(/<!--[\s\S]*?-->\n?/g, "")}
 </main>
 ${fill(footerTpl)}
 ${CONFIG_JS}
 <script src="/assets/site.js" defer></script>
+${themeJs ? `<script src="/assets/theme.js" defer></script>` : ""}
+${usesGhl(body) && !/form_embed\.js/.test(body) ? `<script src="${site.ghl.embedScript}" defer></script>` : ""}
+${site.ghl.trackingId ? `<script src="${site.ghl.trackingScript}" data-tracking-id="${site.ghl.trackingId}" defer></script>` : ""}
 </body>
 </html>
 `;
@@ -220,7 +317,11 @@ function buildDist() {
   }
   const urls = pages.filter((p) => !p.meta.noindex).map((p) => `  <url><loc>${site.baseUrl}${p.meta.path}</loc><lastmod>${today}</lastmod><changefreq>${p.meta.changefreq || "monthly"}</changefreq><priority>${p.meta.priority ?? (p.meta.path === "/" ? "1.0" : "0.7")}</priority></url>`);
   fs.writeFileSync(path.join(DIST, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`);
-  fs.writeFileSync(path.join(DIST, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${site.baseUrl}/sitemap.xml\n`);
+  if (themeJs) fs.writeFileSync(path.join(DIST, "assets", "theme.js"), themeJs);
+  fs.writeFileSync(path.join(DIST, "robots.txt"), robotsTxt());
+  fs.writeFileSync(path.join(DIST, "llms.txt"), llmsTxt());
+  fs.writeFileSync(path.join(DIST, "_headers"), HEADERS);
+  if (redirects) fs.writeFileSync(path.join(DIST, "_redirects"), redirects);
   fs.writeFileSync(path.join(DIST, "404.html"), pageHtml({ meta: { path: "/404.html", title: "Page not found | B2 Motorsports", description: "That page is not here. Try the menu, or call or text 256-910-0658.", noindex: true, file: "404.html" }, body: `<section class="sec"><div class="wrap wrap--narrow"><p class="eyebrow">404</p><h1>Off track.</h1><p class="lede" style="margin-top:18px">That page is not here. Try the menu, or <a href="/contact-us/">get in touch</a>.</p></div></section>` }));
   return DIST;
 }
@@ -236,12 +337,13 @@ function reviewHtml(reports) {
     const r = reports[i];
     return `<section class="page" data-path="${p.meta.path}" data-nav="${p.meta.nav || ""}" data-title="${esc(p.meta.title)}" data-desc="${esc(p.meta.description)}" data-key="${esc(p.meta.keyphrase || "")}" data-h1="${esc(r.h1)}" data-words="${r.words}" data-imgs="${r.imgs}" data-links="${r.internal}" data-file="${p.meta.file}" data-issues="${esc([...r.errs.map((e) => "ERROR " + e), ...r.warns].join(" | "))}" hidden>
 <main class="pg pg-${p.meta.file.replace(/\.html$/, "")}">
-${rel(p.body)}
+${rel(withForms(p.body, true))}
 </main>
 </section>`;
   }).join("\n");
   const picker = pages.map((p) => `<option value="${p.meta.path}">${esc(p.meta.navLabel || p.meta.title.split("|")[0].trim())}</option>`).join("");
   return `<title>B2 Motorsports Site Draft</title>
+${themeInit ? `<script>${themeInit}</script>` : ""}
 ${FONTS}
 <style>
 ${css}
@@ -282,6 +384,7 @@ ${CONFIG_JS}
 <script>
 ${js}
 </script>
+${themeJs ? `<script>\n${themeJs}\n</script>` : ""}
 <script>
 (function () {
   var pages = Array.prototype.slice.call(document.querySelectorAll(".page"));
@@ -357,9 +460,24 @@ pages.forEach((p, i) => {
 lines.push(`**${errCount} errors, ${warnCount} warnings.**`);
 fs.mkdirSync(path.join(ROOT, "docs", "reports"), { recursive: true });
 fs.writeFileSync(path.join(ROOT, "docs", "reports", "build-check.md"), lines.join("\n") + "\n");
+// Every needs-Cliff flag still on a page, in one list: each one ships visibly until it is resolved.
+const noteLines = [`# Open notes — ${today}`, "", "Each `<span class=\"note\">` below shows on the live page until it is answered and removed.", ""];
+let noteCount = 0;
+for (const p of pages) {
+  const ns = [...p.body.matchAll(/<span class="note">([\s\S]*?)<\/span>/g)].map((m) => m[1].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim());
+  if (!ns.length) continue;
+  noteCount += ns.length;
+  noteLines.push(`## ${p.meta.path} — \`${p.meta.file}\``, ...ns.map((n) => `- ${n}`), "");
+}
+noteLines.splice(3, 0, `**${noteCount} notes on ${noteLines.filter((l) => l.startsWith("## ")).length} pages.**`, "");
+fs.writeFileSync(path.join(ROOT, "docs", "reports", "open-notes.md"), noteLines.join("\n") + "\n");
 console.log(lines.join("\n"));
 if (!CHECK_ONLY) {
   const dist = buildDist();
+  const { found: defects, notes } = scanDist(dist);
+  console.log(defects.length ? `\nBuilt site: ${defects.length} audit defects\n${defects.map((d) => "  " + d).join("\n")}` : "\nBuilt site: no audit defects");
+  console.log(notes.length ? `Needs-Cliff notes that would ship: ${notes.join(", ")}` : "No needs-Cliff notes left.");
+  errCount += defects.length;
   fs.mkdirSync(path.join(ROOT, "review"), { recursive: true });
   fs.writeFileSync(path.join(ROOT, "review", "index.html"), reviewHtml(reports));
   copyDir(path.join(ROOT, "assets", "img"), path.join(ROOT, "review", "assets", "img")); // so the review file also works locally

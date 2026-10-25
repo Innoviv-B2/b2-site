@@ -1,11 +1,10 @@
 /* B2 Motorsports — site behaviour. No dependencies.
    1. Mobile menu + dropdowns (touch-friendly).
-   2. Forms: plain HTML forms post to the HubSpot Forms API when a form GUID is configured
-      in site.json; otherwise they fall back to a mailto: so nothing is lost.
+   2. Forms are GoHighLevel embeds (site.json → ghl.forms); a submit becomes a conversion event.
+      The footer's "Cookie settings" opens the Zaraz consent dialog.
    3. Review build: window.B2_REVIEW is set and the hash router in review.js takes over links. */
 (function () {
   "use strict";
-  var cfg = window.B2_CONFIG || {};
 
   /* ---- header ---- */
   var hdr = document.getElementById("hdr");
@@ -33,47 +32,34 @@
     if (e.key === "Escape") document.querySelectorAll(".nav__item[aria-expanded='true']").forEach(function (o) { o.setAttribute("aria-expanded", "false"); });
   });
 
-  /* ---- forms ---- */
-  function hsSubmit(form, key) {
-    var portal = cfg.hubspot && cfg.hubspot.portalId;
-    var guid = cfg.hubspot && cfg.hubspot.forms && cfg.hubspot.forms[key];
-    if (!portal || !guid) return Promise.reject(new Error("no-form"));
-    var fields = [];
-    new FormData(form).forEach(function (v, k) { if (k !== "consent") fields.push({ name: k, value: String(v) }); });
-    var consent = form.querySelector("input[name='consent']");
-    var body = {
-      fields: fields,
-      context: { pageUri: location.href, pageName: document.title },
-      legalConsentOptions: consent ? { consent: { consentToProcess: true, text: cfg.consentText || "", communications: [{ value: !!consent.checked, subscriptionTypeId: 999, text: cfg.consentText || "" }] } } : undefined
-    };
-    return fetch("https://api.hsforms.com/submissions/v3/integration/submit/" + portal + "/" + guid, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body)
-    }).then(function (r) { if (!r.ok) throw new Error("hs-" + r.status); return r.json(); });
-  }
-
-  document.querySelectorAll("form.b2-form").forEach(function (form) {
-    var status = form.querySelector(".form__status");
-    var key = form.getAttribute("data-form") || "general-inquiry";
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var consent = form.querySelector("input[name='consent']");
-      if (consent && !consent.checked) { say("Please tick the consent box so we are allowed to reply.", true); consent.focus(); return; }
-      if (window.B2_REVIEW) { say("Review build: submissions are switched off. On the live site this posts to HubSpot form “" + key + "”."); return; }
-      say("Sending…");
-      hsSubmit(form, key).then(function () {
-        form.reset(); say("Thanks. We reply within a business day, by email or text, whichever you gave us.");
-      }).catch(function (err) {
-        if (err.message === "no-form") {
-          // No HubSpot GUID yet: hand off to email so nothing is lost.
-          var lines = []; new FormData(form).forEach(function (v, k) { if (k !== "consent") lines.push(k + ": " + v); });
-          location.href = "mailto:" + (form.getAttribute("data-email") || cfg.email) + "?subject=" + encodeURIComponent("Website inquiry: " + key) + "&body=" + encodeURIComponent(lines.join("\n"));
-          say("Opening your email app with the details filled in.");
-        } else {
-          say("That did not go through. Call or text " + (cfg.phoneDisplay || "256-910-0658") + " and we will sort it out.", true);
-        }
-      });
+  /* ---- forms: GoHighLevel embeds ----
+     The forms are GoHighLevel iframes, so the page never sees the submit. The iframe posts messages to
+     this page; one that reads as a submission becomes a "form_submit" conversion for the tags in Zaraz
+     (and dataLayer, if a tag reads it). Which message GoHighLevel sends on submit is confirmed on the
+     first test submit (slice 4); the match below is deliberately loose and ignores resize messages. */
+  var lastSubmit = {};
+  window.addEventListener("message", function (e) {
+    if (!/(^|\.)(leadconnectorhq\.com|msgsndr\.com)$/.test((e.origin || "").replace(/^https:\/\//, ""))) return;
+    var raw; try { raw = typeof e.data === "string" ? e.data : JSON.stringify(e.data); } catch (x) { return; }
+    if (!raw || /height|resize|sticky|scroll/i.test(raw) || !/submit|thank|success/i.test(raw)) return;
+    var key = "form";
+    document.querySelectorAll("iframe[data-b2-form], iframe[data-form-name]").forEach(function (f) {
+      if (f.contentWindow === e.source) key = f.getAttribute("data-b2-form") || f.getAttribute("data-form-name");
     });
-    function say(msg, isErr) { if (!status) return; status.textContent = msg; status.classList.toggle("form__status--error", !!isErr); }
+    var now = Date.now();
+    if (lastSubmit[key] && now - lastSubmit[key] < 5000) return;   // one conversion per submit
+    lastSubmit[key] = now;
+    var props = { form: key, page: location.pathname };
+    try { if (window.zaraz && zaraz.track) zaraz.track("form_submit", props); } catch (x) {}
+    (window.dataLayer = window.dataLayer || []).push({ event: "form_submit", form: key, page: location.pathname });
+  });
+
+  /* ---- consent: the footer's "Cookie settings" opens Zaraz's consent dialog ---- */
+  document.querySelectorAll("[data-consent-settings]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (window.zaraz && zaraz.showConsentModal) zaraz.showConsentModal();
+    });
   });
 
   /* ---- YouTube tiles: a link with our own poster until clicked, then the real player ----

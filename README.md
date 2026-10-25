@@ -1,50 +1,59 @@
-# b2-site — the standalone b2motorsports.com
+# b2-site — b2motorsports.com
 
-A complete static website for B2 Motorsports. No WordPress, no Elementor, no plugins, no build
-dependencies. Plain HTML, one stylesheet, one script. Forms post directly to HubSpot.
+The whole B2 Motorsports website: a static site served by **Cloudflare Pages** (decided 25 Oct 2026),
+with GoHighLevel's forms embedded and the ad and analytics tags loaded through Cloudflare Zaraz. No
+WordPress, no plugins, no build dependencies. Plain HTML, one stylesheet, two small scripts.
+
+How to set up and switch over the hosting, step by step, is [`docs/cloudflare.md`](docs/cloudflare.md).
 
 ## Run it
 
 ```bash
-node build.mjs            # → dist/ (deployable site) + review/index.html (single-file review build)
+node build.mjs            # → dist/ (the deployable site) + review/index.html (single-file review build)
 node build.mjs --check    # validate every page, write docs/reports/build-check.md
 ```
 
 Node 18+; no `npm install`. From Windows Git Bash over the `\\wsl.localhost` share call `node`
-directly, not `npm run`.
+directly, not `npm run`. Every build also scans `dist/` for the defects of the 25 Oct audit (old phone,
+office address, cost-model leaks, debug logging, `http://` links, HubSpot leftovers) and writes the
+needs-Cliff flags still on the pages to `docs/reports/open-notes.md`.
 
 ## Layout
 
 | Path | What |
 |---|---|
-| `site.json` | Name, address, phone, HubSpot portal and form ids, navigation, footer links, consent text, planned URLs |
+| `site.json` | Name, address, phone, GoHighLevel form ids and tracking id, navigation, footer links, consent text, planned URLs |
 | `src/pages/*.html` | One file per page: a `<!--meta {…} -->` JSON block (URL, title, description, keyphrase, breadcrumb, schema) followed by the page body (sections only) |
+| `src/pages/post-*.html` | The blog posts migrated from WordPress, at their old URLs |
 | `src/partials/` | Shared header and footer |
-| `src/css/site.css` | The whole design system: tokens, type, components, responsive rules |
-| `src/js/site.js` | Menu, dropdowns, form submission (HubSpot Forms API, email fallback) |
+| `src/css/site.css` | The whole design system: tokens for the dark and light themes, type, components, responsive rules |
+| `src/js/site.js` | Menu, dropdowns, the form-submit conversion event, the Cookie settings link, YouTube tiles |
+| `src/js/theme-init.js`, `theme.js` | The light/dark toggle: the first is inlined in `<head>` so there is no flash of the wrong theme |
+| `src/redirects.txt` | Every old WordPress URL → its new page, in Cloudflare's `_redirects` syntax |
 | `assets/img/` | Optimized photos (JPEG 1600/800 + WebP) and `manifest.json` with subjects and alt text |
 | `build.mjs` | The builder and the checker |
 | `PAGE-SPEC.md` | How to write a page: classes, forms, conventions, SEO rules |
-| `PLAN.md` | The build plan, the agent split, the review loop |
-| `dist/` | Output: `<path>/index.html` per page, `sitemap.xml`, `robots.txt`, `404.html`, `assets/` |
-| `review/index.html` | Every page in one file with a hash router, a page picker and an SEO panel; this is what gets published as the review artifact |
+| `docs/cloudflare.md` | Hosting: Pages, Zaraz, the switch-over |
+| `dist/` | Output (not committed): `<path>/index.html` per page, `sitemap.xml`, `robots.txt`, `llms.txt`, `_headers`, `_redirects`, `404.html`, `assets/` |
+| `review/index.html` | Every page in one file with a hash router, a page picker and an SEO panel; published as the review artifact |
 
 ## Deploying
 
-`dist/` is a plain static site. Upload it to any static host (Cloudflare Pages, Netlify,
-SiteGround's document root, an S3 bucket). URLs match the live WordPress slugs, so no redirects
-are needed if the site replaces the WordPress one at the same domain. `sitemap.xml` and
-`robots.txt` are generated; submit the sitemap in Search Console after go-live.
+Cloudflare Pages builds from this repository's `main` branch through its own GitHub connection
+(build command `node build.mjs`, output `dist`); there is no GitHub Actions workflow and there should
+not be one. A push to `main` deploys; any other branch gets a preview at a `*.pages.dev` address,
+which `_headers` marks noindex.
 
 ## Forms
 
-`site.json → hubspot.forms` maps each form key to a HubSpot form GUID. Keys with an empty GUID fall
-back to opening the visitor's email client with the answers filled in, so nothing is lost while the
-HubSpot forms are being created. The consent text is B2's approved language and is inserted
-verbatim wherever a page writes `{{CONSENT}}`.
+Every form is a GoHighLevel embed: a page writes `{{GHL_FORM:<key>}}` and `site.json → ghl.forms`
+gives the form id. The fields, B2's consent text and the thank-you message live in GoHighLevel.
+Under every embed the build adds "call or text 256-910-0658" and the email, so a visitor is never
+stuck if the frame does not load.
 
 ## What is checked on every build
 
 One `<h1>`, title and meta lengths, keyphrase in title/meta/H1/body, alt text on every image,
 lazy-loading, internal links resolve to real pages, the contact conventions (phone, emails, the shop
-address), the tagline's capital M, the brand purple, no dead links from the old site.
+address), the tagline's capital M, the brand purple, no dead links from the old site; and on the
+built site, the 25 Oct audit's defects.

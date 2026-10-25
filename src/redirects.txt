@@ -1,0 +1,239 @@
+# b2motorsports.com: redirects for the switch from WordPress to Cloudflare Pages.
+# Cloudflare Pages _redirects syntax: "/old /new 301", first match wins, so the most specific rule comes first.
+# Built from the sanitized WordPress export of 14 Sep 2026 (every page, post, attachment page, store page and menu
+# permalink in it) plus the broken links the 25 Oct audit found. A path b2-site serves at the same URL has no line.
+# Deliberately absent: /wp-admin/*, /wp-login.php, /wp-json/* (they should 404), /wp-content/uploads/* (old image and
+# PDF files are not carried over), and query-string URLs (?p=, ?page_id=, ?attachment_id=), which this file cannot match.
+
+# --- Pages that moved: b2-site serves them at the top level (Q-106) -------------------------------------------
+/services/the-cars/ /the-cars/ 301
+/services/the-cars /the-cars/ 301
+/services/sponsors/ /sponsors/ 301
+/services/sponsors /sponsors/ 301
+/services/sponsors/media-packages/ /media-packages/ 301
+/services/sponsors/media-packages /media-packages/ 301
+/services/product-development/ /product-development/ 301
+/services/product-development /product-development/ 301
+/services/simulator-and-sim-training/ /simulator-and-sim-training/ 301
+/services/simulator-and-sim-training /simulator-and-sim-training/ 301
+
+# --- Pages b2-site does not have, sent to the closest match ----------------------------------------------------
+# /services/ was a hub listing the cars, storage, shop, simulator, sponsors and product development. The home page does
+# that job now (storage alone would hide the other five), so the hub goes to /.
+/services/ / 301
+/services / 301
+# News held one external file-share link and no articles; the blog is the nearest thing.
+/news/ /blog/ 301
+/news /blog/ 301
+# The HTML sitemap page is replaced by sitemap.xml and the footer.
+/sitemap/ / 301
+/sitemap / 301
+# The old stand-alone storage form; the storage sign-up page is the form now.
+/storage-form/ /services/storage/sign-up/ 301
+/storage-form /services/storage/sign-up/ 301
+# Menu items that WordPress gave their own permalinks.
+/what-it-costs/ /rental-pricing-calculator/ 301
+/calendar/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/calendar-2/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/navigation/ / 301
+/index.php/2023/12/14/navigation/ / 301
+/home/ / 301
+/home / 301
+/wp-global-styles-generatepress-child/ / 301
+
+# --- Broken links on the old site that the audit found (item 7), sent where they were meant to go --------------
+/2025-race-calendar-spec-racer-ford-rentals-trackside-support/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2025-race-calendar-spec-racer-ford-rentals-trackside-support /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/schedules/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/schedules /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/race-simulator/ /simulator-and-sim-training/ 301
+/race-simulator /simulator-and-sim-training/ 301
+/services/race-simulator/ /simulator-and-sim-training/ 301
+/services/race-simulator /simulator-and-sim-training/ 301
+# The merch store is dropped, so /shop has nowhere to go but home.
+/shop / 301
+/shop/ / 301
+/services/shop/ / 301
+/services/shop / 301
+# The Events Calendar plugin served /events/; the calendar page replaces it.
+/events/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/events /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+
+# --- Merch store (EasyCart) dropped, not moved. Check EasyCart for open orders before the switch. ------------
+/store/* / 301
+/store / 301
+/cart/* / 301
+/cart / 301
+/account/* / 301
+/account / 301
+/checkout/* / 301
+/checkout / 301
+
+# --- Feeds, archives and the WordPress sitemap ---------------------------------------------------------------
+/feed/ /blog/ 301
+/feed /blog/ 301
+/comments/feed/ /blog/ 301
+/blog/feed/ /blog/ 301
+/category/uncategorized/ /blog/ 301
+/category/uncategorized/feed/ /blog/ 301
+/category/getting-started/ /blog/ 301
+/category/getting-started/feed/ /blog/ 301
+/tag/product/ / 301
+/tag/product/feed/ / 301
+/blog/page/* /blog/ 301
+# Author archives: the usernames are not listed here on purpose.
+/author/* /blog/ 301
+/wp-sitemap.xml /sitemap.xml 301
+/sitemap_index.xml /sitemap.xml 301
+/sitemap-index.xml /sitemap.xml 301
+
+# --- Blog posts: same top-level URL, no redirect for the post itself; only its feed ---------------------------
+/mid-ohio-hoosier-super-tour-a-step-forward-for-jackson-diehl/feed/ /mid-ohio-hoosier-super-tour-a-step-forward-for-jackson-diehl/ 301
+/road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/feed/ /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/ 301
+/race-recap-atlanta-motorsports-park-may-30-june-1-2025/feed/ /race-recap-atlanta-motorsports-park-may-30-june-1-2025/ 301
+/how-did-i-start-racing-ryan/feed/ /how-did-i-start-racing-ryan/ 301
+/first-year-full-competition-license-and-srf3-purchase/feed/ /first-year-full-competition-license-and-srf3-purchase/ 301
+/how-to-choose-a-prep-shop/feed/ /how-to-choose-a-prep-shop/ 301
+/summer-sizzle-weekend-at-road-atlanta/feed/ /summer-sizzle-weekend-at-road-atlanta/ 301
+
+# --- Attachment (media) pages WordPress served: each goes to the page it was attached to, else the home page -----
+/logo/ / 301
+/logo-2/ / 301
+/home/hero-web/ / 301
+/home/hero-web-1-1/ / 301
+/home/hero-web-1/ / 301
+/home/hero-web-2/ / 301
+/home/hero-web5-1/ / 301
+/home/hero-web6/ / 301
+/home/orangebg/ / 301
+/home/iconproductdevelopment/ / 301
+/home/iconracesimulator1/ / 301
+/home/iconthecars/ / 301
+/home/hand_shaking_icon/ / 301
+/home/newcarbg/ / 301
+/home/clark-04-lime-rock-park-ta2-race-b2-17-2/ / 301
+/home/clark-04-lime-rock-park-ta2-race-b2-18-2/ / 301
+/home/1-racing-franklin-futrelle-and-sons-and-richard-baldwin-and-daughters-at-sebring-2021/ / 301
+/home/srf_cliff-white-3/ / 301
+/home/web-photos-1/ / 301
+/home/web-photos-2/ / 301
+/home/hero-web4-1/ / 301
+/services/hero-interior-1/ / 301
+/services/cta-interior/ / 301
+/services/b2motorsports_0220/ / 301
+/services/the-cars/hero-interior-2/ /the-cars/ 301
+/services/the-cars/b2motorsports_0220-2/ /the-cars/ 301
+/services/the-cars/b2motorsports_2544/ /the-cars/ 301
+/services/the-cars/clark-04-lime-rock-park-ta2-race-b2-8/ /the-cars/ 301
+/services/the-cars/srf3/ /the-cars/ 301
+/services/the-cars/ta2/ /the-cars/ 301
+/services/the-cars/1-racing-franklin-futrelle-and-sons-and-richard-baldwin-and-daughters-at-sebring-2021-2/ /the-cars/ 301
+/services/the-cars/2021-racing-scca-runnoffs-cliff-white-preping-mark-eatons-car/ /the-cars/ 301
+/services/the-cars/2021-racing-scca-runoffs-specracer-ford-double-yellow-1440x1920/ /the-cars/ 301
+/services/the-cars/clark-04-lime-rock-park-ta2-quali-b2-4-1/ /the-cars/ 301
+/services/the-cars/clark-04-lime-rock-park-ta2-race-b2-17-2-2/ /the-cars/ 301
+/services/the-cars/clark-04-lime-rock-park-ta2-race-b2-18-2-2/ /the-cars/ 301
+/services/sponsors/heropartners/ /sponsors/ 301
+/services/sponsors/armada-team-photo-ta2-nashville-2021/ /sponsors/ 301
+/services/sponsors/transam_20230326_0088-email-960x540/ /sponsors/ 301
+/services/sponsors/armada-horizontal-blue-tagline-ol/ /sponsors/ 301
+/services/sponsors/meco-logo/ /sponsors/ 301
+/services/sponsors/performance-ortho/ /sponsors/ 301
+/services/hero-interior-simulator/ / 301
+/services/simulator_163046/ / 301
+/services/simulator_171641/ / 301
+/services/performance-shop/hero-interior/ /services/performance-shop/ 301
+/services/product-development/hero-interior-3d-printer/ /product-development/ 301
+/services/product-development/b2motorsports_2556/ /product-development/ 301
+/services/storage/e3storage-logo/ /services/storage/ 301
+/services/storage/e3huntsville-bob-wallace-v5/ /services/storage/ 301
+/1/ / 301
+/3/ / 301
+/web-photos-1-2/ / 301
+/about-us/spec-racer-ford/ /about-us/ 301
+/about-us/hero-interior-about-1/ /about-us/ 301
+/about-us/hel/ /about-us/ 301
+/about-us/mark-eaton/ /about-us/ 301
+/about-us/franklin-futrelle/ /about-us/ 301
+/no-user-image-square/ / 301
+/2020-digital-marketing-kit-link-page1/ / 301
+/trans-am-by-pirelli-social-media-performance-20201/ / 301
+/ta_audience-report_jan_nov-2019/ / 301
+/b2-purple-and-orange-camo-shirt-front/ / 301
+/lc-r031824-1/ / 301
+/mid-ohio-hoosier-super-tour-a-step-forward-for-jackson-diehl/pxl_20250516_113956240/ /mid-ohio-hoosier-super-tour-a-step-forward-for-jackson-diehl/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/scca/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/662982f0632b011a413ce726-got-sports-upf-50-long-sleeve-fishing-t/ / 301
+/61hydkndmql-_uy1100_/ / 301
+/download-11/ / 301
+/download-12/ / 301
+/srf3-fit-check/aa/ /srf3-fit-check/ 301
+/srf3-fit-check/dd/ /srf3-fit-check/ 301
+/srf3-fit-check/cc/ /srf3-fit-check/ 301
+/srf3-fit-check/bb/ /srf3-fit-check/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/cropped-nasa_ms_logo_300-1/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/logo-full-svra/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/ptcfulllogo/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/bmpba_clr/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/talladeda-logo/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/michelinroad/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/msplogo/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/img_20250623_173823-4/ /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/ 301
+/road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/img_20250623_173823-1/ /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/ 301
+/road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/img_20250623_173822/ /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/ 301
+/road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/img_20250623_173823-5/ /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/ 301
+/road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/img_20250623_173823/ /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/ 301
+/c016fc43-ad82-457c-99a4-8fe3bea1843b/ / 301
+/cc051bbd-5a83-4222-b3fb-a2680c90d0f8/ / 301
+/6902ee0d-99b2-491a-8040-8c453d4ee90c/ / 301
+/02b2d83d-9c78-4069-8f13-9d61df21140c/ / 301
+/b80e76a8-3305-4cac-aaf5-b67c99c9ed4f/ / 301
+/b2-rf-tee-printing-file-orange_mesa-de-trabajo-1/ / 301
+/b2-rf-hoodie-orange-01/ / 301
+/b2-rf-hoodie-green-01/ / 301
+/b2-rf-tee-printing-file-green_mesa-de-trabajo-1/ / 301
+/how-did-i-start-racing-ryan/pxl_20230827_192005210-active-ts/ /how-did-i-start-racing-ryan/ 301
+/how-did-i-start-racing-ryan/img_20230827_125453/ /how-did-i-start-racing-ryan/ 301
+/how-did-i-start-racing-ryan/pxl_20230826_003833996-mp-1/ /how-did-i-start-racing-ryan/ 301
+/uptima-logo/ / 301
+/flux_tech/ / 301
+/rsw_600h_300cg_true/ / 301
+/shipshape/ / 301
+/tmpqnns_6a1/ / 301
+/dsc09206nighshoot/ / 301
+/racing/ / 301
+/screenshot-2025-09-09-214847/ / 301
+/race-recap-atlanta-motorsports-park-may-30-june-1-2025/screenshot-2025-09-09-220809/ /race-recap-atlanta-motorsports-park-may-30-june-1-2025/ 301
+/first-year-full-competition-license-and-srf3-purchase/image1/ /first-year-full-competition-license-and-srf3-purchase/ 301
+/first-year-full-competition-license-and-srf3-purchase/image2/ /first-year-full-competition-license-and-srf3-purchase/ 301
+/first-year-full-competition-license-and-srf3-purchase/image3/ /first-year-full-competition-license-and-srf3-purchase/ 301
+/first-year-full-competition-license-and-srf3-purchase/image4/ /first-year-full-competition-license-and-srf3-purchase/ 301
+/first-year-full-competition-license-and-srf3-purchase/image5/ /first-year-full-competition-license-and-srf3-purchase/ 301
+/first-year-full-competition-license-and-srf3-purchase/image6/ /first-year-full-competition-license-and-srf3-purchase/ 301
+/first-year-full-competition-license-and-srf3-purchase/image7/ /first-year-full-competition-license-and-srf3-purchase/ 301
+/first-year-full-competition-license-and-srf3-purchase/390f2578-b22a-4d99-9f3b-d7ebb63daf34-1_all_3317/ /first-year-full-competition-license-and-srf3-purchase/ 301
+/home/b2photos_page_2/ / 301
+/home/b2photos_page_1/ / 301
+/home/b2photos_page_4/ / 301
+/home/b2photos_page_5/ / 301
+/driver-development-program/b2photos_page_7/ /driver-development-program/ 301
+/about-us/b2photos_page_8/ /about-us/ 301
+/about-us/b2photos_page_6/ /about-us/ 301
+/services/sponsors/b2photos_page_3/ /sponsors/ 301
+/summer-sizzle-weekend-at-road-atlanta/01-thursday-paddock-storm/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/02-cars-under-the-tent/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/03-chassis641-shop-scales/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/04-car57-paddock/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/video-1-weekend/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/05-vrbo-gate/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/06-vrbo-adirondack-team/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/video-2-weekend-original/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/05-vrbo-gate-2/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/04-car57-paddock-2/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/extra-b2-livery-detail/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/video-2-weekend/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/summer-sizzle-weekend-at-road-atlanta/summer-sizzler-header-selection/ /summer-sizzle-weekend-at-road-atlanta/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/pxl_20250322_114557334/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+
+# --- Posts and pages b2-site serves at the same URL need no line: 7 posts, plus every page whose path matches. ---

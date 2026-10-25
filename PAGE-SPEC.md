@@ -68,29 +68,25 @@ every selector scoped under `.pg-<yourfile>` (e.g. `.pg-storage .tiers { … }`)
 
 ## 4. Forms
 
-Every form is a plain HTML form the site posts to HubSpot. Copy this shape and change the fields
-and `data-form` key (`general-inquiry`, `quote-request`, `fit-check`, `fit-check-short`,
-`storage-inquiry`, `member-services`, `corporate`, `safety-gear`):
+Every form is a GoHighLevel form, embedded (decided 25 Oct 2026; HubSpot retires at the switch-over).
+A page writes the wrapper and a token; the build turns the token into the embed and the call-or-text
+fallback line under it. The key must be in `site.json` → `ghl.forms` or the build stops.
 
 ```html
-<form class="form b2-form" data-form="storage-inquiry" data-email="storage@b2motorsports.com" id="storage-form" novalidate>
+<div class="form ghl-form" id="storage-form" data-form="storage-inquiry">
   <div class="form__head"><h3>Ask about a bay</h3><span class="mono">We reply within a business day</span></div>
-  <div class="fields">
-    <label class="field">Name<input type="text" name="fullname" id="storage-name" required autocomplete="name"></label>
-    <label class="field">Email<input type="email" name="email" id="storage-email" required autocomplete="email"></label>
-    <label class="field">Phone<input type="tel" name="phone" id="storage-phone" autocomplete="tel"></label>
-    <label class="field">What is the car?<input type="text" name="storage_vehicle" id="storage-vehicle"></label>
-    <label class="field field--full">Anything else<textarea name="inquiry_message" id="storage-msg"></textarea></label>
-    <label class="consent"><input type="checkbox" name="consent" id="storage-consent"><span>{{CONSENT}}</span></label>
-    <div class="form__actions"><button class="btn" type="submit"><span>Send</span></button><span class="form__note">No obligation.</span></div>
-    <p class="form__status" aria-live="polite"></p>
-  </div>
-</form>
+  {{GHL_FORM:storage-inquiry}}
+</div>
 ```
 
-Write `{{CONSENT}}` literally; the build replaces it with B2's approved consent text, verbatim.
-Every control needs a stable, page-unique `id`. Field `name`s should be HubSpot property names
-where the deck gives them (`inquiry_message`, `storage_vehicle`, `fit_height`, …), else plain.
+The fields, the consent checkbox (B2's approved text, verbatim) and the thank-you message live in
+the GoHighLevel form, not on the page; change them there. Keys: `general-inquiry` and its page
+variants (`-calendar`, `-paths`, `-sim`, `-media`, `-race-with-us`), `fit-check`,
+`fit-check-short`, `storage-inquiry`, `storage-tour`, `storage-signup`, `member-services`,
+`corporate`, `safety-gear`, `testimonial`. A field can be prefilled by adding its key to the
+iframe's URL (`?storage_position=3T`). `src/js/site.js` turns a submit into a `form_submit`
+conversion for the tags in Zaraz. The calculator embeds `general-inquiry` with the estimate in
+`inquiry_message`.
 
 ## 5. Conventions that are checked mechanically (the build fails on these)
 

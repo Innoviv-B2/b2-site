@@ -152,39 +152,10 @@
       <p class="eyebrow">Member services</p>
       <h2>Tell us about the car and the job.</h2>
     </div>
-    <form class="form b2-form" data-form="member-services" data-email="info@b2motorsports.com" id="member-services-form" novalidate>
+    <div class="form ghl-form" id="member-services-form" data-form="member-services">
       <div class="form__head"><h3>Member Service Request</h3><span class="mono">We reply within a business day</span></div>
-      <div class="fields">
-        <input type="hidden" name="inquiry_type" value="member_services">
-        <label class="field">Name<input type="text" name="fullname" id="mem-name" required autocomplete="name"></label>
-        <label class="field">Email<input type="email" name="email" id="mem-email" required autocomplete="email"></label>
-        <label class="field">Phone<input type="tel" name="phone" id="mem-phone" autocomplete="tel"></label>
-        <label class="field">Are you a member?
-          <select name="member_status" id="mem-status">
-            <option value="">Choose one</option>
-            <option value="member">Yes, I'm a member</option>
-            <option value="joining">Not yet, I'd like to join</option>
-          </select>
-        </label>
-        <label class="field">Your car (year, make, model)<input type="text" name="member_car" id="mem-car"></label>
-        <label class="field">What do you need?
-          <select name="member_service_type" id="mem-service-type">
-            <option value="">Choose one</option>
-            <option value="alignment">Alignment or corner balancing</option>
-            <option value="track_prep">Track prep</option>
-            <option value="track_inspection">Track-day inspection</option>
-            <option value="dyno">Dyno or diagnostics</option>
-            <option value="parts">Parts</option>
-            <option value="repair">Repair</option>
-            <option value="other">Other</option>
-          </select>
-        </label>
-        <label class="field field--full">When do you need it, and anything else<textarea name="inquiry_message" id="mem-message"></textarea></label>
-        <label class="consent"><input type="checkbox" name="consent" id="mem-consent"><span>By submitting a phone number, I consent to receive automated texts and/or phone calls at the phone number used above. &middot; By checking this box, I opt-in and agree to receive text messages from B2 Motorsports. Message and data rates may apply. &middot; By clicking &quot;Submit&quot;, I am consenting to receive text messages from B2 Motorsports to the phone number I provided. &middot; I understand these texts may be automated and that my consent to texting is not required as a condition to purchase. &middot; By submitting your information, you consent to receive all forms of communication including but not limited to; phone, text, email, mail, etc. Message and data rates may apply. Consent to these terms is not a condition of purchase. You may opt out at any time.</span></label>
-        <div class="form__actions"><button class="btn" type="submit"><span>Send</span></button><span class="form__note">No obligation.</span></div>
-        <p class="form__status" aria-live="polite"></p>
-      </div>
-    </form>
+      {{GHL_FORM:member-services}}
+    </div>
     <p class="contact-line"><a href="mailto:info@b2motorsports.com">info@b2motorsports.com</a> · call or text <a href="tel:+12569100658">256-910-0658</a> · 2919A Bob Wallace Ave, Huntsville, AL 35805</p>
   </div>
 </section>

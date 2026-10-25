@@ -37,240 +37,242 @@
 }
 -->
 
-<!-- B2 Motorsports — SRF3 Rental Estimate (Elementor html-widget FRAGMENT)
-     Not a standalone document: no html/head/body tags, no meta, no font links, no header or
-     footer of its own — the GeneratePress theme supplies all of that. Push on the
-     elementor_header_footer template so site nav and footer wrap it.
-     Every rule is scoped under .b2-calc and inherits the B2 Elementor kit: accent retinted to
-     brand purple #7C2FF0 on #F7F7F7 (--signal/--signal-dim), with #FE7429 kept as --amber for
-     deposit/fee warnings and #FF6A00 as --est for the tower's "EST" tags. Lato headings, Roboto
-     body, 1200px container. Do not reintroduce bare body/html/* rules —
-     they repaint the whole page. Class names are deliberately unchanged; the JS selects on IDs.
-     Transport is priced per round-trip mile and shared by the cars in the trailer; tracks[].miles are
-     already round trip. Tires key off SESSIONS; fuel keys off HOURS.
-     Track search is wired for Google Places/Distance Matrix via a server proxy (see CONFIG); the
-     prototype works off a built-in track list until that proxy/key is supplied. -->
+<!-- B2 Motorsports: Spec Racer Ford rental estimate. Every rule is scoped under .b2-calc and every
+     colour comes from the site's theme tokens, so the calculator follows the light or dark theme.
+     Element ids carry the b2c- prefix; the script runs in its own scope and makes no globals. -->
 <style>
   .b2-calc {
-    --asphalt:#F7F7F7; --carbon:#FFFFFF; --carbon-2:#F2F3F3; --edge:#E4E5E5; --edge-bright:#C9CBCA;
-    --signal:#7C2FF0; --signal-dim:#5B21B6; --amber:#FE7429; --est:#FF6A00; --hi:#252525; --mid:#6B6C6C; --lo:#909291;
-    --display:"Lato",system-ui,sans-serif; --body:"Roboto",system-ui,sans-serif;
-    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    --maxw:1200px;
-    background:var(--asphalt); color:var(--hi); font-family:var(--body);
+    /* calculator roles mapped onto the site's theme tokens (src/css/site.css) */
+    --c-panel: var(--ink-raised);
+    --c-tower: color-mix(in srgb, var(--purple) 5%, var(--ink-raised));
+    --c-control: var(--ink);
+    --c-control-hover: color-mix(in srgb, var(--purple) 12%, var(--ink));
+    --c-line: var(--ink-line);
+    --c-edge: var(--border);
+    --c-control-edge: var(--control-border);
+    --c-accent: var(--purple);
+    --c-accent-text: var(--purple-tint);
+    --c-on-accent: var(--on-purple);
+    --c-tint: color-mix(in srgb, var(--purple) 10%, transparent);
+    --c-tint-soft: color-mix(in srgb, var(--purple) 6%, transparent);
+    --c-warn: var(--blaze-text);
+    --c-hi: var(--paper);
+    --c-mid: var(--body);
+    --c-lo: var(--muted);
+    /* no site token for these two: dark values here, light values below */
+    --c-shadow: 0 18px 40px rgba(0,0,0,.55);
+    --c-scrim: rgba(8,7,12,.72);
+    color:var(--c-hi); font-family:var(--font-display);
     line-height:1.5; letter-spacing:.005em;
+  }
+  :root[data-theme="light"] .b2-calc {
+    --c-shadow: 0 18px 40px rgba(15,14,19,.14);
+    --c-scrim: rgba(15,14,19,.45);
   }
   .b2-calc *, .b2-calc *::before, .b2-calc *::after { box-sizing:border-box; }
 
-  .b2-calc .wrap { max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+  .b2-calc .c-hero { padding:56px 0 40px; border-bottom:1px solid var(--c-line); }
+  .b2-calc .eyebrow { font-family:var(--font-mono); font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--c-accent-text); margin:0 0 22px; }
+  .b2-calc .c-hero h1 { font-family:var(--font-display); font-weight:800; text-transform:uppercase; font-size:clamp(34px,5.5vw,58px); line-height:.92; letter-spacing:.01em; margin:0 0 26px; max-width:none; }
+  .b2-calc .c-hero h1 .out { color:var(--c-lo); }
+  .b2-calc .c-lede { max-width:640px; color:var(--c-mid); font-size:18px; margin:0; }
+  .b2-calc .c-lede b { color:var(--c-hi); font-weight:600; }
 
-  .b2-calc .hero { padding:56px 0 40px; border-bottom:1px solid var(--edge); }
-  .b2-calc .eyebrow { font-family:var(--mono); font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--signal); margin:0 0 22px; }
-  .b2-calc .hero h1 { font-family:var(--display); font-weight:800; text-transform:uppercase; font-size:clamp(34px,5.5vw,58px); line-height:.92; letter-spacing:.01em; margin:0 0 26px; }
-  .b2-calc .hero h1 .out { color:var(--lo); }
-  .b2-calc .hero p.lede { max-width:640px; color:var(--mid); font-size:18px; margin:0; }
-  .b2-calc .hero p.lede b { color:var(--hi); font-weight:600; }
-
-  .b2-calc section { padding:64px 0; border-bottom:1px solid var(--edge); }
+  .b2-calc section { padding:64px 0; border-bottom:1px solid var(--c-line); }
   .b2-calc .sec-head { display:flex; align-items:baseline; gap:16px; margin:0 0 34px; }
-  .b2-calc .sec-num { font-family:var(--mono); color:var(--signal); font-size:13px; letter-spacing:.1em; }
-  .b2-calc .sec-title { font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-size:30px; margin:0; }
-  .b2-calc .sec-sub { color:var(--lo); font-size:14px; margin-left:auto; max-width:340px; text-align:right; }
+  .b2-calc .sec-num { font-family:var(--font-mono); color:var(--c-accent-text); font-size:13px; letter-spacing:.1em; }
+  .b2-calc .sec-title { font-family:var(--font-display); font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-size:30px; margin:0; }
+  .b2-calc .sec-sub { color:var(--c-lo); font-size:14px; margin-left:auto; max-width:340px; text-align:right; }
 
   .b2-calc .channels { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
-  .b2-calc .chan { background:var(--carbon); border:1px solid var(--edge); border-radius:4px; padding:18px 16px 20px; position:relative; overflow:hidden; }
-  .b2-calc .chan::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--edge-bright); }
-  .b2-calc .chan .tag { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--lo); }
-  .b2-calc .chan h3 { font-family:var(--display); font-weight:600; text-transform:uppercase; letter-spacing:.02em; font-size:19px; margin:8px 0 8px; }
-  .b2-calc .chan p { color:var(--mid); font-size:13px; margin:0; line-height:1.45; }
-  .b2-calc .chan p .rate { color:var(--signal); font-family:var(--mono); font-size:12px; }
-  .b2-calc .chan p.live { margin-top:12px; font-family:var(--mono); font-size:13px; }
-  .b2-calc .chan p.live a { color:var(--signal); font-weight:600; text-decoration:none; border-bottom:1px dotted var(--signal); }
-  .b2-calc .chan p.live a:hover { color:var(--signal-dim); }
+  .b2-calc .chan { background:var(--c-panel); border:1px solid var(--c-line); border-radius:4px; padding:18px 16px 20px; position:relative; overflow:hidden; }
+  .b2-calc .chan::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--c-edge); }
+  .b2-calc .chan .tag { font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--c-lo); }
+  .b2-calc .chan h3 { font-family:var(--font-display); font-weight:600; text-transform:uppercase; letter-spacing:.02em; font-size:19px; margin:8px 0 8px; }
+  .b2-calc .chan p { color:var(--c-mid); font-size:13px; margin:0; line-height:1.45; }
+  .b2-calc .chan p b { color:var(--c-accent-text); font-weight:600; }
+  .b2-calc .chan p.live { margin-top:12px; font-family:var(--font-mono); font-size:13px; }
+  .b2-calc .chan p.live a { color:var(--c-accent-text); font-weight:600; text-decoration:none; border-bottom:1px dotted currentColor; }
+  .b2-calc .chan p.live a:hover { color:var(--c-hi); }
   .b2-calc .chan p.dl { margin-top:10px; font-size:12.5px; }
-  .b2-calc .chan p.dl a { color:var(--signal); text-decoration:underline; text-underline-offset:2px; }
+  .b2-calc .chan p.dl a { color:var(--c-accent-text); text-decoration:underline; text-underline-offset:2px; }
 
-  .b2-calc .calc { display:grid; grid-template-columns:1fr 1.05fr; gap:0; border:1px solid var(--edge); border-radius:6px; overflow:hidden; }
-  .b2-calc .inputs { background:var(--carbon); padding:30px 30px 34px; }
-  .b2-calc .tower { background:var(--carbon-2); padding:30px 30px 30px; border-left:1px solid var(--edge); }
+  .b2-calc .calc { display:grid; grid-template-columns:1fr 1.05fr; gap:0; border:1px solid var(--c-line); border-radius:6px; overflow:hidden; }
+  .b2-calc .inputs { background:var(--c-panel); padding:30px 30px 34px; }
+  .b2-calc .tower { background:var(--c-tower); padding:30px 30px 30px; border-left:1px solid var(--c-line); }
 
-  .b2-calc .field { margin-bottom:24px; }
-  .b2-calc .field:last-child { margin-bottom:0; }
-  .b2-calc .field > label { display:block; font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--mid); margin-bottom:10px; }
-  .b2-calc .field.hidden { display:none; }
+  .b2-calc .c-field { margin-bottom:24px; }
+  .b2-calc .c-field:last-child { margin-bottom:0; }
+  .b2-calc .c-field > label { display:block; font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--c-mid); margin-bottom:10px; }
+  .b2-calc .c-field > label .opt { font-family:var(--font-display); font-size:11px; letter-spacing:0; text-transform:none; color:var(--c-lo); margin-left:8px; }
+  .b2-calc .c-field.hidden { display:none; }
 
   .b2-calc select, .b2-calc input.txt {
-    width:100%; appearance:none; background:var(--asphalt); color:var(--hi);
-    border:1px solid var(--edge-bright); border-radius:3px; padding:12px 13px; font-family:var(--body); font-size:15px;
+    width:100%; appearance:none; background:var(--c-control); color:var(--c-hi);
+    border:1px solid var(--c-control-edge); border-radius:3px; padding:12px 13px; font-family:var(--font-display); font-size:15px;
   }
-  .b2-calc input.txt::placeholder { color:var(--lo); }
-  .b2-calc input.txt:focus-visible { outline:2px solid var(--signal); outline-offset:2px; }
+  .b2-calc input.txt::placeholder { color:var(--c-lo); }
+  .b2-calc input.txt.num { font-family:var(--font-mono); }
+  .b2-calc input.txt:focus-visible, .b2-calc select:focus-visible { outline:2px solid var(--c-accent); outline-offset:2px; }
 
   /* combobox */
   .b2-calc .combo { position:relative; }
-  .b2-calc .combo .ico { position:absolute; right:13px; top:50%; transform:translateY(-50%); color:var(--lo); font-family:var(--mono); font-size:13px; pointer-events:none; }
+  .b2-calc .combo .ico { position:absolute; right:13px; top:50%; transform:translateY(-50%); color:var(--c-lo); font-family:var(--font-mono); font-size:13px; pointer-events:none; }
   .b2-calc .options { position:absolute; z-index:30; left:0; right:0; top:calc(100% + 4px); margin:0; padding:6px; list-style:none;
-    background:#FFFFFF; border:1px solid var(--edge-bright); border-radius:4px; max-height:260px; overflow:auto; box-shadow:0 18px 40px rgba(0,0,0,.14); }
+    background:var(--c-panel); border:1px solid var(--c-edge); border-radius:4px; max-height:260px; overflow:auto; box-shadow:var(--c-shadow); }
   .b2-calc .options[hidden] { display:none; }
-  .b2-calc .options li { padding:10px 11px; border-radius:3px; cursor:pointer; font-size:14px; color:var(--hi); display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
-  .b2-calc .options li .d { font-family:var(--mono); font-size:11px; color:var(--lo); white-space:nowrap; }
-  .b2-calc .options li:hover, .b2-calc .options li.active { background:rgba(124,47,240,.12); }
-  .b2-calc .options li.empty { color:var(--mid); cursor:default; }
+  .b2-calc .options li { padding:10px 11px; border-radius:3px; cursor:pointer; font-size:14px; color:var(--c-hi); display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
+  .b2-calc .options li .d { font-family:var(--font-mono); font-size:11px; color:var(--c-lo); white-space:nowrap; }
+  .b2-calc .options li:hover, .b2-calc .options li.active { background:var(--c-tint); }
+  .b2-calc .options li.empty { color:var(--c-mid); cursor:default; }
   .b2-calc .options li.empty:hover { background:transparent; }
-  .b2-calc .options li.empty b { color:var(--signal); cursor:pointer; }
-  .b2-calc .options li .reg { font-family:var(--mono); font-style:normal; font-size:9px; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--lo); border:1px solid var(--edge-bright); border-radius:2px;
+  .b2-calc .options li.empty b { color:var(--c-accent-text); cursor:pointer; }
+  .b2-calc .options li .reg { font-family:var(--font-mono); font-style:normal; font-size:9px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--c-lo); border:1px solid var(--c-edge); border-radius:2px;
     padding:1px 4px; margin-left:8px; vertical-align:middle; }
   .b2-calc .options li .d i { font-style:normal; margin-left:6px; font-size:9px; }
-  .b2-calc .options li .d i.ok { color:var(--signal); }
-  .b2-calc .options li .d i.est { color:var(--lo); }
-  .b2-calc .legend { margin-top:8px; font-family:var(--mono); font-size:10.5px; color:var(--lo); letter-spacing:.02em; }
-  .b2-calc .legend b { color:var(--signal); font-weight:400; }
+  .b2-calc .options li .d i.ok { color:var(--c-accent-text); }
+  .b2-calc .options li .d i.est { color:var(--c-lo); }
+  .b2-calc .legend { margin-top:8px; font-family:var(--font-mono); font-size:10.5px; color:var(--c-lo); letter-spacing:.02em; }
+  .b2-calc .legend b { color:var(--c-accent-text); font-weight:400; }
 
-  .b2-calc .dist { margin-top:9px; font-family:var(--mono); font-size:11.5px; color:var(--lo); letter-spacing:.02em; min-height:14px; }
-  .b2-calc .dist b { color:var(--mid); font-weight:500; }
-  .b2-calc .dist .src { color:var(--signal-dim); }
+  .b2-calc .dist { margin-top:9px; font-family:var(--font-mono); font-size:11.5px; color:var(--c-lo); letter-spacing:.02em; min-height:14px; }
+  .b2-calc .dist b { color:var(--c-mid); font-weight:500; }
+  .b2-calc .dist .src { color:var(--c-accent-text); }
 
-  .b2-calc .stepper { display:flex; align-items:stretch; width:100%; border:1px solid var(--edge-bright); border-radius:3px; overflow:hidden; }
-  .b2-calc .stepper button { width:46px; background:var(--asphalt); color:var(--hi); border:none; cursor:pointer; font-family:var(--display); font-size:24px; line-height:1; transition:background .12s; }
-  .b2-calc .stepper button:hover { background:#EDEDED; color:var(--signal); }
-  .b2-calc .stepper button:focus-visible { outline:2px solid var(--signal); outline-offset:-2px; }
-  .b2-calc .stepper .val { flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:var(--asphalt); font-family:var(--mono); font-size:18px; }
-  .b2-calc .stepper .val small { color:var(--lo); font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
+  .b2-calc .stepper { display:flex; align-items:stretch; width:100%; border:1px solid var(--c-control-edge); border-radius:3px; overflow:hidden; }
+  .b2-calc .stepper button { width:46px; background:var(--c-control); color:var(--c-hi); border:none; cursor:pointer; font-family:var(--font-display); font-size:24px; line-height:1; transition:background .12s; }
+  .b2-calc .stepper button:hover { background:var(--c-control-hover); color:var(--c-accent-text); }
+  .b2-calc .stepper button:focus-visible { outline:2px solid var(--c-accent); outline-offset:-2px; }
+  .b2-calc .stepper .val { flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:var(--c-control); font-family:var(--font-mono); font-size:18px; }
+  .b2-calc .stepper .val small { color:var(--c-lo); font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
 
   .b2-calc .toggle { display:flex; gap:8px; }
   .b2-calc .toggle.three button { padding:11px 8px; }
-  .b2-calc .toggle button { flex:1; background:var(--asphalt); color:var(--mid); border:1px solid var(--edge-bright); border-radius:3px; padding:12px 10px; cursor:pointer; font-family:var(--body); font-size:14px; transition:all .12s; text-align:left; }
-  .b2-calc .toggle button .t1 { display:block; font-weight:600; color:var(--hi); font-size:14px; }
-  .b2-calc .toggle button .t2 { display:block; font-family:var(--mono); font-size:10px; color:var(--lo); margin-top:3px; letter-spacing:.04em; }
-  .b2-calc .toggle button[aria-pressed="true"] { border-color:var(--signal); background:rgba(124,47,240,.08); }
-  .b2-calc .toggle button[aria-pressed="true"] .t1 { color:var(--signal); }
-  .b2-calc .toggle button:focus-visible { outline:2px solid var(--signal); outline-offset:2px; }
+  .b2-calc .toggle button { flex:1; background:var(--c-control); color:var(--c-mid); border:1px solid var(--c-control-edge); border-radius:3px; padding:12px 10px; cursor:pointer; font-family:var(--font-display); font-size:14px; transition:all .12s; text-align:left; }
+  .b2-calc .toggle button .t1 { display:block; font-weight:600; color:var(--c-hi); font-size:14px; }
+  .b2-calc .toggle button .t2 { display:block; font-family:var(--font-mono); font-size:10px; color:var(--c-lo); margin-top:3px; letter-spacing:.04em; }
+  .b2-calc .toggle button[aria-pressed="true"] { border-color:var(--c-accent); background:var(--c-tint); }
+  .b2-calc .toggle button[aria-pressed="true"] .t1 { color:var(--c-accent-text); }
+  .b2-calc .toggle button:focus-visible { outline:2px solid var(--c-accent); outline-offset:2px; }
 
-  .b2-calc .tower h4 { font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--lo); margin:0 0 20px; }
-  .b2-calc .line { padding:11px 0; border-bottom:1px solid var(--edge); }
+  .b2-calc .tower h4 { font-family:var(--font-mono); font-style:normal; font-weight:400; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--c-lo); margin:0 0 20px; }
+  .b2-calc .line { padding:11px 0; border-bottom:1px solid var(--c-line); }
   .b2-calc .line.hidden { display:none; }
   .b2-calc .line .row { display:flex; align-items:baseline; justify-content:space-between; }
-  .b2-calc .line .name { font-family:var(--body); font-size:14px; color:var(--mid); }
-  .b2-calc .line .amt { font-family:var(--mono); font-size:16px; color:var(--hi); font-variant-numeric:tabular-nums; }
-  .b2-calc .line .est { color:var(--est); font-size:10px; font-family:var(--mono); letter-spacing:.1em; margin-left:7px; }
-  .b2-calc .line .sub { font-family:var(--mono); font-size:11px; color:var(--lo); margin-top:5px; letter-spacing:.02em; }
-  .b2-calc .line .tnote { font-family:var(--body); font-size:12px; line-height:1.5; color:var(--mid); background:rgba(124,47,240,.07); border-left:2px solid var(--signal); padding:8px 11px; margin-top:9px; }
-  .b2-calc .line .tnote b { color:var(--signal); font-weight:600; }
-  .b2-calc .chan p b { color:var(--signal); font-weight:600; }
-  .b2-calc .bar { height:3px; background:var(--edge); border-radius:2px; margin-top:8px; overflow:hidden; }
-  .b2-calc .bar > i { display:block; height:100%; background:var(--edge-bright); border-radius:2px; transition:width .45s cubic-bezier(.2,.7,.2,1); }
-  .b2-calc .line.cardfee .name, .b2-calc .line.cardfee .amt { color:var(--signal); }
-  .b2-calc .line.cardfee .bar > i { background:var(--signal); }
+  .b2-calc .line .name { font-family:var(--font-display); font-size:14px; color:var(--c-mid); }
+  .b2-calc .line .amt { font-family:var(--font-mono); font-size:16px; color:var(--c-hi); font-variant-numeric:tabular-nums; }
+  .b2-calc .line .est { color:var(--c-warn); font-size:10px; font-family:var(--font-mono); letter-spacing:.1em; margin-left:7px; }
+  .b2-calc .line .c-sub { font-family:var(--font-mono); font-size:11px; color:var(--c-lo); margin-top:5px; letter-spacing:.02em; }
+  .b2-calc .line .tnote { font-family:var(--font-display); font-size:12px; line-height:1.5; color:var(--c-mid); background:var(--c-tint-soft); border-left:2px solid var(--c-accent); padding:8px 11px; margin-top:9px; }
+  .b2-calc .line .tnote b { color:var(--c-accent-text); font-weight:600; }
+  .b2-calc .bar { height:3px; background:var(--c-line); border-radius:2px; margin-top:8px; overflow:hidden; }
+  .b2-calc .bar > i { display:block; height:100%; background:var(--c-edge); border-radius:2px; transition:width .45s cubic-bezier(.2,.7,.2,1); }
+  .b2-calc .line.cardfee .name, .b2-calc .line.cardfee .amt { color:var(--c-accent-text); }
+  .b2-calc .line.cardfee .bar > i { background:var(--c-accent); }
 
-  .b2-calc .total { margin-top:22px; padding-top:18px; border-top:2px solid var(--edge-bright); display:flex; align-items:flex-end; justify-content:space-between; }
-  .b2-calc .total .lbl { font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--mid); }
-  .b2-calc .total .lbl span { display:block; color:var(--lo); font-size:10px; letter-spacing:.12em; margin-top:4px; }
-  .b2-calc .total .big { font-family:var(--display); font-weight:800; font-size:46px; line-height:.9; color:var(--signal); font-variant-numeric:tabular-nums; }
-  .b2-calc .total .big::before { content:"$"; font-size:26px; color:var(--signal-dim); vertical-align:top; margin-right:2px; }
+  .b2-calc .c-total { margin-top:22px; padding-top:18px; border-top:2px solid var(--c-edge); display:flex; align-items:flex-end; justify-content:space-between; gap:12px; }
+  .b2-calc .c-total .lbl { font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--c-mid); }
+  .b2-calc .c-total .lbl span { display:block; color:var(--c-lo); font-size:10px; letter-spacing:.12em; margin-top:4px; }
+  .b2-calc .c-total .c-big { font-family:var(--font-display); font-weight:800; font-size:46px; line-height:.9; color:var(--c-accent-text); font-variant-numeric:tabular-nums; }
+  .b2-calc .c-total .c-big::before { content:"$"; font-size:26px; vertical-align:top; margin-right:2px; }
 
-  .b2-calc .calc-note { margin-top:18px; color:var(--lo); font-size:12.5px; line-height:1.5; font-family:var(--mono); }
-  .b2-calc .calc-note b { color:var(--mid); font-weight:500; }
+  .b2-calc .calc-note { margin-top:18px; color:var(--c-lo); font-size:12.5px; line-height:1.5; font-family:var(--font-mono); }
+  .b2-calc .calc-note b { color:var(--c-mid); font-weight:500; }
 
   .b2-calc .two { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  .b2-calc .panel { background:var(--carbon); border:1px solid var(--edge); border-radius:5px; padding:26px 26px 28px; }
-  .b2-calc .panel h3 { font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-size:21px; margin:0 0 18px; }
-  .b2-calc .kv { display:flex; justify-content:space-between; gap:14px; padding:11px 0; border-bottom:1px solid var(--edge); }
-  .b2-calc .kv:last-child { border-bottom:none; }
-  .b2-calc .kv .k { color:var(--mid); font-size:14px; }
-  .b2-calc .kv .v { font-family:var(--mono); font-size:14px; color:var(--hi); text-align:right; }
-  .b2-calc .kv .v.amber { color:var(--amber); }
-  .b2-calc ol.steps { margin:0; padding:0; list-style:none; counter-reset:s; }
-  .b2-calc ol.steps li { counter-increment:s; padding:11px 0 11px 38px; border-bottom:1px solid var(--edge); position:relative; color:var(--mid); font-size:14px; }
-  .b2-calc ol.steps li:last-child { border-bottom:none; }
-  .b2-calc ol.steps li b { color:var(--hi); font-weight:600; }
-  .b2-calc ol.steps li::before { content:counter(s,decimal-leading-zero); position:absolute; left:0; top:11px; font-family:var(--mono); font-size:12px; color:var(--signal); }
+  .b2-calc .panel { background:var(--c-panel); border:1px solid var(--c-line); border-radius:5px; padding:26px 26px 28px; }
+  .b2-calc .panel h3 { font-family:var(--font-display); font-weight:700; text-transform:uppercase; letter-spacing:.03em; font-size:21px; margin:0 0 18px; }
+  .b2-calc .c-kv { display:flex; justify-content:space-between; gap:14px; padding:11px 0; border-bottom:1px solid var(--c-line); }
+  .b2-calc .c-kv:last-child { border-bottom:none; }
+  .b2-calc .c-kv .k { color:var(--c-mid); font-size:14px; }
+  .b2-calc .c-kv .v { font-family:var(--font-mono); font-size:14px; color:var(--c-hi); text-align:right; }
+  .b2-calc .c-kv .v.amber { color:var(--c-warn); }
+  .b2-calc ol.c-steps { margin:0; padding:0; list-style:none; counter-reset:s; }
+  .b2-calc ol.c-steps li { counter-increment:s; padding:11px 0 11px 38px; border-bottom:1px solid var(--c-line); position:relative; color:var(--c-mid); font-size:14px; }
+  .b2-calc ol.c-steps li:last-child { border-bottom:none; }
+  .b2-calc ol.c-steps li b { color:var(--c-hi); font-weight:600; }
+  .b2-calc ol.c-steps li::before { content:counter(s,decimal-leading-zero); position:absolute; left:0; top:11px; font-family:var(--font-mono); font-size:12px; color:var(--c-accent-text); }
 
   .b2-calc .closing { border-bottom:none; text-align:center; padding:80px 0 90px; }
-  .b2-calc .closing h2 { font-family:var(--display); font-weight:800; text-transform:uppercase; font-size:clamp(32px,5vw,56px); letter-spacing:.02em; margin:0 0 14px; }
-  .b2-calc .closing p { color:var(--mid); max-width:480px; margin:0 auto 30px; }
-  .b2-calc .bigcta { display:inline-block; font-family:var(--mono); font-size:14px; letter-spacing:.1em; text-transform:uppercase; font-weight:600; color:var(--asphalt); background:var(--signal); text-decoration:none; padding:16px 34px; border-radius:0; border:2px solid var(--signal); transition:transform .12s, background .12s; }
-  .b2-calc .bigcta:hover { background:transparent; color:var(--signal); transform:translateY(-2px); }
-  .b2-calc .fineprint { margin-top:22px; color:var(--lo); font-size:12px; font-family:var(--mono); }
+  .b2-calc .closing h2 { font-family:var(--font-display); font-weight:800; text-transform:uppercase; font-size:clamp(32px,5vw,56px); letter-spacing:.02em; margin:0 0 14px; }
+  .b2-calc .closing p { color:var(--c-mid); max-width:480px; margin:0 auto 30px; }
+  .b2-calc .bigcta { display:inline-block; font-family:var(--font-mono); font-size:14px; letter-spacing:.1em; text-transform:uppercase; font-weight:600; color:var(--c-on-accent); background:var(--c-accent); text-decoration:none; padding:16px 34px; border-radius:0; border:2px solid var(--c-accent); cursor:pointer; transition:transform .12s, background .12s; }
+  .b2-calc .bigcta:hover { background:transparent; color:var(--c-accent-text); transform:translateY(-2px); }
+  .b2-calc .fineprint { margin-top:22px; color:var(--c-lo); font-size:12px; font-family:var(--font-mono); }
 
   @media (max-width:880px) {
     .b2-calc .channels { grid-template-columns:1fr 1fr; }
     .b2-calc .calc { grid-template-columns:1fr; }
-    .b2-calc .tower { border-left:none; border-top:1px solid var(--edge); }
+    .b2-calc .tower { border-left:none; border-top:1px solid var(--c-line); }
     .b2-calc .two { grid-template-columns:1fr; }
     .b2-calc .sec-sub { display:none; }
   }
   @media (max-width:520px) {
     .b2-calc .channels { grid-template-columns:1fr; }
-    .b2-calc .hero { padding:56px 0 38px; }
-    .b2-calc .wrap { padding:0 18px; }
+    .b2-calc .c-hero { padding:56px 0 38px; }
     .b2-calc .toggle.three { flex-wrap:wrap; }
     .b2-calc .toggle.three button { flex:1 1 100%; }
   }
   @media (prefers-reduced-motion: reduce) { .b2-calc * { transition:none !important; } }
 
-  /* --- analytics quote CTA + modal --- */
-  .b2-calc .towercta { margin-top:16px; width:100%; background:var(--signal); color:var(--asphalt); border:none; border-radius:0; border:2px solid var(--signal);
-    padding:14px; font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; cursor:pointer; transition:background .12s, transform .12s; }
-  .b2-calc .towercta:hover { background:transparent; color:var(--signal); transform:translateY(-1px); }
-  .b2-calc .overlay { position:fixed; inset:0; z-index:100; background:rgba(37,37,37,.6); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; padding:20px; }
+  /* --- quote CTA + modal --- */
+  .b2-calc .towercta { margin-top:16px; width:100%; background:var(--c-accent); color:var(--c-on-accent); border-radius:0; border:2px solid var(--c-accent);
+    padding:14px; font-family:var(--font-mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; cursor:pointer; transition:background .12s, transform .12s; }
+  .b2-calc .towercta:hover { background:transparent; color:var(--c-accent-text); transform:translateY(-1px); }
+  .b2-calc .overlay { position:fixed; inset:0; z-index:100; background:var(--c-scrim); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; padding:20px; }
   .b2-calc .overlay[hidden] { display:none; }
-  .b2-calc .modal { width:100%; max-width:460px; background:var(--carbon); border:1px solid var(--edge-bright); border-radius:8px; padding:26px 26px 28px; max-height:90vh; overflow:auto; }
-  .b2-calc .modal h3 { font-family:var(--display); font-weight:800; text-transform:uppercase; font-size:26px; margin:0 0 4px; }
-  .b2-calc .modal .msub { color:var(--mid); font-size:13.5px; margin:0 0 18px; line-height:1.45; }
-  .b2-calc .modal .sum { background:var(--asphalt); border:1px solid var(--edge); border-radius:4px; padding:12px 14px; margin-bottom:18px; font-family:var(--mono); font-size:12px; color:var(--mid); line-height:1.7; }
-  .b2-calc .modal .sum b { color:var(--signal); }
-  .b2-calc .modal label.fld { display:block; margin-bottom:12px; font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--mid); }
-  .b2-calc .modal label.fld input { display:block; width:100%; margin-top:6px; background:var(--asphalt); color:var(--hi); border:1px solid var(--edge-bright); border-radius:3px; padding:11px 12px; font-family:var(--body); font-size:15px; }
-  .b2-calc .modal label.fld input:focus-visible { outline:2px solid var(--signal); outline-offset:2px; }
-  .b2-calc .modal .consent { display:flex; gap:9px; align-items:flex-start; font-family:var(--body); font-size:11px; line-height:1.45; color:var(--mid); margin:4px 0 18px; }
-  .b2-calc .modal .consent input { margin-top:2px; flex:none; }
-  .b2-calc .modal .consent > span { max-height:104px; overflow-y:auto; padding-right:6px; }
-  .b2-calc .modal .actions { display:flex; gap:10px; }
-  .b2-calc .modal .actions button { flex:1; border-radius:3px; padding:13px; font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; cursor:pointer; border:1px solid var(--edge-bright); }
-  .b2-calc .modal .submit { background:var(--signal); color:var(--asphalt); border-color:var(--signal); }
-  .b2-calc .modal .cancel { background:transparent; color:var(--mid); }
-  .b2-calc .modal .done { text-align:center; padding:10px 0; }
-  .b2-calc .modal .done .big { font-family:var(--display); font-size:38px; color:var(--signal); text-transform:uppercase; margin-bottom:6px; }
+  .b2-calc .modal { width:100%; max-width:560px; background:var(--c-panel); color:var(--c-hi); border:1px solid var(--c-edge); border-radius:8px; padding:22px 24px 24px; max-height:92vh; overflow:auto; box-shadow:var(--c-shadow); }
+  .b2-calc .modal .mhead { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin:0 0 4px; }
+  .b2-calc .modal h3 { font-family:var(--font-display); font-weight:800; text-transform:uppercase; font-size:26px; margin:0; }
+  .b2-calc .modal .mclose { flex:none; background:transparent; color:var(--c-mid); border:1px solid var(--c-edge); border-radius:3px; width:36px; height:36px; font-size:20px; line-height:1; cursor:pointer; }
+  .b2-calc .modal .mclose:hover { color:var(--c-hi); border-color:var(--c-control-edge); }
+  .b2-calc .modal .msub { color:var(--c-mid); font-size:13.5px; margin:0 0 16px; line-height:1.45; }
+  .b2-calc .modal .sum { background:var(--c-control); border:1px solid var(--c-line); border-radius:4px; padding:12px 14px; margin-bottom:16px; font-family:var(--font-mono); font-size:12px; color:var(--c-mid); line-height:1.7; }
+  .b2-calc .modal .sum .hl { color:var(--c-accent-text); font-weight:700; }
+  .b2-calc .modal .c-embed { min-height:120px; }
+  .b2-calc .modal .c-slow { margin:12px 0 0; padding:10px 12px; border-left:3px solid var(--c-warn); background:var(--c-tint-soft); color:var(--c-hi); font-size:14px; line-height:1.5; }
+  .b2-calc .modal .c-fallback { margin:14px 0 0; font-size:14px; color:var(--c-mid); }
+  .b2-calc .modal .c-slow a, .b2-calc .modal .c-fallback a { color:var(--c-accent-text); font-weight:600; text-decoration:underline; text-underline-offset:2px; }
 
-  /* event handoff banner — shown when the calendar links in with ?event=&track=&date= */
+  /* event handoff banner: shown only for an event that is on the calendar */
   .b2-calc .evt { display:flex; align-items:baseline; flex-wrap:wrap; gap:10px; margin:0 0 18px;
-    padding:12px 16px; background:rgba(124,47,240,.08); border-left:3px solid var(--signal); }
+    padding:12px 16px; background:var(--c-tint); border-left:3px solid var(--c-accent); }
   .b2-calc .evt[hidden] { display:none; }
-  .b2-calc .evt-tag { font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--signal); }
-  .b2-calc .evt-name { font-weight:600; color:var(--hi); font-size:15px; }
-  .b2-calc .evt-date { font-family:var(--mono); font-size:13px; color:var(--mid); }
-  .b2-calc .evt-type { font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--hi); border:1px solid var(--edge-bright); padding:2px 7px; }
-  .b2-calc .evt-clear { margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--lo); text-decoration:underline; }
-  .b2-calc .evt-clear:hover { color:var(--signal); }
-  .b2-calc .field > label .opt { font-family:var(--body); font-size:11px; letter-spacing:0; text-transform:none; color:var(--lo); margin-left:8px; }
-  .b2-calc .lede a, .b2-calc .related a { color:var(--signal); text-decoration:underline; text-underline-offset:2px; }
-  .b2-calc .lede a:hover, .b2-calc .related a:hover { color:var(--hi); }
-  .b2-calc .related { margin-top:14px; font-size:13px; color:var(--lo); }
+  .b2-calc .evt-tag { font-family:var(--font-mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--c-accent-text); }
+  .b2-calc .evt-name { font-weight:600; color:var(--c-hi); font-size:15px; }
+  .b2-calc .evt-date { font-family:var(--font-mono); font-size:13px; color:var(--c-mid); }
+  .b2-calc .evt-type { font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--c-hi); border:1px solid var(--c-edge); padding:2px 7px; }
+  .b2-calc .evt-type:empty { display:none; }
+  .b2-calc .evt-clear { margin-left:auto; font-family:var(--font-mono); font-size:11px; color:var(--c-lo); text-decoration:underline; }
+  .b2-calc .evt-clear:hover { color:var(--c-accent-text); }
+  .b2-calc .c-lede a, .b2-calc .related a { color:var(--c-accent-text); text-decoration:underline; text-underline-offset:2px; }
+  .b2-calc .c-lede a:hover, .b2-calc .related a:hover { color:var(--c-hi); }
+  .b2-calc .related { margin-top:14px; font-size:13px; color:var(--c-lo); }
 
-  /* anchor band — new, between hero and §01 */
-  .b2-calc .anchor-h2 { font-family:var(--display); font-weight:800; text-transform:uppercase; font-size:clamp(26px,3.6vw,38px); line-height:1.05; letter-spacing:.01em; margin:0 0 16px; max-width:760px; }
-  .b2-calc .anchor-lede { max-width:760px; color:var(--mid); font-size:16px; margin:0 0 24px; }
+  /* anchor band, between the hero and section 01 */
+  .b2-calc .anchor-h2 { font-family:var(--font-display); font-weight:800; text-transform:uppercase; font-size:clamp(26px,3.6vw,38px); line-height:1.05; letter-spacing:.01em; margin:0 0 16px; max-width:760px; }
+  .b2-calc .anchor-lede { max-width:760px; color:var(--c-mid); font-size:16px; margin:0 0 24px; }
   .b2-calc .anchor-panel { max-width:760px; margin:0 0 16px; }
-  .b2-calc .anchor-total { border-top:2px solid var(--edge-bright); margin-top:4px; padding-top:14px; }
-  .b2-calc .anchor-total .k { font-weight:700; font-size:17px; }
-  .b2-calc .anchor-total .v { font-weight:700; font-size:17px; color:var(--signal); }
-  .b2-calc .anchor-note { max-width:760px; color:var(--lo); font-size:12.5px; font-family:var(--mono); margin:0 0 22px; }
+  .b2-calc .anchor-total { border-top:2px solid var(--c-edge); margin-top:4px; padding-top:14px; }
+  .b2-calc .anchor-total .k { font-weight:700; font-size:17px; color:var(--c-hi); }
+  .b2-calc .anchor-total .v { font-weight:700; font-size:17px; color:var(--c-accent-text); }
+  .b2-calc .anchor-note { max-width:760px; color:var(--c-lo); font-size:12.5px; font-family:var(--font-mono); margin:0 0 22px; }
   .b2-calc .anchor-actions { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
-  .b2-calc .anchor-cta { width:auto; padding:14px 28px; }
-  .b2-calc .anchor-link { color:var(--signal); font-size:13px; text-decoration:underline; text-underline-offset:2px; }
-  .b2-calc .anchor-link:hover { color:var(--hi); }
+  .b2-calc .anchor-cta { width:auto; padding:14px 28px; margin-top:0; }
+  .b2-calc .anchor-link { color:var(--c-accent-text); font-size:13px; text-decoration:underline; text-underline-offset:2px; }
+  .b2-calc .anchor-link:hover { color:var(--c-hi); }
   @media (max-width:520px) {
     .b2-calc .anchor-cta { width:100%; }
   }
 </style>
 
 <div class="b2-calc">
-<div class="hero">
+<div class="c-hero">
   <div class="wrap">
     <p class="eyebrow">Spec Racer Ford · Gen 3 · Arrive & Drive</p>
     <h1>Spec Racer Ford rental cost<br><span class="out">Every line. Nothing hidden.</span></h1>
-    <p class="lede">A spec car is a level field, so we price like one. Here is what an SRF3 Spec Racer Ford rental costs, line by line: transport, tires, fuel, <a href="/the-cars/">the car itself</a> and <a href="/race-with-us/">our trackside crew</a>, each on its own line so you see exactly what you pay for. Build your weekend below: the number you see is the number we bill from.</p>
+    <p class="c-lede">A spec car is a level field, so we price like one. Here is what an SRF3 Spec Racer Ford rental costs, line by line: transport, tires, fuel, <a href="/the-cars/">the car itself</a> and <a href="/race-with-us/">our trackside crew</a>, each on its own line so you see exactly what you pay for. Build your weekend below: the number you see is the number we bill from.</p>
     <img src="/assets/img/hero-car59-on-track.jpg" alt="Spec Racer Ford Gen 3 rental car at Barber Motorsports Park" width="1600" height="816" loading="lazy" style="display:block;width:100%;height:auto;border-radius:6px;margin-top:32px;">
   </div>
 </div>
@@ -281,17 +283,17 @@
     <h2 class="anchor-h2">A typical two-day track weekend runs around $4,500. Race weekends are priced line by line.</h2>
     <p class="anchor-lede">Here is the arithmetic for two days at Barber: one car of three in the trailer, four hours on track over eight sessions, scuffed tires. Transport and prep are charged once per event, so the second day costs less than the first. Change any input below and the number follows.</p>
     <div class="panel anchor-panel">
-      <div class="kv"><span class="k">Transport</span><span class="v">$249</span></div>
-      <div class="kv"><span class="k">Prep</span><span class="v">$600</span></div>
-      <div class="kv"><span class="k">Trackside support</span><span class="v">$1,200</span></div>
-      <div class="kv"><span class="k">Tires (est.)</span><span class="v">$348</span></div>
-      <div class="kv"><span class="k">Fuel (est.)</span><span class="v">$273</span></div>
-      <div class="kv"><span class="k">Car rental</span><span class="v">$1,799</span></div>
-      <div class="kv anchor-total"><span class="k">Total</span><span class="v">$4,468</span></div>
+      <div class="c-kv"><span class="k">Transport</span><span class="v">$249</span></div>
+      <div class="c-kv"><span class="k">Prep</span><span class="v">$600</span></div>
+      <div class="c-kv"><span class="k">Trackside support</span><span class="v">$1,200</span></div>
+      <div class="c-kv"><span class="k">Tires (est.)</span><span class="v">$348</span></div>
+      <div class="c-kv"><span class="k">Fuel (est.)</span><span class="v">$273</span></div>
+      <div class="c-kv"><span class="k">Car rental</span><span class="v">$1,799</span></div>
+      <div class="c-kv anchor-total"><span class="k">Total</span><span class="v">$4,468</span></div>
     </div>
     <p class="anchor-note">Agreement by DocuSign &middot; ACH or check, no fee &middot; Credit card +3%. The crash-damage deposit is separate, and comes back in full with an undamaged car (section 03).</p>
     <div class="anchor-actions">
-      <button class="towercta anchor-cta" id="anchorStart" type="button">Start from this example</button>
+      <button class="towercta anchor-cta" id="b2c-anchor-start" type="button">Start from this example</button>
       <a class="anchor-link" href="/race-with-us/">Or read how a weekend works &rarr;</a>
     </div>
   </div>
@@ -315,7 +317,7 @@
   </div>
 </section>
 
-<section id="quote">
+<section id="quote" data-b2c="quote">
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-num">02</span>
@@ -323,99 +325,99 @@
       <p class="sec-sub">Live, line by line. Tires and fuel settle on what you actually use.</p>
     </div>
 
-    <div class="evt" id="eventBanner" hidden>
+    <div class="evt" id="b2c-event-banner" hidden>
       <span class="evt-tag">Quoting for</span>
-      <span class="evt-name" id="eventName"></span>
-      <span class="evt-date" id="eventDate"></span>
-      <span class="evt-type" id="eventType"></span>
-      <a class="evt-clear" href="#" id="eventClear">clear</a>
+      <span class="evt-name" id="b2c-event-name"></span>
+      <span class="evt-date" id="b2c-event-date"></span>
+      <span class="evt-type" id="b2c-event-type"></span>
+      <a class="evt-clear" href="#quote" id="b2c-event-clear">clear</a>
     </div>
     <div class="calc">
       <div class="inputs">
-        <div class="field hidden" id="eventField">
-          <label for="eventSelect">Pick your weekend <span class="opt">from the 2026 calendar; it fills in the track, days and track time</span></label>
-          <select id="eventSelect">
+        <div class="c-field hidden" id="b2c-event-field">
+          <label for="b2c-event-select">Pick your weekend <span class="opt">from the 2026 calendar; it fills in the track, days and track time</span></label>
+          <select id="b2c-event-select">
             <option value="">Not tied to an event: just pricing a day</option>
           </select>
-          <div class="dist" id="eventStatus"></div>
+          <div class="dist" id="b2c-event-status"></div>
         </div>
 
-        <div class="field">
-          <label for="trackSearch">Track</label>
-          <div class="combo">
-            <input class="txt" id="trackSearch" type="text" placeholder="Search a track…" autocomplete="off"
-                   role="combobox" aria-expanded="false" aria-controls="trackList" aria-autocomplete="list" />
+        <div class="c-field">
+          <label for="b2c-track-search">Track</label>
+          <div class="combo" id="b2c-combo">
+            <input class="txt" id="b2c-track-search" type="text" placeholder="Search a track…" autocomplete="off"
+                   role="combobox" aria-expanded="false" aria-controls="b2c-track-list" aria-autocomplete="list" />
             <span class="ico">▾</span>
-            <ul class="options" id="trackList" role="listbox" hidden></ul>
+            <ul class="options" id="b2c-track-list" role="listbox" hidden></ul>
           </div>
-          <div class="dist" id="distStatus"></div>
+          <div class="dist" id="b2c-dist-status"></div>
           <div class="legend"><b>●</b> confirmed road distance · ○ estimated ±15%; we confirm exact miles on your quote</div>
         </div>
 
-        <div class="field hidden" id="milesField">
-          <label for="milesInput">Round-trip distance (miles)</label>
-          <input class="txt" id="milesInput" type="number" min="0" step="10" value="300" inputmode="numeric" style="font-family:var(--mono)" />
+        <div class="c-field hidden" id="b2c-miles-field">
+          <label for="b2c-miles-input">Round-trip distance (miles)</label>
+          <input class="txt num" id="b2c-miles-input" type="number" min="0" step="10" value="300" inputmode="numeric" />
         </div>
 
-        <div class="field">
+        <div class="c-field">
           <label>Event days <span class="opt">drives trackside crew only</span></label>
           <div class="stepper" data-step="days">
             <button type="button" data-dir="-1" aria-label="One fewer day">&minus;</button>
-            <div class="val"><span id="daysVal">2</span><small>days</small></div>
+            <div class="val"><span id="b2c-days-val">2</span><small>days</small></div>
             <button type="button" data-dir="1" aria-label="One more day">+</button>
           </div>
         </div>
 
-        <div class="field">
+        <div class="c-field">
           <label>Track time <span class="opt">weekend total</span></label>
           <div class="stepper" data-step="hours">
             <button type="button" data-dir="-1" aria-label="Less track time">&minus;</button>
-            <div class="val"><span id="hoursVal">4</span><small>hrs</small></div>
+            <div class="val"><span id="b2c-hours-val">4</span><small>hrs</small></div>
             <button type="button" data-dir="1" aria-label="More track time">+</button>
           </div>
         </div>
 
-        <div class="field">
+        <div class="c-field">
           <label>Sessions on track <span class="opt">weekend total; one session = one heat cycle</span></label>
           <div class="stepper" data-step="sessions">
             <button type="button" data-dir="-1" aria-label="Fewer sessions">&minus;</button>
-            <div class="val"><span id="sessVal">8</span><small>sessions</small></div>
+            <div class="val"><span id="b2c-sess-val">8</span><small>sessions</small></div>
             <button type="button" data-dir="1" aria-label="More sessions">+</button>
           </div>
         </div>
 
-        <div class="field">
+        <div class="c-field">
           <label>Cars in the trailer <span class="opt">transport is shared: more cars, less each</span></label>
           <div class="stepper" data-step="cars">
             <button type="button" data-dir="-1" aria-label="Fewer cars">&minus;</button>
-            <div class="val"><span id="carsVal">3</span><small>cars</small></div>
+            <div class="val"><span id="b2c-cars-val">3</span><small>cars</small></div>
             <button type="button" data-dir="1" aria-label="More cars">+</button>
           </div>
-          <div class="dist" id="carsStatus"></div>
+          <div class="dist" id="b2c-cars-status"></div>
         </div>
 
-        <div class="field">
+        <div class="c-field">
           <label>Whose car? <span class="opt">same crew, same lines; your own SRF drops the car rental</span></label>
-          <div class="toggle" id="carToggle">
+          <div class="toggle" id="b2c-car-toggle">
             <button type="button" data-car="rental" aria-pressed="true"><span class="t1">Rent our SRF3</span><span class="t2">arrive &amp; drive</span></button>
             <button type="button" data-car="own" aria-pressed="false"><span class="t1">Your own SRF</span><span class="t2">we prep &amp; crew it</span></button>
           </div>
         </div>
 
-        <div class="field">
+        <div class="c-field">
           <label>Tires</label>
-          <div class="toggle" id="tireToggle">
+          <div class="toggle" id="b2c-tire-toggle">
             <button type="button" data-tire="new" aria-pressed="false"><span class="t1">New set</span><span class="t2">heat cycles 1-8</span></button>
             <button type="button" data-tire="used" aria-pressed="true"><span class="t1">Scuffed / used</span><span class="t2">heat cycles 9-16</span></button>
           </div>
         </div>
 
-        <div class="field">
+        <div class="c-field">
           <label>Payment method</label>
-          <div class="toggle three" id="payToggle">
+          <div class="toggle three" id="b2c-pay-toggle">
             <button type="button" data-pay="ach" aria-pressed="true"><span class="t1">ACH</span><span class="t2">no fee</span></button>
             <button type="button" data-pay="check" aria-pressed="false"><span class="t1">Check</span><span class="t2">no fee</span></button>
-            <button type="button" data-pay="card" aria-pressed="false"><span class="t1">Credit card</span><span class="t2" id="cardFeeHint">+ fee</span></button>
+            <button type="button" data-pay="card" aria-pressed="false"><span class="t1">Credit card</span><span class="t2" id="b2c-card-fee-hint">+ fee</span></button>
           </div>
         </div>
       </div>
@@ -423,24 +425,24 @@
       <div class="tower">
         <h4>Estimate ▸ live</h4>
         <div class="line" data-line="transport">
-          <div class="row"><span class="name">Transport</span><span class="amt" id="a-transport">248.56</span></div>
-          <div class="sub" id="s-transport"></div>
+          <div class="row"><span class="name">Transport</span><span class="amt" id="b2c-a-transport">248.56</span></div>
+          <div class="c-sub" id="b2c-s-transport"></div>
           <div class="tnote">Indicative rate. <b>Transport is shared by the cars in the trailer.</b> At six cars your share is roughly a sixth of a solo tow. We confirm the final number on your quote.</div>
-          <div class="bar"><i id="b-transport" style="width:5.56%"></i></div>
+          <div class="bar"><i id="b2c-b-transport" style="width:5.56%"></i></div>
         </div>
-        <div class="line" data-line="prep"><div class="row"><span class="name">Prep</span><span class="amt" id="a-prep">600.00</span></div><div class="sub" id="s-prep"></div><div class="bar"><i id="b-prep" style="width:13.43%"></i></div></div>
-        <div class="line" data-line="support"><div class="row"><span class="name">Trackside Support</span><span class="amt" id="a-support">1,200.00</span></div><div class="sub" id="s-support"></div><div class="bar"><i id="b-support" style="width:26.86%"></i></div></div>
-        <div class="line" data-line="tires"><div class="row"><span class="name">Tires <span class="est">EST</span></span><span class="amt" id="a-tires">347.94</span></div><div class="sub" id="s-tires"></div><div class="bar"><i id="b-tires" style="width:7.79%"></i></div></div>
-        <div class="line" data-line="fuel"><div class="row"><span class="name">Fuel <span class="est">EST</span></span><span class="amt" id="a-fuel">273.00</span></div><div class="sub" id="s-fuel"></div><div class="bar"><i id="b-fuel" style="width:6.11%"></i></div></div>
-        <div class="line" data-line="car"><div class="row"><span class="name">Car Rental</span><span class="amt" id="a-car">1,798.52</span></div><div class="sub" id="s-car"></div><div class="bar"><i id="b-car" style="width:40.25%"></i></div></div>
-        <div class="line cardfee hidden" data-line="cardfee" id="line-cardfee"><div class="row"><span class="name" id="cardfeeName">Card convenience fee</span><span class="amt" id="a-cardfee">0</span></div><div class="bar"><i id="b-cardfee"></i></div></div>
+        <div class="line" data-line="prep"><div class="row"><span class="name">Prep</span><span class="amt" id="b2c-a-prep">600.00</span></div><div class="c-sub" id="b2c-s-prep"></div><div class="bar"><i id="b2c-b-prep" style="width:13.43%"></i></div></div>
+        <div class="line" data-line="support"><div class="row"><span class="name">Trackside Support</span><span class="amt" id="b2c-a-support">1,200.00</span></div><div class="c-sub" id="b2c-s-support"></div><div class="bar"><i id="b2c-b-support" style="width:26.86%"></i></div></div>
+        <div class="line" data-line="tires"><div class="row"><span class="name">Tires <span class="est">EST</span></span><span class="amt" id="b2c-a-tires">347.94</span></div><div class="c-sub" id="b2c-s-tires"></div><div class="bar"><i id="b2c-b-tires" style="width:7.79%"></i></div></div>
+        <div class="line" data-line="fuel"><div class="row"><span class="name">Fuel <span class="est">EST</span></span><span class="amt" id="b2c-a-fuel">273.00</span></div><div class="c-sub" id="b2c-s-fuel"></div><div class="bar"><i id="b2c-b-fuel" style="width:6.11%"></i></div></div>
+        <div class="line" data-line="car"><div class="row"><span class="name">Car Rental</span><span class="amt" id="b2c-a-car">1,798.52</span></div><div class="c-sub" id="b2c-s-car"></div><div class="bar"><i id="b2c-b-car" style="width:40.25%"></i></div></div>
+        <div class="line cardfee hidden" data-line="cardfee" id="b2c-line-cardfee"><div class="row"><span class="name" id="b2c-cardfee-name">Card convenience fee</span><span class="amt" id="b2c-a-cardfee">0</span></div><div class="bar"><i id="b2c-b-cardfee"></i></div></div>
 
-        <div class="total">
-          <div class="lbl">Estimated total<span id="ctx"></span></div>
-          <div class="big" id="grandTotal">4,468</div>
+        <div class="c-total">
+          <div class="lbl">Estimated total<span id="b2c-ctx"></span></div>
+          <div class="c-big" id="b2c-grand-total">4,468</div>
         </div>
         <p class="calc-note"><b>This is an estimate, not a final invoice.</b> Tires and fuel settle on actual usage. We confirm car fit before quoting. Large drivers are no problem: we've fit 6'7" and 275 lb.</p>
-        <button class="towercta" id="reqBtn" type="button">Book this weekend &rarr;</button>
+        <button class="towercta" id="b2c-req-btn" type="button">Book this weekend &rarr;</button>
       </div>
     </div>
   </div>
@@ -452,17 +454,17 @@
     <div class="two">
       <div class="panel">
         <h3>Deposit, contract & payment</h3>
-        <div class="kv"><span class="k">Crash-damage deposit, refundable</span><span class="v">$6,000</span></div>
-        <div class="kv"><span class="k">Returned if undamaged</span><span class="v">Yes, in full</span></div>
-        <div class="kv"><span class="k">Agreement</span><span class="v">DocuSign</span></div>
-        <div class="kv"><span class="k">Payment due</span><span class="v">Before the event</span></div>
-        <div class="kv"><span class="k">Cancellation</span><span class="v">14-day policy</span></div>
-        <div class="kv"><span class="k">Pay by ACH or check</span><span class="v">No fee</span></div>
-        <div class="kv"><span class="k">Pay by credit card</span><span class="v amber" id="ccFeeRow">Convenience fee</span></div>
+        <div class="c-kv"><span class="k">Crash-damage deposit, refundable</span><span class="v">$6,000</span></div>
+        <div class="c-kv"><span class="k">Returned if undamaged</span><span class="v">Yes, in full</span></div>
+        <div class="c-kv"><span class="k">Agreement</span><span class="v">DocuSign</span></div>
+        <div class="c-kv"><span class="k">Payment due</span><span class="v">Before the event</span></div>
+        <div class="c-kv"><span class="k">Cancellation</span><span class="v">14-day policy</span></div>
+        <div class="c-kv"><span class="k">Pay by ACH or check</span><span class="v">No fee</span></div>
+        <div class="c-kv"><span class="k">Pay by credit card</span><span class="v amber" id="b2c-cc-fee-row">Convenience fee</span></div>
       </div>
       <div class="panel">
         <h3>Four steps</h3>
-        <ol class="steps">
+        <ol class="c-steps">
           <li><b>Pick a weekend.</b> Choose it above and register with the organizer.</li>
           <li><b>Sign up with B2.</b> A short driver registration form and the DocuSign agreement.</li>
           <li><b>Pay before the event.</b> Rental and deposit; 14-day cancellation policy.</li>
@@ -477,39 +479,34 @@
   <div class="wrap">
     <h2>That is the number. Book this weekend.</h2>
     <p>The calculator is not a teaser: it is the same arithmetic we bill from, line by line. Tires and fuel settle on what you actually use, and the only other things that change it are a multi-race discount or bringing your own car. Own a Spec Racer? Flip "Whose car?" above: same crew, same lines, same rates, no car rental. Elsewhere you call or fill in a form and wait for a price that moves with the days and the towing distance. Here you see it first.</p>
-    <button class="bigcta" id="reqBtn2" type="button">Book this weekend</button>
+    <button class="bigcta" id="b2c-req-btn-2" type="button">Book this weekend</button>
     <p class="fineprint">Look for the white truck, trailer, and canopy at the track.</p>
     <p class="related">More on the program: <a href="/the-cars/">the Spec Racer Ford itself</a> &middot; <a href="/2026-race-calendar-spec-racer-ford-rentals-trackside-support/">2026 race calendar</a> &middot; <a href="/race-with-us/">arrive-and-drive services</a> &middot; <a href="/srf3-fit-check/">the SRF3 fit check</a></p>
   </div>
 </section>
 
-<div class="overlay" id="quoteOverlay" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="qTitle">
-    <h3 id="qTitle">Book this weekend</h3>
-    <p class="msub">These are the line items you picked. Send them and we confirm your spot, then send the DocuSign agreement and payment details.</p>
-    <div class="sum" id="quoteSummary"></div>
-    <div id="hsFormTarget"></div>
-    <div id="nativeForm">
-      <label class="fld">Name<input id="qName" type="text" autocomplete="name"></label>
-      <label class="fld">Email<input id="qEmail" type="email" autocomplete="email"></label>
-      <label class="fld">Phone (optional)<input id="qPhone" type="tel" autocomplete="tel"></label>
-      <label class="consent"><input id="qConsent" type="checkbox">
-        <span>By submitting a phone number, I consent to receive automated texts and/or phone calls at the phone number used above. &middot; By checking this box, I opt-in and agree to receive text messages from B2 Motorsports. Message and data rates may apply. &middot; By clicking &quot;Submit&quot;, I am consenting to receive text messages from B2 Motorsports to the phone number I provided. &middot; I understand these texts may be automated and that my consent to texting is not required as a condition to purchase. &middot; By submitting your information, you consent to receive all forms of communication including but not limited to; phone, text, email, mail, etc. Message and data rates may apply. Consent to these terms is not a condition of purchase. You may opt out at any time.</span></label>
-      <div class="actions">
-        <button class="cancel" type="button" id="qCancel">Cancel</button>
-        <button class="submit" type="button" id="qSubmit">Book it</button>
-      </div>
+<div class="overlay" id="b2c-quote-overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="b2c-q-title">
+    <div class="mhead">
+      <h3 id="b2c-q-title">Book this weekend</h3>
+      <button class="mclose" type="button" id="b2c-q-close" aria-label="Close">&times;</button>
     </div>
-    <div class="done" id="quoteDone" hidden>
-      <div class="big">Thanks!</div>
-      <p class="msub">Your weekend is on its way to the B2 crew. We will confirm your spot and send the agreement.</p>
-      <div class="actions"><button class="cancel" type="button" id="qClose2">Close</button></div>
-    </div>
+    <p class="msub">These are the line items you picked. Send them with the form below and we confirm your spot, then send the DocuSign agreement and payment details.</p>
+    <div class="sum" id="b2c-quote-summary"></div>
+    <div class="c-embed" id="b2c-ghl"></div>
+    <p class="c-slow" id="b2c-ghl-slow" role="status" hidden>The form is taking a while to load. <a href="tel:+12569100658">Call or text 256-910-0658</a> or email <a href="mailto:info@b2motorsports.com">info@b2motorsports.com</a> with the line items above and we will confirm your weekend.</p>
+    <p class="c-fallback">Or <a href="tel:+12569100658">call or text 256-910-0658</a> &middot; <a href="mailto:info@b2motorsports.com">info@b2motorsports.com</a></p>
   </div>
 </div>
 </div>
 
 <script>
+(function () {
+"use strict";
+const root = document.querySelector(".b2-calc");
+if (!root) return;
+const $ = (id) => document.getElementById("b2c-" + id);
+
 /* ============================================================
    CONFIG — rate constants + integration.
    Prices only. Where each one comes from is documented in the b2-wp-tools repo, not here.
@@ -621,16 +618,25 @@ const CONFIG = {
   sessionsRange: { min:1, max:16, step:1 },      // WEEKEND TOTAL = heat cycles used
   carsRange:     { min:1, max:6, step:1 },       // cars sharing the trailer
 
-  // -- ANALYTICS + CRM -------------------------------------------------------
-  // Fill these to go live. Until then, events are console-logged (debug:true) so you can watch the
-  // funnel fire in DevTools without any accounts wired up. NOTHING is sent anywhere until these are set.
+  // -- ANALYTICS -------------------------------------------------------------
+  // Events reach Google Analytics only when a GA4 id is set here or the host page already
+  // loads gtag. The quote itself goes to the GoHighLevel form (QUOTE_FORM below).
   analytics: {
     ga4Id:        "",          // "G-XXXXXXXXXX"  Google Analytics 4 Measurement ID
-    hubspotHubId: "",          // "1234567"       HubSpot Hub/account ID -> loads the tracking code
-    hubspot: { portalId:"", formId:"", region:"na1" },   // embedded quote form (HubSpot Forms)
-    injectScripts: true,       // set FALSE on a HubSpot-hosted page, or if GA is added at the host level
-    debug: true,               // console.log every event (leave on until live)
+    injectScripts: true,       // set FALSE if GA is added at the host level
+    debug: false,              // console.log every event; local testing only
   },
+};
+
+// The quote request is GoHighLevel's general-inquiry form, embedded when the modal opens.
+// The estimate rides in as URL prefill (field keys inquiry_message and inquiry_topic).
+const QUOTE_FORM = {
+  id:      "u4lXXGwic4y8bzIXkxCM",
+  name:    "general-inquiry",
+  base:    "https://api.leadconnectorhq.com/widget/form/",
+  embedJs: "https://link.msgsndr.com/js/form_embed.js",
+  topic:   "Rental quote",
+  slowMs:  8000,
 };
 
 /* ---- live-distance hook (no-op until configured) -------------------------
@@ -651,47 +657,57 @@ async function resolveLiveMiles(track) {
     return typeof data.roundTripMiles === "number" ? data.roundTripMiles : null;
   } catch { return null; }
 }
-/* Places Autocomplete (for searching ANY track) would similarly run through the proxy or the
-   Maps JS API once a key/library is loaded. The prototype below filters the built-in TRACKS list. */
 
 const state = { miles:CONFIG.tracks[1].miles, distLabel:CONFIG.tracks[1].name, distSrc:CONFIG.tracks[1].src,
                 days:2, hours:4, sessions:8, cars:3, tire:"used", pay:"ach", car:"rental" };
-const EVENT = { name:"", date:"", type:"" };   // set from the picker or ?event=&date=&type= — see "calendar handoff"
+const EVENT = { name:"", date:"", type:"" };   // set only from a calendar event (picker or a matching ?event=)
 const money = new Intl.NumberFormat("en-US",{ minimumFractionDigits:2, maximumFractionDigits:2 });
 const whole = new Intl.NumberFormat("en-US",{ maximumFractionDigits:0 });
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const hrTxt = v => (Number.isInteger(v) ? String(v) : v.toFixed(1));
+// track names are stored "Track — City ST"; on screen the dash becomes a comma
+const disp = (s) => String(s).replace(/\s*—\s*/g, ", ");
 
 /* config-driven labels */
-document.getElementById("cardFeeHint").textContent = "+ " + CONFIG.ccFeePct + "% fee";
-document.getElementById("cardfeeName").textContent = "Card convenience fee (" + CONFIG.ccFeePct + "%)";
-document.getElementById("ccFeeRow").textContent = "+ " + CONFIG.ccFeePct + "% fee";
+$("card-fee-hint").textContent = "+ " + CONFIG.ccFeePct + "% fee";
+$("cardfee-name").textContent = "Card convenience fee (" + CONFIG.ccFeePct + "%)";
+$("cc-fee-row").textContent = "+ " + CONFIG.ccFeePct + "% fee";
 
 /* ---------- track search combobox ---------- */
-const search = document.getElementById("trackSearch");
-const list = document.getElementById("trackList");
-const distStatus = document.getElementById("distStatus");
-const milesField = document.getElementById("milesField");
-const milesInput = document.getElementById("milesInput");
+const combo = $("combo");
+const search = $("track-search");
+const list = $("track-list");
+const distStatus = $("dist-status");
+const milesField = $("miles-field");
+const milesInput = $("miles-input");
 let activeIdx = -1, matches = [];
+
+function el(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+}
 
 function openList(items) {
   matches = items;
-  list.innerHTML = "";
+  list.textContent = "";
   if (!items.length) {
-    const li = document.createElement("li");
-    li.className = "empty";
-    li.innerHTML = `No match in the demo list. <b id="manualLink">Enter distance manually →</b>`;
+    const li = el("li", "empty", "No match in the demo list. ");
+    const manual = el("b", "", "Enter distance manually →");
+    li.appendChild(manual);
     list.appendChild(li);
-    li.querySelector("#manualLink").addEventListener("click", enableManual);
+    manual.addEventListener("click", enableManual);
   } else {
     items.forEach((t, i) => {
-      const li = document.createElement("li");
+      const li = el("li");
       li.setAttribute("role","option");
       li.dataset.i = i;
-      li.innerHTML = `<span>${t.name}<em class="reg">${t.reg || ""}</em></span>` +
-                     `<span class="d">${whole.format(Math.round(t.miles))} mi rt` +
-                     `<i class="${t.src === "road" ? "ok" : "est"}">${t.src === "road" ? "\u25CF" : "\u25CB"}</i></span>`;
+      const nm = el("span", "", disp(t.name));
+      nm.appendChild(el("em", "reg", t.reg || ""));
+      const d = el("span", "d", whole.format(Math.round(t.miles)) + " mi rt");
+      d.appendChild(el("i", t.src === "road" ? "ok" : "est", t.src === "road" ? "●" : "○"));
+      li.appendChild(nm); li.appendChild(d);
       li.addEventListener("click", () => pickTrack(t));
       list.appendChild(li);
     });
@@ -704,7 +720,7 @@ function closeList() { list.hidden = true; search.setAttribute("aria-expanded","
    Racers type "COTA", "National Corvette Museum", "Mid-Ohio Sportscar"; the official
    names are "Circuit of the Americas", "NCM Motorsports Park", "Mid-Ohio Sports Car
    Course". Matching the name alone hid tracks that were in the list all along.
-   Every track carries an alias field — keep it populated when adding tracks. */
+   Every track carries an alias field; keep it populated when adding tracks. */
 const normalize = (s) => String(s).toLowerCase()
   .replace(/int'?l\b/g, "international")
   .replace(/[^a-z0-9]+/g, " ")
@@ -719,7 +735,7 @@ function filterTracks(q) {
 }
 
 async function pickTrack(t) {
-  search.value = t.name;
+  search.value = disp(t.name);
   closeList();
   milesField.classList.add("hidden");
   // try live distance first; fall back to the built-in mileage
@@ -732,7 +748,7 @@ async function pickTrack(t) {
   state.distLabel = t.name;
   state.distSrc = live != null ? "exact · via Google Maps"
                 : t.src === "road" ? "confirmed road distance"
-                : "estimated \u00B115%, exact on quote";
+                : "estimated ±15%, exact on quote";
   render();
 }
 
@@ -748,9 +764,7 @@ function enableManual() {
 
 search.addEventListener("input", () => openList(filterTracks(search.value)));
 // Focus opens the FULL list, not the list filtered by the track already chosen.
-// init sets search.value to tracks[0], so filtering on focus left the dropdown
-// showing only PTC. Selecting the text means the first keystroke replaces it and
-// filtering resumes as normal.
+// Selecting the text means the first keystroke replaces it and filtering resumes as normal.
 search.addEventListener("focus", () => { search.select(); openList(CONFIG.tracks.slice()); });
 search.addEventListener("keydown", e => {
   if (list.hidden) return;
@@ -761,42 +775,43 @@ search.addEventListener("keydown", e => {
   else if (e.key === "Escape") { closeList(); return; }
   opts.forEach((o,i) => o.classList.toggle("active", i === activeIdx));
 });
-document.addEventListener("click", e => { if (!e.target.closest(".combo")) closeList(); });
+document.addEventListener("click", e => { if (!combo.contains(e.target)) closeList(); });
 milesInput.addEventListener("input", () => { state.miles = parseFloat(milesInput.value) || 0; render(); });
 
 /* ---------- steppers ---------- */
 const STEP = {
-  days:     { ...CONFIG.daysRange,     out:"daysVal",  key:"days" },
-  hours:    { ...CONFIG.hoursRange,    out:"hoursVal", key:"hours" },
-  sessions: { ...CONFIG.sessionsRange, out:"sessVal",  key:"sessions" },
-  cars:     { ...CONFIG.carsRange,     out:"carsVal",  key:"cars" },
+  days:     { ...CONFIG.daysRange,     out:"days-val",  key:"days" },
+  hours:    { ...CONFIG.hoursRange,    out:"hours-val", key:"hours" },
+  sessions: { ...CONFIG.sessionsRange, out:"sess-val",  key:"sessions" },
+  cars:     { ...CONFIG.carsRange,     out:"cars-val",  key:"cars" },
 };
-document.querySelectorAll(".stepper").forEach(st => {
+root.querySelectorAll(".stepper").forEach(st => {
   const cfg = STEP[st.dataset.step];
   st.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
     const next = +(state[cfg.key] + (+b.dataset.dir) * cfg.step).toFixed(2);
     if (next < cfg.min || next > cfg.max) return;
     state[cfg.key] = next;
-    document.getElementById(cfg.out).textContent = cfg.key === "hours" ? hrTxt(next) : next;
+    $(cfg.out).textContent = cfg.key === "hours" ? hrTxt(next) : next;
     render();
   }));
 });
 
 /* ---------- toggles ---------- */
-document.querySelectorAll("#tireToggle button").forEach(b => b.addEventListener("click", () => {
+const toggleButtons = (id) => [...$(id).querySelectorAll("button")];
+toggleButtons("tire-toggle").forEach(b => b.addEventListener("click", () => {
   state.tire = b.dataset.tire;
-  document.querySelectorAll("#tireToggle button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  toggleButtons("tire-toggle").forEach(x => x.setAttribute("aria-pressed", x === b));
   render();
 }));
 // Owners of their own SRF pay the same lines at the same rates; only the car rental drops out.
-document.querySelectorAll("#carToggle button").forEach(b => b.addEventListener("click", () => {
+toggleButtons("car-toggle").forEach(b => b.addEventListener("click", () => {
   state.car = b.dataset.car;
-  document.querySelectorAll("#carToggle button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  toggleButtons("car-toggle").forEach(x => x.setAttribute("aria-pressed", x === b));
   render();
 }));
-document.querySelectorAll("#payToggle button").forEach(b => b.addEventListener("click", () => {
+toggleButtons("pay-toggle").forEach(b => b.addEventListener("click", () => {
   state.pay = b.dataset.pay;
-  document.querySelectorAll("#payToggle button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  toggleButtons("pay-toggle").forEach(x => x.setAttribute("aria-pressed", x === b));
   render();
 }));
 
@@ -871,27 +886,27 @@ function render() {
   const c = compute();
   const total = c.transport + c.prep + c.support + c.tires + c.fuel + c.car + c.cardfee;
   ["transport","prep","support","tires","fuel","car","cardfee"].forEach(k => {
-    writeAmount(document.getElementById("a-"+k), c[k]);
-    document.getElementById("b-"+k).style.width = (total ? (c[k]/total)*100 : 0) + "%";
+    writeAmount($("a-"+k), c[k]);
+    $("b-"+k).style.width = (total ? (c[k]/total)*100 : 0) + "%";
   });
-  writeAmount(document.getElementById("grandTotal"), total);
+  writeAmount($("grand-total"), total);
 
   const td = transportDetail();
   const startC = tireStartCycle(), endC = startC + state.sessions - 1;
-  document.getElementById("s-transport").textContent =
+  $("s-transport").textContent =
     whole.format(Math.round(td.miles)) + " mi round trip · " + hrTxt(td.driveHrs) + " drive hrs · " +
     td.crewCount + " crew" + (td.nights ? " · " + td.nights + " night" + (td.nights>1?"s":"") : "") +
     " · shared by " + td.cars + " car" + (td.cars>1?"s":"");
-  document.getElementById("s-prep").textContent =
+  $("s-prep").textContent =
     "flat per event: alignment, fitment, wash, loading";
-  document.getElementById("s-support").textContent =
+  $("s-support").textContent =
     state.days + " day" + (state.days>1?"s":"") + " × $" + money.format(CONFIG.supportPerDay) + "/day";
-  document.getElementById("s-tires").textContent =
+  $("s-tires").textContent =
     state.sessions + " heat cycle" + (state.sessions>1?"s":"") + " (" + (startC+1) + "–" + (endC+1) + " of " +
     CONFIG.tireLifeCycles + ") · avg $" + money.format(c.tires / Math.max(1,state.sessions)) + "/cycle";
-  document.getElementById("s-fuel").textContent =
+  $("s-fuel").textContent =
     hrTxt(state.hours) + " hrs × $" + money.format(CONFIG.fuelPerHour) + "/hr";
-  document.getElementById("s-car").textContent = state.car === "own"
+  $("s-car").textContent = state.car === "own"
     ? "your own Spec Racer, no rental"
     : hrTxt(state.hours) + " hrs × $" + money.format(CONFIG.carPerHour) + "/hr of track time";
 
@@ -904,62 +919,61 @@ function render() {
     fuel:      "$" + money.format(CONFIG.fuelPerHour),
     car:       "$" + money.format(CONFIG.carPerHour),
   };
-  document.querySelectorAll("[data-live]").forEach(el => { el.textContent = live[el.dataset.live] || ""; });
+  root.querySelectorAll("[data-live]").forEach(n => { n.textContent = live[n.dataset.live] || ""; });
 
-  document.getElementById("line-cardfee").classList.toggle("hidden", state.pay !== "card");
+  $("line-cardfee").classList.toggle("hidden", state.pay !== "card");
 
-  distStatus.innerHTML = state.miles > 0
-    ? `<b>${whole.format(Math.round(state.miles))} mi round trip</b> · <span class="src">${state.distSrc}</span>`
-    : "Pick a track or enter a distance.";
+  distStatus.textContent = "";
+  if (state.miles > 0) {
+    distStatus.appendChild(el("b", "", whole.format(Math.round(state.miles)) + " mi round trip"));
+    distStatus.appendChild(document.createTextNode(" · "));
+    distStatus.appendChild(el("span", "src", state.distSrc));
+  } else distStatus.textContent = "Pick a track or enter a distance.";
 
   const payLabel = state.pay === "card" ? "card +" + CONFIG.ccFeePct + "%" : state.pay.toUpperCase();
-  document.getElementById("ctx").textContent =
-    `${state.days}d · ${hrTxt(state.hours)}hr · ${state.sessions} sessions · ${state.distLabel} · ${payLabel}` +
+  $("ctx").textContent =
+    `${state.days}d · ${hrTxt(state.hours)}hr · ${state.sessions} sessions · ${disp(state.distLabel)} · ${payLabel}` +
     (state.car === "own" ? " · your car" : "");
 }
 
-/* init: select Barber — the 14 Sep anchor benchmark (2 days, 4h, 8 sessions, 3 cars, used tires) */
-search.value = CONFIG.tracks[1].name;
+/* init: select Barber, the anchor benchmark (2 days, 4h, 8 sessions, 3 cars, used tires) */
+search.value = disp(CONFIG.tracks[1].name);
 render();
 
+const quoteSec = root.querySelector('[data-b2c="quote"]');
+const toQuote = (smooth) => { if (quoteSec) quoteSec.scrollIntoView({ behavior: smooth && !reduce ? "smooth" : "auto", block: "start" }); };
+
 /* ---------- "Start from this example" (anchor band) ---------- */
-const anchorStartBtn = document.getElementById("anchorStart");
-if (anchorStartBtn) anchorStartBtn.addEventListener("click", async function () {
-  EVENT.name = ""; EVENT.date = ""; EVENT.type = ""; showEventBanner();
+$("anchor-start").addEventListener("click", async function () {
+  setEvent(null); showEventBanner();
+  const sel = $("event-select"); if (sel) sel.value = "";
   await pickTrack(CONFIG.tracks[1]);
   setStep("days", 2); setStep("hours", 4); setStep("sessions", 8); setStep("cars", 3);
   state.tire = "used"; state.car = "rental";
-  document.querySelectorAll("#tireToggle button").forEach(b => b.setAttribute("aria-pressed", b.dataset.tire === "used" ? "true" : "false"));
-  document.querySelectorAll("#carToggle button").forEach(b => b.setAttribute("aria-pressed", b.dataset.car === "rental" ? "true" : "false"));
+  toggleButtons("tire-toggle").forEach(b => b.setAttribute("aria-pressed", b.dataset.tire === "used" ? "true" : "false"));
+  toggleButtons("car-toggle").forEach(b => b.setAttribute("aria-pressed", b.dataset.car === "rental" ? "true" : "false"));
   render();
-  document.getElementById("quote").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  toQuote(true);
 });
 
 
-/* ============================ ANALYTICS + CRM ============================== */
+/* ================================ ANALYTICS ================================= */
 const A = CONFIG.analytics;
 
-// inject GA4 + HubSpot loader only when configured and allowed by the host
-if (A.injectScripts && A.ga4Id) {
+// inject GA4 only when configured and allowed by the host
+if (A.injectScripts && A.ga4Id && typeof window.gtag !== "function") {
   const s = document.createElement("script"); s.async = true;
-  s.src = "https://www.googletagmanager.com/gtag/js?id=" + A.ga4Id; document.head.appendChild(s);
+  s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(A.ga4Id); document.head.appendChild(s);
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function(){ dataLayer.push(arguments); };
-  gtag("js", new Date()); gtag("config", A.ga4Id);
-}
-if (A.injectScripts && A.hubspotHubId) {
-  const h = document.createElement("script");
-  h.type = "text/javascript"; h.async = true; h.defer = true; h.id = "hs-script-loader";
-  h.src = "https://js.hs-scripts.com/" + A.hubspotHubId + ".js"; document.head.appendChild(h);
-  window._hsq = window._hsq || [];
+  window.gtag = function(){ window.dataLayer.push(arguments); };
+  window.gtag("js", new Date()); window.gtag("config", A.ga4Id);
 }
 
-// one helper fans every event out to GA4, HubSpot, and (in debug) the console
+// one helper sends every event to GA4 when it is present; never contact details
 function track(name, params) {
   const p = params || {};
   if (A.debug) console.log("[track]", name, p);
-  if (window.gtag) gtag("event", name, p);
-  if (window._hsq) window._hsq.push(["trackCustomBehavioralEvent", { name: name, properties: p }]);
+  if (typeof window.gtag === "function") window.gtag("event", name, p);
 }
 
 // flat, GA4-friendly snapshot of the current estimate
@@ -967,7 +981,7 @@ function snapshot() {
   const c = compute();
   const total = c.transport + c.prep + c.support + c.tires + c.fuel + c.car + c.cardfee;
   return {
-    track_name: state.distLabel,
+    track_name: disp(state.distLabel),
     round_trip_miles: Math.round(state.miles),
     distance_source: state.distSrc,
     days: state.days, track_hours: state.hours, sessions: state.sessions,
@@ -988,114 +1002,150 @@ render = function () { _render(); scheduleConfigEvent(); };
 const _pick = pickTrack;
 pickTrack = async function (t) {
   await _pick(t);
-  track("estimate_track_selected", { track_name: t.name, track_region: t.reg || "", round_trip_miles: Math.round(t.miles), distance_source: t.src });
+  track("estimate_track_selected", { track_name: disp(t.name), track_region: t.reg || "", round_trip_miles: Math.round(t.miles), distance_source: t.src });
 };
-document.querySelectorAll("#payToggle button").forEach(function (b) {
+toggleButtons("pay-toggle").forEach(function (b) {
   b.addEventListener("click", function () { track("payment_method_selected", { payment_method: b.dataset.pay }); });
 });
 
-/* ---- quote modal ---- */
-const overlay = document.getElementById("quoteOverlay");
-const nativeForm = document.getElementById("nativeForm");
-const quoteDone = document.getElementById("quoteDone");
+/* ---- quote modal: GoHighLevel form, estimate prefilled ---- */
+const overlay = $("quote-overlay");
+const embedBox = $("ghl");
+const slowMsg = $("ghl-slow");
+let slowT = 0, frameMsg = "", opener = null;
 
-function fillSummary() {
+// the estimate as plain-text lines: shown in the modal and carried into the form's message
+function estimateLines() {
   const s = snapshot();
-  const esc = (v) => String(v).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
-  const evt = (s.event_name || s.event_date)
-    ? "<b>" + [s.event_name, s.event_date].filter(Boolean).map(esc).join(" &middot; ") + "</b><br>"
-    : "";
-  document.getElementById("quoteSummary").innerHTML =
-    evt +
-    esc(s.track_name) + "<br>" +
-    s.days + " day" + (s.days > 1 ? "s" : "") + " &middot; " + hrTxt(s.track_hours) + " hr &middot; " +
-    s.sessions + " sessions &middot; " + s.tires + " tires &middot; " + s.payment_method.toUpperCase() +
-    (s.car === "own" ? " &middot; your own SRF" : "") + "<br>" +
-    "<b>Est. $" + s.estimate_total.toLocaleString() + "</b> &middot; " + s.round_trip_miles + " mi rt (" + s.distance_source + ")";
+  const lines = [];
+  if (s.event_name) lines.push("Event: " + s.event_name + (s.event_date ? ", " + s.event_date : "") + (s.event_type ? " (" + s.event_type + ")" : ""));
+  const src = { road: "confirmed road distance", computed: "estimated ±15%" }[s.distance_source] || s.distance_source;
+  lines.push("Track: " + s.track_name + " (" + whole.format(s.round_trip_miles) + " mi round trip, " + src + ")");
+  lines.push(s.days + " day" + (s.days > 1 ? "s" : "") + ", " + hrTxt(s.track_hours) + " hr on track, " + s.sessions + " session" + (s.sessions > 1 ? "s" : ""));
+  lines.push(s.cars_in_trailer + " car" + (s.cars_in_trailer > 1 ? "s" : "") + " in the trailer");
+  lines.push((s.tires === "new" ? "New tires" : "Scuffed tires") + ", " + (s.car === "own" ? "your own SRF" : "rental SRF3") + ", pay by " +
+             (s.payment_method === "card" ? "credit card (+" + CONFIG.ccFeePct + "%)" : s.payment_method === "ach" ? "ACH" : "check"));
+  lines.push("Estimated total: $" + whole.format(s.estimate_total));
+  return lines;
 }
 
-function buildHsForm() {
-  nativeForm.hidden = true;
-  const create = function () {
-    hbspt.forms.create({
-      portalId: A.hubspot.portalId, formId: A.hubspot.formId, region: A.hubspot.region || "na1",
-      target: "#hsFormTarget",
-      onFormReady: function (form) {
-        const s = snapshot();
-        const set = function (n, v) {
-          const el = form.querySelector('[name="' + n + '"]');
-          if (el) { el.value = v; el.dispatchEvent(new Event("input", { bubbles: true })); }
-        };
-        // these map to HubSpot contact/form properties you create (see notes)
-        set("estimate_total", s.estimate_total); set("estimate_track", s.track_name);
-        set("estimate_round_trip_miles", s.round_trip_miles); set("estimate_days", s.days);
-        set("estimate_hours", s.track_hours); set("estimate_sessions", s.sessions);
-        set("estimate_tires", s.tires); set("estimate_payment", s.payment_method);
-        set("estimate_cars_in_trailer", s.cars_in_trailer); set("estimate_car", s.car);
-        set("estimate_event_name", s.event_name); set("estimate_event_date", s.event_date);
-        set("estimate_event_type", s.event_type);
-      },
-      onFormSubmitted: function () { track("quote_submitted", snapshot()); }
-    });
+function fillSummary(lines) {
+  const box = $("quote-summary");
+  box.textContent = "";
+  lines.forEach((t, i) => {
+    const hl = i === lines.length - 1 || (i === 0 && EVENT.name);
+    box.appendChild(el("div", hl ? "hl" : "", t));
+  });
+}
+
+function loadEmbedScript() {
+  if (document.querySelector('script[src="' + QUOTE_FORM.embedJs + '"]')) return;
+  const s = document.createElement("script");
+  s.src = QUOTE_FORM.embedJs; s.async = true;
+  document.body.appendChild(s);
+}
+
+function mountForm(msg) {
+  if (msg === frameMsg && embedBox.querySelector("iframe")) return;   // same estimate: keep what they typed
+  frameMsg = msg;
+  clearTimeout(slowT); slowMsg.hidden = true;
+  embedBox.textContent = "";
+  if (window.B2_REVIEW) {   // the review draft never loads the real form: a submit there would be a real contact
+    const p = document.createElement("p");
+    p.textContent = "Review build: on the live site the GoHighLevel form loads here with this estimate filled in: " + msg;
+    embedBox.appendChild(p);
+    return;
+  }
+  const f = document.createElement("iframe");
+  f.src = QUOTE_FORM.base + QUOTE_FORM.id +
+          "?inquiry_message=" + encodeURIComponent(msg) +
+          "&inquiry_topic=" + encodeURIComponent(QUOTE_FORM.topic);
+  f.id = "inline-" + QUOTE_FORM.id;
+  f.title = "Rental quote request";
+  f.style.cssText = "width:100%;height:100%;border:none;border-radius:3px;min-height:640px;display:block";
+  const attrs = {
+    "data-layout": "{'id':'INLINE'}",
+    "data-trigger-type": "alwaysShow",
+    "data-trigger-value": "",
+    "data-activation-type": "alwaysActivated",
+    "data-activation-value": "",
+    "data-deactivation-type": "neverDeactivate",
+    "data-deactivation-value": "",
+    "data-form-name": QUOTE_FORM.name,
+    "data-height": "640",
+    "data-layout-iframe-id": "inline-" + QUOTE_FORM.id,
+    "data-form-id": QUOTE_FORM.id,
+    "data-b2-form": "calculator-quote",
   };
-  if (window.hbspt) create();
-  else { const s = document.createElement("script"); s.src = "https://js.hsforms.net/forms/embed/v2.js"; s.onload = create; document.head.appendChild(s); }
+  Object.keys(attrs).forEach(k => f.setAttribute(k, attrs[k]));
+  let loaded = false;
+  f.addEventListener("load", () => { loaded = true; clearTimeout(slowT); slowMsg.hidden = true; });
+  slowT = setTimeout(() => { if (!loaded) slowMsg.hidden = false; }, QUOTE_FORM.slowMs);
+  embedBox.appendChild(f);
+  loadEmbedScript();
 }
 
-function openQuote() {
+function openQuote(e) {
+  opener = e && e.currentTarget;
   track("quote_requested", snapshot());
-  fillSummary();
-  nativeForm.hidden = false; quoteDone.hidden = true;
-  document.getElementById("quoteSummary").hidden = false;
+  const lines = estimateLines();
+  fillSummary(lines);
   overlay.hidden = false; document.body.style.overflow = "hidden";
-  if (A.hubspot.portalId && A.hubspot.formId) buildHsForm();
+  mountForm(lines.join(". ") + ".");
+  $("q-close").focus();
 }
-function closeQuote() { overlay.hidden = true; document.body.style.overflow = ""; }
+function closeQuote() {
+  overlay.hidden = true; document.body.style.overflow = "";
+  if (opener && opener.focus) opener.focus();
+}
 
-document.getElementById("reqBtn").addEventListener("click", openQuote);
-document.getElementById("reqBtn2").addEventListener("click", openQuote);
-document.getElementById("qCancel").addEventListener("click", closeQuote);
-document.getElementById("qClose2").addEventListener("click", closeQuote);
-document.getElementById("qClose2").addEventListener("click", function(){ nativeForm.hidden=false; quoteDone.hidden=true; document.getElementById("quoteSummary").hidden=false; });
+$("req-btn").addEventListener("click", openQuote);
+$("req-btn-2").addEventListener("click", openQuote);
+$("q-close").addEventListener("click", closeQuote);
 overlay.addEventListener("click", function (e) { if (e.target === overlay) closeQuote(); });
 document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !overlay.hidden) closeQuote(); });
-
-// native fallback submit (prototype capture — real capture is the HubSpot embed above)
-document.getElementById("qSubmit").addEventListener("click", function () {
-  const email = document.getElementById("qEmail").value.trim();
-  if (!email || !/.+@.+\..+/.test(email)) { const f = document.getElementById("qEmail"); f.focus(); f.style.borderColor = "var(--signal)"; return; }
-  const snap = snapshot();
-  snap.name = document.getElementById("qName").value.trim();
-  snap.email = email;
-  snap.phone = document.getElementById("qPhone").value.trim();
-  snap.consent = document.getElementById("qConsent").checked;
-  track("quote_submitted", snap);
-  nativeForm.hidden = true; document.getElementById("quoteSummary").hidden = true; quoteDone.hidden = false;
-});
 
 /* ---------- calendar handoff ----------
    The 2026 Race Calendar links in with, for example:
      /rental-pricing-calculator/?event=Just+Track+It&track=Atlanta+Motorsports+Park&date=Sep+12-13&days=2
    `track` resolves through the SAME alias-aware matcher the dropdown uses, so the calendar
-   can say "AMP" or the full official name and either one lands.
-   `event` and `date` are display-only in the calculator but travel with the quote into
-   HubSpot as estimate_event_name / estimate_event_date. */
+   can say "AMP" or the full official name and either one lands. `days`, `hours` and `sessions`
+   are numbers clamped to the steppers' ranges. `event`, `date` and `type` never reach the page
+   as typed: the banner shows an event only when it matches one on the calendar, and then it
+   shows the calendar's own words. A made-up ?event= shows no banner. */
 
 function setStep(key, value) {
   const cfg = STEP[key];
   if (!cfg || !isFinite(value)) return;
   const v = Math.min(Math.max(value, cfg.min), cfg.max);
   state[cfg.key] = v;
-  document.getElementById(cfg.out).textContent = key === "hours" ? hrTxt(v) : v;
+  $(cfg.out).textContent = key === "hours" ? hrTxt(v) : v;
 }
 
 function showEventBanner() {
-  const el = document.getElementById("eventBanner");
-  if (!EVENT.name && !EVENT.date && !EVENT.type) { el.hidden = true; return; }
-  document.getElementById("eventName").textContent = EVENT.name || "Selected event";
-  document.getElementById("eventDate").textContent = EVENT.date || "";
-  document.getElementById("eventType").textContent = EVENT.type || "";
-  el.hidden = false;
+  const b = $("event-banner");
+  if (!EVENT.name) { b.hidden = true; return; }
+  $("event-name").textContent = EVENT.name;
+  $("event-date").textContent = EVENT.date || "";
+  $("event-type").textContent = EVENT.type || "";
+  b.hidden = false;
+}
+
+// e is a calendar event (or null to clear); wantType narrows the type shown to one the event has
+function setEvent(e, wantType) {
+  if (!e) { EVENT.name = ""; EVENT.date = ""; EVENT.type = ""; return; }
+  EVENT.name = e.name; EVENT.date = e.date;
+  const w = matchKey(wantType);
+  const hit = w ? e.types.find(t => matchKey(t) === w) : null;
+  EVENT.type = hit || e.type;
+}
+
+// compare calendar text loosely: case, spacing and any kind of dash do not matter
+const matchKey = (s) => String(s || "").toLowerCase().replace(/[‐-―]/g, "-").replace(/\s*-\s*/g, "-").replace(/\s+/g, " ").trim();
+function findCalendarEvent(name, date) {
+  const n = matchKey(name), d = matchKey(date);
+  if (!n) return -1;
+  return CAL_EVENTS.findIndex(x => matchKey(x.name) === n && (!d || matchKey(x.date) === d));
 }
 
 // The live site carries the handoff in location.search; the single-file review draft routes by
@@ -1110,9 +1160,8 @@ function handoffParams() {
 async function applyEventFromUrl() {
   const p = handoffParams();
   if (!p.get("event") && !p.get("track") && !p.get("date")) return;
-  EVENT.name = (p.get("event") || "").trim().slice(0, 120);
-  EVENT.date = (p.get("date")  || "").trim().slice(0, 40);
-  EVENT.type = (p.get("type")  || "").trim().slice(0, 60);
+  const i = findCalendarEvent(p.get("event"), p.get("date"));
+  setEvent(i >= 0 ? CAL_EVENTS[i] : null, p.get("type"));
   const qTrack = p.get("track"), qDays = p.get("days"), qHours = p.get("hours"), qSessions = p.get("sessions");
   if (qTrack) {
     const hit = filterTracks(qTrack);
@@ -1122,32 +1171,28 @@ async function applyEventFromUrl() {
   if (qDays) setStep("days", parseInt(qDays, 10));
   if (qHours) setStep("hours", parseFloat(qHours));
   if (qSessions) setStep("sessions", parseInt(qSessions, 10));
-  const sel = document.getElementById("eventSelect");
-  if (sel && CAL_EVENTS.length) {
-    const i = CAL_EVENTS.findIndex(x => x.name === EVENT.name && x.date === EVENT.date);
-    sel.value = i >= 0 ? String(i) : "";
-  }
+  const sel = $("event-select");
+  if (sel) sel.value = i >= 0 ? String(i) : "";
   showEventBanner();
   render();
-  if (EVENT.name || EVENT.date) {
-    track("event_handoff", { event_name: EVENT.name, event_date: EVENT.date, track_name: state.distLabel });
+  if (EVENT.name) {
+    track("event_handoff", { event_name: EVENT.name, event_date: EVENT.date, track_name: disp(state.distLabel) });
   }
 }
 
-document.getElementById("eventClear").addEventListener("click", function (e) {
+$("event-clear").addEventListener("click", function (e) {
   e.preventDefault();
-  EVENT.name = ""; EVENT.date = ""; EVENT.type = "";
-  const sel = document.getElementById("eventSelect");
+  setEvent(null);
+  const sel = $("event-select");
   if (sel) sel.value = "";          // keep the picker and the banner in step
   showEventBanner();
+  render();
 });
 
 
 /* ---------- race-weekend picker, read live from the calendar page ----------
-   Rather than hard-coding event links into the calendar (an Elementor widget on a
-   published page that would drift the moment an event is added), the calculator fetches
-   the calendar page and parses its table. One source of truth: edit the calendar, the
-   dropdown follows. Verified against the live table — 20 events, all tracks resolved.
+   Rather than hard-coding a list of events, the calculator fetches the calendar page and
+   parses its table. One source of truth: edit the calendar, the dropdown follows.
    Every failure path is silent: the field stays hidden and the calculator is unaffected. */
 
 let CAL_EVENTS = [];
@@ -1191,8 +1236,8 @@ function parseEventDays(date) {
 }
 
 // <br> inside a header must become a space or "Track<br>Day" reads as "TrackDay"
-function cellText(el) {
-  const c = el.cloneNode(true);
+function cellText(node) {
+  const c = node.cloneNode(true);
   c.querySelectorAll("br").forEach(br => br.replaceWith(" "));
   return c.textContent.replace(/\s+/g, " ").trim();
 }
@@ -1269,9 +1314,9 @@ async function loadCalendarEvents() {
 }
 
 async function initEventPicker() {
-  const field = document.getElementById("eventField");
-  const sel = document.getElementById("eventSelect");
-  const status = document.getElementById("eventStatus");
+  const field = $("event-field");
+  const sel = $("event-select");
+  const status = $("event-status");
   const events = await loadCalendarEvents();
   if (!events) return;                       // stays hidden; nothing else changes
   CAL_EVENTS = events;
@@ -1282,36 +1327,36 @@ async function initEventPicker() {
     sel.appendChild(o);
   });
   field.classList.remove("hidden");
-  status.innerHTML = "<b>" + events.length + " events</b> · <span class='src'>live from the calendar</span>";
+  status.textContent = "";
+  status.appendChild(el("b", "", events.length + " events"));
+  status.appendChild(document.createTextNode(" · "));
+  status.appendChild(el("span", "src", "live from the calendar"));
 
   sel.addEventListener("change", async () => {
     const e = CAL_EVENTS[+sel.value];
-    if (!e) { EVENT.name = ""; EVENT.date = ""; EVENT.type = ""; showEventBanner(); render(); return; }
-    EVENT.name = e.name; EVENT.date = e.date; EVENT.type = e.type;
+    if (!sel.value || !e) { setEvent(null); showEventBanner(); render(); return; }
+    setEvent(e);
     if (e.track) await pickTrack(e.track);
     setStep("days", e.days);
     if (e.hours != null) setStep("hours", e.hours);
     if (e.sessions != null) setStep("sessions", e.sessions);
     showEventBanner(); render();
-    track("event_selected", { event_name: e.name, event_date: e.date, event_type: e.type, track_name: state.distLabel });
+    track("event_selected", { event_name: e.name, event_date: e.date, event_type: e.type, track_name: disp(state.distLabel) });
   });
-
-  // if the URL already named an event, show it selected rather than blank
-  if (EVENT.name || EVENT.date) {
-    const i = events.findIndex(x => x.name === EVENT.name && x.date === EVENT.date);
-    if (i >= 0) sel.value = String(i);
-  }
 }
 
+// the calendar's "Price it" links end in #quote; land on the estimate once the handoff is applied
+const landOnQuote = () => { if (/(^#|\/)quote$|#quote$/.test(location.hash) || location.hash === "#quote") toQuote(false); };
+
 // wait for the whole document: in the review draft the calendar section comes after this script
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { initEventPicker().then(applyEventFromUrl); });
-else initEventPicker().then(applyEventFromUrl);
+const start = () => initEventPicker().then(applyEventFromUrl).then(landOnQuote);
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+else start();
 // the review draft changes pages by hash, so a "Price it" click arrives as a hashchange
 window.addEventListener("hashchange", function () {
   if (location.hash.indexOf("rental-pricing-calculator") >= 0 && location.hash.indexOf("?") >= 0) {
-    applyEventFromUrl().then(function () {
-      const q = document.getElementById("quote"); if (q) q.scrollIntoView({ block: "start" });
-    });
+    applyEventFromUrl().then(function () { toQuote(false); });
   }
 });
+})();
 </script>

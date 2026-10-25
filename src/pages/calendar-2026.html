@@ -366,20 +366,10 @@
       <h2>Tell us which weekend.</h2>
       <p class="sub">Name the event and track from the table above, and we'll follow up with a trailer-spot confirmation and an itemized quote.</p>
     </div>
-    <form class="form b2-form" data-form="general-inquiry" data-email="info@b2motorsports.com" id="cal-inquiry-form" novalidate>
+    <div class="form ghl-form" id="cal-inquiry-form" data-form="general-inquiry-calendar">
       <div class="form__head"><h3>General inquiry</h3><span class="mono">We reply within a business day</span></div>
-      <div class="fields">
-        <label class="field">Name<input type="text" name="fullname" id="cal-name" required autocomplete="name"></label>
-        <label class="field">Email<input type="email" name="email" id="cal-email" required autocomplete="email"></label>
-        <label class="field">Phone<input type="tel" name="phone" id="cal-phone" autocomplete="tel"></label>
-        <label class="field">Event(s) of interest<input type="text" name="events_interest" id="cal-events" placeholder="e.g. Chin Track Days, Oct 17&ndash;18"></label>
-        <label class="field field--full">Services of interest<input type="text" name="services_interest" id="cal-services" placeholder="e.g. arrive-and-drive rental, trackside support"></label>
-        <label class="field field--full">Anything else<textarea name="inquiry_message" id="cal-msg"></textarea></label>
-        <label class="consent"><input type="checkbox" name="consent" id="cal-consent"><span>By submitting a phone number, I consent to receive automated texts and/or phone calls at the phone number used above. &middot; By checking this box, I opt-in and agree to receive text messages from B2 Motorsports. Message and data rates may apply. &middot; By clicking &quot;Submit&quot;, I am consenting to receive text messages from B2 Motorsports to the phone number I provided. &middot; I understand these texts may be automated and that my consent to texting is not required as a condition to purchase. &middot; By submitting your information, you consent to receive all forms of communication including but not limited to; phone, text, email, mail, etc. Message and data rates may apply. Consent to these terms is not a condition of purchase. You may opt out at any time.</span></label>
-        <div class="form__actions"><button class="btn" type="submit"><span>Send</span></button><span class="form__note">No obligation.</span></div>
-        <p class="form__status" aria-live="polite"></p>
-      </div>
-    </form>
+      {{GHL_FORM:general-inquiry-calendar}}
+    </div>
   </div>
 </section>
 

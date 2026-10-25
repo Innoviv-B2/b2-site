@@ -106,25 +106,10 @@
 
       <h2 id="measurements">Send us your measurements</h2>
       <p>Every supplier above sizes gear off the same handful of numbers: head circumference for a helmet, hand circumference for gloves, chest, waist, hips, inseam and sleeve for a suit, and plain shoe size for shoes and socks. Send us yours and we will help you read the size charts before you order. Fill in the form below or email <a href="mailto:info@b2motorsports.com">info@b2motorsports.com</a> with your height, weight, and helmet, suit, glove and shoe sizes.</p>
-      <form class="form b2-form" data-form="safety-gear" data-email="info@b2motorsports.com" id="gear-form" novalidate>
-        <div class="form__head"><h3>Safety gear measurements</h3><span class="mono">We reply within a business day</span></div>
-        <div class="fields">
-          <label class="field">Name<input type="text" name="fullname" id="gear-name" required autocomplete="name"></label>
-          <label class="field">Email<input type="email" name="email" id="gear-email" required autocomplete="email"></label>
-          <label class="field">Phone<input type="tel" name="phone" id="gear-phone" autocomplete="tel"></label>
-          <label class="field">Helmet size<input type="text" name="gear_helmet_size" id="gear-helmet-size" placeholder="e.g. 58 cm / M"></label>
-          <label class="field">Suit size<input type="text" name="gear_suit_size" id="gear-suit-size" placeholder="e.g. 42 / M"></label>
-          <label class="field">Glove size<input type="text" name="gear_glove_size" id="gear-glove-size" placeholder="e.g. L"></label>
-          <label class="field">Shoe size (US)<input type="text" name="gear_shoe_size" id="gear-shoe-size"></label>
-          <label class="field">Height (in)<input type="number" name="gear_height" id="gear-height"></label>
-          <label class="field">Weight (lb)<input type="number" name="gear_weight" id="gear-weight"></label>
-          <label class="field field--full">Anything else (brand preference, budget, questions)<textarea name="inquiry_message" id="gear-msg"></textarea></label>
-          <label class="consent"><input type="checkbox" name="consent" id="gear-consent"><span>By submitting a phone number, I consent to receive automated texts and/or phone calls at the phone number used above. &middot; By checking this box, I opt-in and agree to receive text messages from B2 Motorsports. Message and data rates may apply. &middot; By clicking &quot;Submit&quot;, I am consenting to receive text messages from B2 Motorsports to the phone number I provided. &middot; I understand these texts may be automated and that my consent to texting is not required as a condition to purchase. &middot; By submitting your information, you consent to receive all forms of communication including but not limited to; phone, text, email, mail, etc. Message and data rates may apply. Consent to these terms is not a condition of purchase. You may opt out at any time.</span></label>
-          <div class="form__actions"><button class="btn" type="submit"><span>Send</span></button><span class="form__note">No obligation.</span></div>
-          <p class="form__status" aria-live="polite"></p>
-        </div>
-      </form>
-      <p class="mono">needs Cliff: paste the HubSpot form GUID for "safety-gear" into site.json once the form is built <span class="note">needs Cliff: form GUID</span></p>
+      <div class="form ghl-form" id="gear-form" data-form="safety-gear">
+      <div class="form__head"><h3>Safety gear measurements</h3><span class="mono">We reply within a business day</span></div>
+      {{GHL_FORM:safety-gear}}
+    </div>
 
       <h2>The checklist</h2>
       <ul class="check">

@@ -134,20 +134,10 @@
   <div class="wrap wrap--narrow">
     <h2>Schedule a tour.</h2>
     <p class="body">Twenty minutes, in the building, with someone who works there. Tell us when suits you and what you would store or work on.</p>
-    <form class="form b2-form" data-form="storage-tour" data-email="storage@b2motorsports.com" id="equipment-tour-form" novalidate>
+    <div class="form ghl-form" id="equipment-tour-form" data-form="storage-tour">
       <div class="form__head"><h3>Schedule a tour</h3><span class="mono">We reply within a business day</span></div>
-      <div class="fields">
-        <input type="hidden" name="inquiry_type" value="storage_tour">
-        <label class="field">Name<input type="text" name="fullname" id="eq-tour-name" required autocomplete="name"></label>
-        <label class="field">Email<input type="email" name="email" id="eq-tour-email" required autocomplete="email"></label>
-        <label class="field">Phone<input type="tel" name="phone" id="eq-tour-phone" autocomplete="tel"></label>
-        <label class="field">When works for you?<input type="text" name="tour_when" id="eq-tour-when" placeholder="e.g. weekday after 4, or Saturday morning"></label>
-        <label class="field field--full">What would you store or work on?<textarea name="inquiry_message" id="eq-tour-msg"></textarea></label>
-        <label class="consent"><input type="checkbox" name="consent" id="eq-tour-consent"><span>By submitting a phone number, I consent to receive automated texts and/or phone calls at the phone number used above. &middot; By checking this box, I opt-in and agree to receive text messages from B2 Motorsports. Message and data rates may apply. &middot; By clicking &quot;Submit&quot;, I am consenting to receive text messages from B2 Motorsports to the phone number I provided. &middot; I understand these texts may be automated and that my consent to texting is not required as a condition to purchase. &middot; By submitting your information, you consent to receive all forms of communication including but not limited to; phone, text, email, mail, etc. Message and data rates may apply. Consent to these terms is not a condition of purchase. You may opt out at any time.</span></label>
-        <div class="form__actions"><button class="btn" type="submit"><span>Request a tour</span></button><span class="form__note">Mon–Fri 8–5, or by arrangement.</span></div>
-        <p class="form__status" aria-live="polite"></p>
-      </div>
-    </form>
+      {{GHL_FORM:storage-tour}}
+    </div>
     <p class="contact-line"><a href="mailto:storage@b2motorsports.com">storage@b2motorsports.com</a> · call or text <a href="tel:+12569100658">256-910-0658</a> · 2919A Bob Wallace Ave, Huntsville, AL 35805</p>
   </div>
 </section>
