@@ -22,7 +22,7 @@
 - 1101 words · H1: "Spec Racer Ford rental cost Every line. Nothing hidden." · 1 images · 7 internal links
 
 ## /race-calendar-spec-racer-ford-rentals-trackside-support/ — `calendar.html`
-- 2143 words · H1: "The Spec Racer Ford race calendar." · 1 images · 55 internal links
+- 2274 words · H1: "The Spec Racer Ford race calendar." · 1 images · 55 internal links
 
 ## /services/storage/ — `storage.html`
 - 619 words · H1: "Car storage in Huntsville, with a DIY garage on the other side of the door." · 5 images · 14 internal links

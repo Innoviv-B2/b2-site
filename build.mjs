@@ -47,6 +47,12 @@ const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct
 const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const fmtDay = (d) => `${MON[+d.slice(5, 7) - 1]} ${+d.slice(8, 10)}`;
 const fmtRange = (s, e) => !e || e === s ? fmtDay(s) : s.slice(5, 7) === e.slice(5, 7) ? `${fmtDay(s)}–${+e.slice(8, 10)}` : `${fmtDay(s)}–${fmtDay(e)}`;
+// The calendar's dates name their year (Cliff, 25 Oct 2026); its address, title and labels still don't
+const fmtRangeY = (s, e) => !e || s.slice(0, 4) === e.slice(0, 4) ? `${fmtRange(s, e)}, ${s.slice(0, 4)}` : `${fmtDay(s)}, ${s.slice(0, 4)}–${fmtDay(e)}, ${e.slice(0, 4)}`;
+const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const STATE = { AL: "Alabama", AR: "Arkansas", FL: "Florida", GA: "Georgia", IL: "Illinois", IN: "Indiana", KS: "Kansas", KY: "Kentucky", LA: "Louisiana", MD: "Maryland",
+  MI: "Michigan", MO: "Missouri", MS: "Mississippi", NC: "North Carolina", NJ: "New Jersey", NY: "New York", OH: "Ohio", OK: "Oklahoma", PA: "Pennsylvania", SC: "South Carolina",
+  TN: "Tennessee", TX: "Texas", VA: "Virginia", WI: "Wisconsin", WV: "West Virginia" };
 const eventDay = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });   // B2's day, not the build server's
 const dayN = (d) => Date.parse(d.slice(0, 10) + "T12:00:00Z") / 864e5;
 const eventsFile = path.join(SRC, "data", "events.json");
@@ -88,12 +94,12 @@ function calRow(e) {
     const mark = i === 1 ? "&sup1;" : i === 0 && !e.types.includes("track_day") && has(e, RACE) ? "&sup2;" : i === 2 ? sic : "";
     return `<td class="cal-tick">&#10003;${mark}</td>`;
   }).join("");
-  const q = new URLSearchParams({ event: e.title, track: e.track, date: fmtRange(e.start, e.end), days: String(days), hours: String(hours), sessions: String(sessions) });
+  const q = new URLSearchParams({ event: e.title, track: e.track, date: fmtRangeY(e.start, e.end), days: String(days), hours: String(hours), sessions: String(sessions) });
   const at = `${esc(e.track)}${e.city ? ` (${esc(e.city)}, ${esc(e.state)})` : ""}${e.line ? ` &middot; ${esc(e.line)}` : ""}`;
-  // data-types / data-license / data-state are for filters to come: license is the lowest bar to get on track that weekend
+  // data-types and data-state drive the page's filter (site.js); data-license is the lowest bar to get on track that weekend
   const lic = e.types.some((t) => ["track_day", "test_day", "school", "CRE"].includes(t)) ? "none" : e.types.includes("time_trial") ? "tt" : "comp";
   return `          <tr data-end="${e.end}" data-types="${e.types.join(" ")}" data-license="${lic}" data-state="${esc(e.state || "")}">
-            <td><b>${fmtRange(e.start, e.end).replace("–", "&ndash;")}</b>${days === 1 ? ` (${DOW[new Date(e.start + "T12:00:00Z").getUTCDay()]})` : ""}${e.dates_estimated ? `<br><span class="cal-register"><span>dates TBC</span></span>` : ""}</td>
+            <td><b><time datetime="${e.start}">${fmtRangeY(e.start, e.end).replace("–", "&ndash;")}</time></b>${days === 1 ? ` (${DOW[new Date(e.start + "T12:00:00Z").getUTCDay()]})` : ""}${e.dates_estimated ? `<br><span class="cal-register"><span>dates TBC</span></span>` : ""}</td>
             <td class="cal-event">${esc(e.title)}<br><span class="cal-at">${at}</span>${badges}</td>
             ${ticks}
             <td class="cal-time">${hours} h &middot; ${sessions} sessions<br><a href="/rental-pricing-calculator/?${esc(q.toString())}#quote">Price it</a></td>
@@ -103,7 +109,11 @@ function calRow(e) {
 }
 if (calPage) {
   const url = site.baseUrl + calPage.meta.path;
-  calPage.body = calPage.body.replace("{{CAL_ROWS}}", upcoming.map(calRow).join("\n"));
+  // a month row heads each month's events (one cell, so the calculator's picker skips it); site.js hides it with its rows
+  const monthRow = (ym) => `          <tr class="cal-month"><td colspan="9"><time datetime="${ym}">${MONTH[+ym.slice(5, 7) - 1]} ${ym.slice(0, 4)}</time></td></tr>`;
+  calPage.body = calPage.body.replace("{{CAL_ROWS}}", upcoming.map((e, i) => (i && upcoming[i - 1].start.slice(0, 7) === e.start.slice(0, 7) ? "" : monthRow(e.start.slice(0, 7)) + "\n") + calRow(e)).join("\n"))
+    .replace("{{CAL_STATES}}", [...new Set(upcoming.map((e) => e.state).filter(Boolean))].sort((a, b) => (STATE[a] || a).localeCompare(STATE[b] || b))
+      .map((s) => `<option value="${esc(s)}">${esc(STATE[s] || s)}</option>`).join(""));
   if (!upcoming.length) calPage.body = calPage.body.replace(/ data-upcoming-empty hidden/, " data-upcoming-empty");
   calPage.meta.schema[0].itemListElement = upcoming.map((e, i) => ({ "@type": "ListItem", position: i + 1, item: {
     "@type": "Event", name: `${e.title} at ${e.track}`, startDate: e.start, endDate: e.end,
@@ -298,10 +308,12 @@ function checkPage(p) {
   if (/dollars per/i.test(body) && !/dollars per <b>sMile<\/b>|dollars per sMile/.test(body)) errs.push("tagline present but not spelled 'dollars per sMile'");
   if (meta.nav === "calendar") {
     errs.push(...calTrackErrs);
-    // the calendar shows only the dates still to come, so nothing on it, or in a menu that names it, says a year
+    // the calendar shows only the dates still to come, so nothing on it, or in a menu that names it, says a year;
+    // only its dates do, each inside a <time> element (Cliff, 25 Oct 2026)
     const labels = [...site.nav.flatMap((n) => [n, ...(n.children || [])]).filter((n) => n.href === meta.path).map((n) => n.label),
       ...[...site.footer.race, ...site.footer.more].filter(([, h]) => h === meta.path).map(([l]) => l)];
-    const named = [text, meta.title, meta.description, meta.navLabel, meta.keyphrase, JSON.stringify(meta.breadcrumb), meta.schema[0].name, ...labels].join(" ");
+    const undated = body.replace(/<time\b[^>]*>[^<]*<\/time>/g, " ").replace(/<script[\s\S]*?<\/script>/g, "").replace(/<style[\s\S]*?<\/style>/g, "").replace(/<[^>]+>/g, " ");
+    const named = [undated, meta.title, meta.description, meta.navLabel, meta.keyphrase, JSON.stringify(meta.breadcrumb), meta.schema[0].name, ...labels].join(" ");
     if (/\b20\d\d\b/.test(named)) errs.push("the calendar or a menu link to it names a year");
   }
   const internal = (body.match(/href="\/(?!assets)/g) || []).length;

@@ -47,6 +47,19 @@
 .pg-calendar .cal-map { position: relative; width: 100%; padding-bottom: 60%; border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--border); }
 .pg-calendar .cal-empty td { text-align: center; padding: 22px 16px; color: var(--muted); }
 .pg-calendar .cal-map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.pg-calendar .table td > b > time { white-space: nowrap; }
+.pg-calendar .cal-month td { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--blaze-text); padding-top: 26px; }
+.pg-calendar tbody .cal-month:first-child td { padding-top: 14px; }
+.pg-calendar .cal-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin: 0 0 8px; }
+.pg-calendar .cal-filter[hidden], .pg-calendar .cal-more[hidden] { display: none; }
+.pg-calendar .cal-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.pg-calendar .cal-chips button { font: 600 14px/1 var(--font-display); color: var(--paper); background: transparent; border: 1px solid var(--control-border); border-radius: 999px; padding: 10px 15px; min-height: 40px; cursor: pointer; }
+.pg-calendar .cal-chips button:hover { border-color: var(--purple); }
+.pg-calendar .cal-chips button[aria-pressed="true"] { background: var(--purple); border-color: var(--purple); color: var(--on-purple); }
+.pg-calendar .cal-where { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+.pg-calendar .cal-where select { font: 15px var(--font-display); color: var(--paper); background: var(--ink); border: 1px solid var(--control-border); border-radius: var(--radius-control); padding: 8px 10px; min-height: 40px; }
+.pg-calendar .cal-count { flex-basis: 100%; margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.pg-calendar .cal-more { margin: 20px 0 0; }
 </style>
 
 <!-- Hero -->
@@ -107,6 +120,20 @@
       <h2>Track days to national races, one crew.</h2>
       <p class="sub">Track Day, Time Trial, Road Race, and Enduro columns show what runs that weekend, and the track time column shows about how much driving you get. Press Price it on any row and the calculator opens with that weekend already filled in. Register through the organizer's own link, then text us to hold your trailer spot.</p>
     </div>
+    <div class="cal-filter" data-cal-filter hidden>
+      <div class="cal-chips" role="group" aria-label="Kind of event">
+        <button type="button" data-f="" aria-pressed="true">All events</button>
+        <button type="button" data-f="track_day test_day school" aria-pressed="false">Track &amp; test days</button>
+        <button type="button" data-f="time_trial" aria-pressed="false">Time trials</button>
+        <button type="button" data-f="race" aria-pressed="false">Road races</button>
+        <button type="button" data-f="enduro" aria-pressed="false">Enduros</button>
+        <button type="button" data-f="CRE" aria-pressed="false">CREs</button>
+      </div>
+      <label class="cal-where">State
+        <select data-f-state><option value="">Anywhere</option>{{CAL_STATES}}</select>
+      </label>
+      <p class="cal-count" data-cal-count aria-live="polite"></p>
+    </div>
     <div class="scroll-x">
       <table class="table">
         <thead>
@@ -127,8 +154,14 @@
           <tr class="cal-empty" data-upcoming-empty hidden>
             <td colspan="9">The next dates go up as the organizers publish them. Call or text <a href="tel:+12569100658">256-910-0658</a> and we'll tell you what's coming.</td>
           </tr>
+          <tr class="cal-empty" data-cal-nomatch hidden>
+            <td colspan="9">Nothing on the calendar matches that yet. Pick All events, or call or text <a href="tel:+12569100658">256-910-0658</a> and we'll look further afield.</td>
+          </tr>
         </tbody>
       </table>
+    </div>
+    <div class="cal-more" hidden>
+      <button type="button" class="btn btn--ghost btn--small" data-cal-more><span>Show every date</span></button>
     </div>
     <p class="cal-foot">
       &sup1; Time Trial / Time Attack entry needs a Time Trials license only (quick online application, no racing school). No competition license required. We'll walk you through it.<br>

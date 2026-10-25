@@ -3,7 +3,7 @@
    2. Forms are GoHighLevel embeds (site.json → ghl.forms); a submit becomes a conversion event.
       The footer's "Cookie settings" opens the Zaraz consent dialog.
    3. Review build: window.B2_REVIEW is set and the hash router in review.js takes over links.
-   4. Calendar dates that have passed since the last build come off the page. */
+   4. Calendar dates that have passed since the last build come off the page; the rest filter by kind and state. */
 (function () {
   "use strict";
 
@@ -103,6 +103,45 @@
   document.querySelectorAll("[data-upcoming-empty]").forEach(function (el) {
     el.hidden = !!el.parentNode.querySelector("[data-end]");
   });
+
+  /* ---- calendar: filter by kind of event and state, the next dozen dates first ----
+     Rows carry data-types and data-state; a month row shows while a row under it does. "Show every date"
+     lifts the dozen until the page is reloaded. Without script every row shows and the filter stays hidden. */
+  var calF = document.querySelector("[data-cal-filter]");
+  var calBody = calF && calF.parentNode.querySelector("tbody");
+  if (calBody && calBody.querySelector("tr[data-end]")) {
+    var CAL_FIRST = 12, calType = "", calAll = false;
+    var calState = calF.querySelector("[data-f-state]"), calCount = calF.querySelector("[data-cal-count]");
+    var calMore = calF.parentNode.querySelector("[data-cal-more]"), calNone = calBody.querySelector("[data-cal-nomatch]");
+    var calApply = function () {
+      var st = calState.value, types = calType ? calType.split(" ") : [], n = 0, shown = 0, month = null, any = false;
+      Array.prototype.forEach.call(calBody.rows, function (tr) {
+        if (tr.classList.contains("cal-month")) { if (month) month.hidden = !any; month = tr; any = false; return; }
+        if (!tr.hasAttribute("data-end")) return;
+        var ok = (!st || tr.getAttribute("data-state") === st) &&
+          (!types.length || tr.getAttribute("data-types").split(" ").some(function (t) { return types.indexOf(t) >= 0; }));
+        if (ok) n++;
+        tr.hidden = !ok || (!calAll && n > CAL_FIRST);
+        if (!tr.hidden) { shown++; any = true; }
+      });
+      if (month) month.hidden = !any;
+      if (calNone) calNone.hidden = n > 0;
+      calCount.textContent = n ? "Showing " + shown + " of " + n + (n === 1 ? " date" : " dates") : "";
+      calMore.parentNode.hidden = shown >= n;
+      calMore.firstChild.textContent = "Show all " + n + " dates";
+    };
+    calF.querySelectorAll("[data-f]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        calType = b.getAttribute("data-f");
+        calF.querySelectorAll("[data-f]").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+        calApply();
+      });
+    });
+    calState.addEventListener("change", calApply);
+    calMore.addEventListener("click", function () { calAll = true; calApply(); });
+    calF.hidden = false;
+    calApply();
+  }
 
   /* ---- footer year ---- */
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
