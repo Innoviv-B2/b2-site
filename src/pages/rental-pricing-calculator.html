@@ -5,7 +5,7 @@
   "nav": "race",
   "navLabel": "What It Costs",
   "title": "Spec Racer Ford Rental Cost Calculator | B2 Motorsports",
-  "description": "See your Spec Racer Ford rental cost in seconds: car, transport, tires, fuel and trackside crew, each its own line. Pick a 2026 race weekend for a real number.",
+  "description": "See your Spec Racer Ford rental cost in seconds: car, transport, tires, fuel and trackside crew, each its own line. Pick a race weekend for a real number.",
   "keyphrase": "Spec Racer Ford rental cost",
   "ogImage": "/assets/img/hero-car59-on-track.jpg",
   "breadcrumb": [
@@ -335,7 +335,7 @@
     <div class="calc">
       <div class="inputs">
         <div class="c-field hidden" id="b2c-event-field">
-          <label for="b2c-event-select">Pick your weekend <span class="opt">from the 2026 calendar; it fills in the track, days and track time</span></label>
+          <label for="b2c-event-select">Pick your weekend <span class="opt">from the race calendar; it fills in the track, days and track time</span></label>
           <select id="b2c-event-select">
             <option value="">Not tied to an event: just pricing a day</option>
           </select>
@@ -484,7 +484,7 @@
     <p>The calculator is not a teaser: it is the same arithmetic we bill from, line by line. Tires and fuel settle on what you actually use, and the only other things that change it are a multi-race discount or bringing your own car. Own a Spec Racer? Flip "Whose car?" above: same crew, same lines, same rates, no car rental. Elsewhere you call or fill in a form and wait for a price that moves with the days and the towing distance. Here you see it first.</p>
     <button class="bigcta" id="b2c-req-btn-2" type="button">Book this weekend</button>
     <p class="fineprint">Look for the white truck, trailer, and canopy at the track.</p>
-    <p class="related">More on the program: <a href="/the-cars/">the Spec Racer Ford itself</a> &middot; <a href="/2026-race-calendar-spec-racer-ford-rentals-trackside-support/">2026 race calendar</a> &middot; <a href="/race-with-us/">arrive-and-drive services</a> &middot; <a href="/srf3-fit-check/">the SRF3 fit check</a></p>
+    <p class="related">More on the program: <a href="/the-cars/">the Spec Racer Ford itself</a> &middot; <a href="/race-calendar-spec-racer-ford-rentals-trackside-support/">race calendar</a> &middot; <a href="/race-with-us/">arrive-and-drive services</a> &middot; <a href="/srf3-fit-check/">the SRF3 fit check</a></p>
   </div>
 </section>
 
@@ -554,7 +554,7 @@ const CONFIG = {
   distanceProxyUrl: "",     // e.g. "/api/track-distance"  (recommended)
   // The race-weekend picker fetches the CALENDAR page and parses its table, so the dropdown
   // always matches what the calendar shows. Same origin, no CORS. Set "" to disable the picker.
-  calendarUrl: "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/",
+  calendarUrl: "/race-calendar-spec-racer-ford-rentals-trackside-support/",
 
   // -- TRACK LIST ------------------------------------------------------------
   // Universe = the 2026 SCCA U.S. Majors Tour schedule (SRF3 is a listed class in every Majors
@@ -1127,7 +1127,7 @@ overlay.addEventListener("click", function (e) { if (e.target === overlay) close
 document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !overlay.hidden) closeQuote(); });
 
 /* ---------- calendar handoff ----------
-   The 2026 Race Calendar links in with, for example:
+   The race calendar links in with, for example:
      /rental-pricing-calculator/?event=Just+Track+It&track=Atlanta+Motorsports+Park&date=Sep+12-13&days=2
    `track` resolves through the SAME alias-aware matcher the dropdown uses, so the calendar
    can say "AMP" or the full official name and either one lands. `days`, `hours` and `sessions`
@@ -1252,6 +1252,7 @@ function parseEventDays(date) {
   const a = new Date(y, CAL_MON[m[1]], +m[2]);
   if (!m[4]) return 1;
   const b = new Date(y, CAL_MON[m[3] || m[1]], +m[4]);
+  if (b < a) b.setFullYear(y + 1);   // "Dec 30–Jan 2" runs into the new year
   const n = Math.round((b - a) / 86400000) + 1;
   return n > 0 && n < 15 ? n : 1;
 }
@@ -1301,10 +1302,14 @@ async function loadCalendarEvents() {
     const typeCols = headers.map((h, i) => ({ h: h, i: i }))
       .filter(c => c.i > eventIdx && SKIP.indexOf(c.h.toLowerCase()) < 0 && c.h.toLowerCase().indexOf("track time") < 0);
 
+    // a row carries its last day as data-end; the fetched page may predate dates that have passed since
+    const now = new Date(), two = (n) => String(n).padStart(2, "0");
+    const today = `${now.getFullYear()}-${two(now.getMonth() + 1)}-${two(now.getDate())}`;
     const out = [];
     for (const tr of table.querySelectorAll("tr")) {
       const tds = [...tr.querySelectorAll("td")];
       if (tds.length < 2) continue;
+      if (tr.dataset.end && tr.dataset.end < today) continue;
       const hand = rowHandoff(tr);
       const date = hand && hand.get("date") ? hand.get("date") : cellText(tds[dateIdx] || tds[0]);
       const cell = cellText(tds[eventIdx] || tds[1]);

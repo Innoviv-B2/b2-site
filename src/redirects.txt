@@ -33,9 +33,12 @@
 /storage-form /services/storage/ 301
 # Menu items that WordPress gave their own permalinks.
 /what-it-costs/ /rental-pricing-calculator/ 301
-/calendar/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/calendar-2/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/2026-race-calendar/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/calendar/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/calendar-2/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+# The calendar dropped the year from its address (Cliff, 25 Oct 2026): it always shows the dates still to come.
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
 /navigation/ / 301
 /index.php/2023/12/14/navigation/ / 301
 /home/ / 301
@@ -43,10 +46,10 @@
 /wp-global-styles-generatepress-child/ / 301
 
 # --- Broken links on the old site that the audit found (item 7), sent where they were meant to go --------------
-/2025-race-calendar-spec-racer-ford-rentals-trackside-support/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/2025-race-calendar-spec-racer-ford-rentals-trackside-support /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/schedules/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/schedules /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2025-race-calendar-spec-racer-ford-rentals-trackside-support/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2025-race-calendar-spec-racer-ford-rentals-trackside-support /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/schedules/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/schedules /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
 /race-simulator/ /simulator-and-sim-training/ 301
 /race-simulator /simulator-and-sim-training/ 301
 /services/race-simulator/ /simulator-and-sim-training/ 301
@@ -57,8 +60,8 @@
 /services/shop/ / 301
 /services/shop / 301
 # The Events Calendar plugin served /events/; the calendar page replaces it.
-/events/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/events /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/events/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/events /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
 
 # --- Merch store (EasyCart) dropped, not moved. Check EasyCart for open orders before the switch. ------------
 /store/* / 301
@@ -163,7 +166,7 @@
 /b2-purple-and-orange-camo-shirt-front/ / 301
 /lc-r031824-1/ / 301
 /mid-ohio-hoosier-super-tour-a-step-forward-for-jackson-diehl/pxl_20250516_113956240/ /mid-ohio-hoosier-super-tour-a-step-forward-for-jackson-diehl/ 301
-/2026-race-calendar-spec-racer-ford-rentals-trackside-support/scca/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/scca/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
 /662982f0632b011a413ce726-got-sports-upf-50-long-sleeve-fishing-t/ / 301
 /61hydkndmql-_uy1100_/ / 301
 /download-11/ / 301
@@ -172,13 +175,13 @@
 /srf3-fit-check/dd/ /srf3-fit-check/ 301
 /srf3-fit-check/cc/ /srf3-fit-check/ 301
 /srf3-fit-check/bb/ /srf3-fit-check/ 301
-/2026-race-calendar-spec-racer-ford-rentals-trackside-support/cropped-nasa_ms_logo_300-1/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/2026-race-calendar-spec-racer-ford-rentals-trackside-support/logo-full-svra/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/2026-race-calendar-spec-racer-ford-rentals-trackside-support/ptcfulllogo/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/2026-race-calendar-spec-racer-ford-rentals-trackside-support/bmpba_clr/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/2026-race-calendar-spec-racer-ford-rentals-trackside-support/talladeda-logo/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/2026-race-calendar-spec-racer-ford-rentals-trackside-support/michelinroad/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
-/2026-race-calendar-spec-racer-ford-rentals-trackside-support/msplogo/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/cropped-nasa_ms_logo_300-1/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/logo-full-svra/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/ptcfulllogo/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/bmpba_clr/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/talladeda-logo/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/michelinroad/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/msplogo/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
 /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/img_20250623_173823-4/ /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/ 301
 /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/img_20250623_173823-1/ /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/ 301
 /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/img_20250623_173822/ /road-america-june-sprints-weekend-recap-scca-hoosier-super-tour/ 301
@@ -234,6 +237,6 @@
 /summer-sizzle-weekend-at-road-atlanta/extra-b2-livery-detail/ /summer-sizzle-weekend-at-road-atlanta/ 301
 /summer-sizzle-weekend-at-road-atlanta/video-2-weekend/ /summer-sizzle-weekend-at-road-atlanta/ 301
 /summer-sizzle-weekend-at-road-atlanta/summer-sizzler-header-selection/ /summer-sizzle-weekend-at-road-atlanta/ 301
-/2026-race-calendar-spec-racer-ford-rentals-trackside-support/pxl_20250322_114557334/ /2026-race-calendar-spec-racer-ford-rentals-trackside-support/ 301
+/2026-race-calendar-spec-racer-ford-rentals-trackside-support/pxl_20250322_114557334/ /race-calendar-spec-racer-ford-rentals-trackside-support/ 301
 
 # --- Posts and pages b2-site serves at the same URL need no line: 7 posts, plus every page whose path matches. ---

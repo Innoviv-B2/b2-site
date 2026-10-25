@@ -54,7 +54,7 @@
     "/the-cars/",
     "/srf3-fit-check/",
     "/rental-pricing-calculator/",
-    "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/",
+    "/race-calendar-spec-racer-ford-rentals-trackside-support/",
     "/services/storage/",
     "/services/storage/equipment/",
     "/services/storage/membership/",
@@ -95,8 +95,8 @@
           "href": "/rental-pricing-calculator/"
         },
         {
-          "label": "2026 Calendar",
-          "href": "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/"
+          "label": "Race Calendar",
+          "href": "/race-calendar-spec-racer-ford-rentals-trackside-support/"
         },
         {
           "label": "How to Get a Racing License",
@@ -135,7 +135,7 @@
     {
       "key": "calendar",
       "label": "Calendar",
-      "href": "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/"
+      "href": "/race-calendar-spec-racer-ford-rentals-trackside-support/"
     },
     {
       "key": "about",
@@ -181,8 +181,8 @@
         "/crash-damage/"
       ],
       [
-        "2026 Calendar",
-        "/2026-race-calendar-spec-racer-ford-rentals-trackside-support/"
+        "Race Calendar",
+        "/race-calendar-spec-racer-ford-rentals-trackside-support/"
       ],
       [
         "How to Get a Racing License",

@@ -120,7 +120,7 @@ estimate in its hidden `estimate_*` fields and, as text, in `inquiry_message`.
 ## 7. Pages that exist (link only to these)
 
 `/` `/race-with-us/` `/the-cars/` `/srf3-fit-check/` `/rental-pricing-calculator/`
-`/2026-race-calendar-spec-racer-ford-rentals-trackside-support/` `/services/storage/`
+`/race-calendar-spec-racer-ford-rentals-trackside-support/` `/services/storage/`
 `/services/performance-shop/` `/about-us/` `/faq/` `/contact-us/` `/blog/`
 `/blog/buying-safety-gear/` `/how-to-get-a-racing-license/` `/paths-into-racing/`
 `/driver-development-program/` `/simulator-and-sim-training/` `/sponsors/` `/media-packages/`

@@ -36,15 +36,34 @@ const pages = pageFiles.map((f) => parsePage(path.join(SRC, "pages", f)));
 
 /* ---------- event feed: the calendar page's Event schema is the one source of truth ----------
    {{EVENTS_COUNT}} = events not yet finished as of the build date; {{EVENTS_NEXT}} = rail rows for the next four.
-   Rebuilding the site refreshes both, so nothing on other pages goes stale when the calendar changes. */
+   The calendar only ever shows dates still to come (Cliff, 25 Oct 2026): the build drops past table rows and
+   past schema events, and site.js drops whatever has passed since, because the site rebuilds only on a push.
+   So every row and rail item carries its last day as data-end="YYYY-MM-DD", and the count carries every end date. */
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const fmtDay = (d) => `${MON[+d.slice(5, 7) - 1]} ${+d.slice(8, 10)}`;
 const fmtRange = (s, e) => !e || e === s ? fmtDay(s) : s.slice(5, 7) === e.slice(5, 7) ? `${fmtDay(s)}–${+e.slice(8, 10)}` : `${fmtDay(s)}–${fmtDay(e)}`;
+const eventDay = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });   // B2's day, not the build server's
+const lastDay = (e) => e.endDate || e.startDate;
 const calPage = pages.find((p) => p.meta.nav === "calendar" && p.meta.schema);
-const upcoming = ((calPage && calPage.meta.schema[0].itemListElement) || []).map((x) => x.item)
-  .filter((e) => (e.endDate || e.startDate) >= today).sort((a, b) => a.startDate.localeCompare(b.startDate));
-const eventRow = (e) => { const [who, ...where] = e.name.split(" — "); return `<li><span class="rail__t">${fmtRange(e.startDate, e.endDate)}</span><p><b>${who}</b>${where.length ? ", " + where.join(" — ") : ""}</p></li>`; };
-for (const p of pages) p.body = p.body.replace(/{{EVENTS_COUNT}}/g, String(upcoming.length)).replace(/{{EVENTS_NEXT}}/g, upcoming.slice(0, 4).map(eventRow).join("\n        "));
+const calEvents = ((calPage && calPage.meta.schema[0].itemListElement) || []).map((x) => x.item);
+const ROW_RE = /\n?[ \t]*<tr data-end="([^"]*)">[\s\S]*?<\/tr>/g;
+const calRowErrs = [];
+if (calPage) {
+  const rowEnds = [...calPage.body.matchAll(ROW_RE)].map((m) => m[1]).sort().join(" ");
+  const schemaEnds = calEvents.map(lastDay).sort().join(" ");
+  if (rowEnds !== schemaEnds) calRowErrs.push("calendar table rows (data-end) and Event schema (endDate or startDate) list different dates; every row needs a schema event with the same last day");
+  const bare = (calPage.body.split("<tbody>")[1] || "").match(/<tr(?![^>]*data-(end|upcoming-empty))[^>]*>/g);
+  if (bare) calRowErrs.push(`${bare.length} calendar row(s) without data-end="YYYY-MM-DD"; they would never come off`);
+}
+const upcoming = calEvents.filter((e) => lastDay(e) >= eventDay).sort((a, b) => a.startDate.localeCompare(b.startDate));
+if (calPage) {
+  calPage.body = calPage.body.replace(ROW_RE, (row, end) => end >= eventDay ? row : "");
+  if (!upcoming.length) calPage.body = calPage.body.replace(/ data-upcoming-empty hidden/, " data-upcoming-empty");
+  calPage.meta.schema[0].itemListElement = upcoming.map((item, i) => ({ "@type": "ListItem", position: i + 1, item }));
+}
+const eventRow = (e, i) => { const [who, ...where] = e.name.split(" — "); return `<li data-end="${lastDay(e)}"${i >= 4 ? " hidden" : ""}><span class="rail__t">${fmtRange(e.startDate, e.endDate)}</span><p><b>${who}</b>${where.length ? ", " + where.join(" — ") : ""}</p></li>`; };
+const countHtml = `<span data-upcoming-count="${upcoming.map(lastDay).join(" ")}">${upcoming.length}</span>`;
+for (const p of pages) p.body = p.body.replace(/{{EVENTS_COUNT}}/g, countHtml).replace(/{{EVENTS_NEXT}}/g, upcoming.map(eventRow).join("\n        "));
 // The privacy policy's effective date is the go-live date, set once in site.json on launch day.
 for (const p of pages) p.body = p.body.replace(/{{PRIVACY_EFFECTIVE}}/g, site.privacyEffective || "[set at launch]");
 const knownPaths = new Set([...pages.map((p) => p.meta.path), ...(site.plannedPaths || [])]);
@@ -152,7 +171,7 @@ const usesGhl = (body) => /{{GHL_FORM:|leadconnectorhq\.com\/widget\/form\//.tes
 const FORBIDDEN = [
   [/256-692-3996/, "old phone number"], [/2820 15th/i, "office address (site shows the shop: 2919A Bob Wallace Ave)"],
   [/mcwilliamsmarketing/i, "agency email"], [/dollars per (smile|Smile|mile)\b/, "tagline must read 'dollars per sMile'"],
-  [/staging2|\/race-simulator\//i, "dead link"], [/2025-race-calendar/i, "2025 calendar link"], [/#833CA3/i, "old purple; use #7C2FF0"],
+  [/staging2|\/race-simulator\//i, "dead link"], [/\/20\d\d-race-calendar/i, "calendar link with a year in it (the calendar has no year)"], [/#833CA3/i, "old purple; use #7C2FF0"],
   [/lorem ipsum/i, "placeholder text"], [/<html\b|<body\b|<head\b|<\/head>|<\/body>/i, "page fragments must not contain html/head/body"]
 ];
 function checkPage(p) {
@@ -195,6 +214,14 @@ function checkPage(p) {
     if (re.test(body)) errs.push(`forbidden: ${why} (${re})`);
   }
   if (/dollars per/i.test(body) && !/dollars per <b>sMile<\/b>|dollars per sMile/.test(body)) errs.push("tagline present but not spelled 'dollars per sMile'");
+  if (meta.nav === "calendar") {
+    errs.push(...calRowErrs);
+    // the calendar shows only the dates still to come, so nothing on it, or in a menu that names it, says a year
+    const labels = [...site.nav.flatMap((n) => [n, ...(n.children || [])]).filter((n) => n.href === meta.path).map((n) => n.label),
+      ...[...site.footer.race, ...site.footer.more].filter(([, h]) => h === meta.path).map(([l]) => l)];
+    const named = [text, meta.title, meta.description, meta.navLabel, meta.keyphrase, JSON.stringify(meta.breadcrumb), meta.schema[0].name, ...labels].join(" ");
+    if (/\b20\d\d\b/.test(named)) errs.push("the calendar or a menu link to it names a year");
+  }
   const internal = (body.match(/href="\/(?!assets)/g) || []).length;
   if (internal < 3 && !meta.noindex) warns.push(`only ${internal} internal links`);
   return { errs, warns, words, h1, imgs: (body.match(/<img\b/g) || []).length, internal };

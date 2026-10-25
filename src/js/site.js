@@ -2,7 +2,8 @@
    1. Mobile menu + dropdowns (touch-friendly).
    2. Forms are GoHighLevel embeds (site.json → ghl.forms); a submit becomes a conversion event.
       The footer's "Cookie settings" opens the Zaraz consent dialog.
-   3. Review build: window.B2_REVIEW is set and the hash router in review.js takes over links. */
+   3. Review build: window.B2_REVIEW is set and the hash router in review.js takes over links.
+   4. Calendar dates that have passed since the last build come off the page. */
 (function () {
   "use strict";
 
@@ -77,6 +78,25 @@
       f.className = "yt__frame";
       a.replaceWith(f);
     });
+  });
+
+  /* ---- calendar: dates that have passed come off ----
+     The build drops past dates, but the site rebuilds only on a push, so the page drops any that have passed
+     since. Each row or rail item carries its last day as data-end="YYYY-MM-DD"; one that ends today stays up.
+     A rail with data-upcoming-limit shows that many; a data-upcoming-count holds every end date and counts the
+     ones still to come; a data-upcoming-empty row shows once nothing is left beside it. */
+  var now = new Date(), two = function (n) { return (n < 10 ? "0" : "") + n; };
+  var today = now.getFullYear() + "-" + two(now.getMonth() + 1) + "-" + two(now.getDate());
+  document.querySelectorAll("[data-end]").forEach(function (el) { if (el.getAttribute("data-end") < today) el.remove(); });
+  document.querySelectorAll("[data-upcoming-limit]").forEach(function (list) {
+    var n = +list.getAttribute("data-upcoming-limit");
+    Array.prototype.forEach.call(list.children, function (li, i) { li.hidden = i >= n; });
+  });
+  document.querySelectorAll("[data-upcoming-count]").forEach(function (el) {
+    el.textContent = el.getAttribute("data-upcoming-count").split(" ").filter(function (d) { return d && d >= today; }).length;
+  });
+  document.querySelectorAll("[data-upcoming-empty]").forEach(function (el) {
+    el.hidden = !!el.parentNode.querySelector("[data-end]");
   });
 
   /* ---- footer year ---- */
