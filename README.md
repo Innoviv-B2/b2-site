@@ -29,6 +29,8 @@ needs-Cliff flags still on the pages to `docs/reports/open-notes.md`.
 | `src/css/site.css` | The whole design system: tokens for the dark and light themes, type, components, responsive rules |
 | `src/js/site.js` | Menu, dropdowns, the form-submit conversion event, the Cookie settings link, YouTube tiles |
 | `src/js/theme-init.js`, `theme.js` | The light/dark toggle: the first is inlined in `<head>` so there is no flash of the wrong theme |
+| `src/data/events.json` | The race calendar: the approved event feed from b2-event-calendar, which the build renders as the calendar table, its Event schema and the next-events rail. Never edited by hand |
+| `tools/calendar-update.mjs` | Copies that feed in and prints what changes; `--branch --push` puts the change on `events/<date>` for a Cloudflare preview (never on `main`; the merge is the publish) |
 | `src/redirects.txt` | Every old WordPress URL → its new page, in Cloudflare's `_redirects` syntax |
 | `assets/img/` | Optimized photos (JPEG 1600/800 + WebP) and `manifest.json` with subjects and alt text |
 | `build.mjs` | The builder and the checker |
@@ -50,6 +52,33 @@ Every form is a GoHighLevel embed: a page writes `{{GHL_FORM:<key>}}` and `site.
 gives the form id. The fields, B2's consent text and the thank-you message live in GoHighLevel.
 Under every embed the build adds "call or text 256-910-0658" and the email, so a visitor is never
 stuck if the frame does not load.
+
+## Updating the race calendar
+
+The calendar is generated from `src/data/events.json`; events are approved on b2-event-calendar's
+proposed-calendar page and published there (its skill, step 8). Then, from the repo root on `main`:
+
+```bash
+node tools/calendar-update.mjs                    # check the feed, write events.json, print what changes
+node tools/calendar-update.mjs --branch --push    # the same on events/<date>, built and checked, pushed for a preview
+```
+
+Cliff looks at the branch's Cloudflare preview and merges it; the merge is the publish.
+
+## Adding a track
+
+When the calendar gains an event at a track the calculator doesn't know, the calendar page fails the
+build check ("… is not in the calculator's track list") and `calendar-update.mjs` won't make a branch,
+because that event's Price it link would open with no transport price. To add the track:
+
+1. **The calendar run names it.** b2-event-calendar's `data/tracks.json` has the track: its name,
+   aliases, city, state, and the one-way **road route** miles and hours from the shop (basis
+   `osrm-route <date>` or the workbook; an estimate is not enough, since transport is priced from it).
+2. **Add it to the calculator:** `node tools/add-track.mjs "<track>" --lat <n> --lng <n> --reg <division>`
+   prints the line (round-trip miles = 2 × one-way, `src:"road"`) and where it goes in the
+   nearest-first list; add `--write` to put it there. `--lat/--lng` are the track's own coordinates.
+3. **Build and check:** `node build.mjs --check`, the calendar page clean; price one weekend there.
+4. **Cliff OKs it** before it ships, because it changes quotes; record it in b2-wp-tools `DECISIONS.md`.
 
 ## What is checked on every build
 

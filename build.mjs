@@ -34,35 +34,101 @@ function parsePage(file) {
 const pageFiles = fs.existsSync(path.join(SRC, "pages")) ? fs.readdirSync(path.join(SRC, "pages")).filter((f) => f.endsWith(".html")).sort() : [];
 const pages = pageFiles.map((f) => parsePage(path.join(SRC, "pages", f)));
 
-/* ---------- event feed: the calendar page's Event schema is the one source of truth ----------
-   {{EVENTS_COUNT}} = events not yet finished as of the build date; {{EVENTS_NEXT}} = rail rows for the next four.
-   The calendar only ever shows dates still to come (Cliff, 25 Oct 2026): the build drops past table rows and
-   past schema events, and site.js drops whatever has passed since, because the site rebuilds only on a push.
-   So every row and rail item carries its last day as data-end="YYYY-MM-DD", and the count carries every end date. */
+/* ---------- the race calendar: src/data/events.json is the one source of truth ----------
+   The approved event feed from b2-event-calendar (Cliff puts events on the website on its proposed-calendar
+   page; publish.py writes the feed; tools/calendar-update.mjs copies it here). Never edited by hand: a wrong
+   fact is fixed at the source. It renders the calendar page's rows ({{CAL_ROWS}}) and its Event schema, and on
+   other pages {{EVENTS_COUNT}} (events not yet finished) and {{EVENTS_NEXT}} (rail rows, the first four shown).
+   The calendar only ever shows dates still to come (Cliff, 25 Oct 2026): the build renders upcoming events only,
+   and site.js drops whatever has passed since, because the site rebuilds only on a push. So every row and rail
+   item carries its last day as data-end="YYYY-MM-DD", and the count carries every end date. The rows keep the
+   headers and the Price it links the calculator's race-weekend picker parses, so the picker follows the calendar. */
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const fmtDay = (d) => `${MON[+d.slice(5, 7) - 1]} ${+d.slice(8, 10)}`;
 const fmtRange = (s, e) => !e || e === s ? fmtDay(s) : s.slice(5, 7) === e.slice(5, 7) ? `${fmtDay(s)}–${+e.slice(8, 10)}` : `${fmtDay(s)}–${fmtDay(e)}`;
 const eventDay = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });   // B2's day, not the build server's
-const lastDay = (e) => e.endDate || e.startDate;
+const dayN = (d) => Date.parse(d.slice(0, 10) + "T12:00:00Z") / 864e5;
+const eventsFile = path.join(SRC, "data", "events.json");
+const feed = fs.existsSync(eventsFile) ? JSON.parse(read(eventsFile)) : { events: [] };
+const upcoming = feed.events.filter((e) => e.end >= eventDay).sort((a, b) => a.start.localeCompare(b.start) || a.title.localeCompare(b.title));
 const calPage = pages.find((p) => p.meta.nav === "calendar" && p.meta.schema);
-const calEvents = ((calPage && calPage.meta.schema[0].itemListElement) || []).map((x) => x.item);
-const ROW_RE = /\n?[ \t]*<tr data-end="([^"]*)">[\s\S]*?<\/tr>/g;
-const calRowErrs = [];
-if (calPage) {
-  const rowEnds = [...calPage.body.matchAll(ROW_RE)].map((m) => m[1]).sort().join(" ");
-  const schemaEnds = calEvents.map(lastDay).sort().join(" ");
-  if (rowEnds !== schemaEnds) calRowErrs.push("calendar table rows (data-end) and Event schema (endDate or startDate) list different dates; every row needs a schema event with the same last day");
-  const bare = (calPage.body.split("<tbody>")[1] || "").match(/<tr(?![^>]*data-(end|upcoming-empty))[^>]*>/g);
-  if (bare) calRowErrs.push(`${bare.length} calendar row(s) without data-end="YYYY-MM-DD"; they would never come off`);
+const RACE = ["race", "enduro", "time_trial", "CRE"];
+const has = (e, ts) => e.types.some((t) => ts.includes(t));
+const COLS = [["track_day", "test_day", "school"], ["time_trial"], ["race", "CRE"], ["enduro"]];   // Track Day, Time Trial, Road Race, Enduro
+// Track time is B2's estimate model (the footnote): race weekends about 4 h over 8 sessions, track days 2 h over
+// 4 sessions a day. The feed also carries each registration's published hours, but sources mean different things
+// by them (a provider's whole day, SRF3's own sessions), so they stay out of the Price it links until they agree.
+const trackTime = (e, days) => has(e, RACE) ? [4, 8] : [2 * Math.min(days, 3), 4 * Math.min(days, 3)];
+function licenseCell(e) {
+  const race = /SVRA/i.test(`${e.sanctioning_body} ${e.organizer}`) ? "SVRA or Comp" : "Comp";
+  const open = ["track_day", "test_day", "school"].find((t) => e.types.includes(t));
+  const openName = { track_day: "track day", test_day: "test day", school: "school" }[open];
+  if (has(e, ["race", "enduro"])) return open ? `None (${openName}) &middot; ${race} (race)` : race;
+  if (e.types.includes("CRE")) return "None (CRE)";
+  if (e.types.includes("time_trial")) return open ? `None (${openName}) &middot; Time Trials (TT)` : "Time Trials";
+  return "None";
 }
-const upcoming = calEvents.filter((e) => lastDay(e) >= eventDay).sort((a, b) => a.startDate.localeCompare(b.startDate));
+function registerCell(e) {
+  const NAME = { race: "Race", enduro: "Enduro", time_trial: "Time Trial", track_day: "Track day", test_day: "Test day", school: "School", CRE: "CRE" };
+  const urls = new Map();
+  for (const r of e.registrations) if (r.registration_url && !urls.has(r.registration_url)) urls.set(r.registration_url, r.event_type);
+  const links = [...urls].map(([u, t]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${urls.size > 1 ? NAME[t] || "Link" : "Link"}</a>`);
+  return `<td class="cal-register">${links.length ? links.join(" &middot; ") : `<a href="sms:${site.phoneTel}">Text us</a>`}${e.checked ? `<br><span>checked ${fmtDay(e.checked)}</span>` : ""}</td>`;
+}
+function calRow(e) {
+  const days = dayN(e.end) - dayN(e.start) + 1, [hours, sessions] = trackTime(e, days);
+  const closes = e.registrations.map((r) => (r.reg_closes || "").slice(0, 10)).filter((d) => d && d >= eventDay).sort()[0];
+  const off = e.registrations.find((r) => ["cancelled", "postponed"].includes(r.status));
+  const badges = [off ? off.status.toUpperCase() : "", closes && dayN(closes) - dayN(eventDay) <= 21 ? `REG CLOSES ${fmtDay(closes).toUpperCase()}` : "",
+    !e.seeded && e.approved_at && dayN(eventDay) - dayN(e.approved_at) <= 21 ? "NEW" : ""].filter(Boolean).map((b) => ` <span class="est">${b}</span>`).join("");
+  const sic = /SARRC Invitational|\bSIC\b/i.test(`${e.title} ${e.event_name}`) ? "&sup3;" : "";
+  const ticks = COLS.map((ts, i) => {
+    if (!has(e, ts)) return "<td></td>";
+    const mark = i === 1 ? "&sup1;" : i === 0 && !e.types.includes("track_day") && has(e, RACE) ? "&sup2;" : i === 2 ? sic : "";
+    return `<td class="cal-tick">&#10003;${mark}</td>`;
+  }).join("");
+  const q = new URLSearchParams({ event: e.title, track: e.track, date: fmtRange(e.start, e.end), days: String(days), hours: String(hours), sessions: String(sessions) });
+  const at = `${esc(e.track)}${e.city ? ` (${esc(e.city)}, ${esc(e.state)})` : ""}${e.line ? ` &middot; ${esc(e.line)}` : ""}`;
+  // data-types / data-license / data-state are for filters to come: license is the lowest bar to get on track that weekend
+  const lic = e.types.some((t) => ["track_day", "test_day", "school", "CRE"].includes(t)) ? "none" : e.types.includes("time_trial") ? "tt" : "comp";
+  return `          <tr data-end="${e.end}" data-types="${e.types.join(" ")}" data-license="${lic}" data-state="${esc(e.state || "")}">
+            <td><b>${fmtRange(e.start, e.end).replace("–", "&ndash;")}</b>${days === 1 ? ` (${DOW[new Date(e.start + "T12:00:00Z").getUTCDay()]})` : ""}${e.dates_estimated ? `<br><span class="cal-register"><span>dates TBC</span></span>` : ""}</td>
+            <td class="cal-event">${esc(e.title)}<br><span class="cal-at">${at}</span>${badges}</td>
+            ${ticks}
+            <td class="cal-time">${hours} h &middot; ${sessions} sessions<br><a href="/rental-pricing-calculator/?${esc(q.toString())}#quote">Price it</a></td>
+            <td>${licenseCell(e)}</td>
+            ${registerCell(e)}
+          </tr>`;
+}
 if (calPage) {
-  calPage.body = calPage.body.replace(ROW_RE, (row, end) => end >= eventDay ? row : "");
+  const url = site.baseUrl + calPage.meta.path;
+  calPage.body = calPage.body.replace("{{CAL_ROWS}}", upcoming.map(calRow).join("\n"));
   if (!upcoming.length) calPage.body = calPage.body.replace(/ data-upcoming-empty hidden/, " data-upcoming-empty");
-  calPage.meta.schema[0].itemListElement = upcoming.map((item, i) => ({ "@type": "ListItem", position: i + 1, item }));
+  calPage.meta.schema[0].itemListElement = upcoming.map((e, i) => ({ "@type": "ListItem", position: i + 1, item: {
+    "@type": "Event", name: `${e.title} at ${e.track}`, startDate: e.start, endDate: e.end,
+    eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    location: { "@type": "Place", name: e.track, ...(e.city ? { address: { "@type": "PostalAddress", addressLocality: e.city, addressRegion: e.state, addressCountry: "US" } } : {}) },
+    ...(e.organizer ? { organizer: { "@type": "Organization", name: e.organizer } } : {}), url } }));
 }
-const eventRow = (e, i) => { const [who, ...where] = e.name.split(" — "); return `<li data-end="${lastDay(e)}"${i >= 4 ? " hidden" : ""}><span class="rail__t">${fmtRange(e.startDate, e.endDate)}</span><p><b>${who}</b>${where.length ? ", " + where.join(" — ") : ""}</p></li>`; };
-const countHtml = `<span data-upcoming-count="${upcoming.map(lastDay).join(" ")}">${upcoming.length}</span>`;
+// Every calendar track must be one the calculator knows, or its Price it link opens with no transport price.
+// The match is the calculator's own (distinctive words of name + alias), and the state must agree. A new track
+// is added with tools/add-track.mjs (README §Adding a track); until then the calendar page fails the check.
+const calcPage = pages.find((p) => p.meta.file === "rental-pricing-calculator.html");
+const STOP = new Set("international intl raceway speedway park motorsports motorsport motor racing complex the of and at circuit".split(" "));
+const words = (s) => String(s).toLowerCase().replace(/[^a-z0-9 ]+/g, " ").split(" ").filter((w) => w.length > 1 && !STOP.has(w));
+const calcTracks = calcPage ? [...calcPage.body.matchAll(/\{ name:"([^"]+)"[^}]*?alias:"([^"]*)"/g)].map(([, n, a]) => ({ name: n.replace(/\\u2014/g, "—"), alias: a })) : [];
+const calTrackErrs = [];
+for (const t of [...new Set(upcoming.map((e) => e.track))]) {
+  const hay = new Set(words(t));
+  let best = null, score = 0;
+  for (const c of calcTracks) { const s = [...new Set([...words(c.name.split("—")[0]), ...words(c.alias)])].filter((w) => hay.has(w)).length; if (s > score) { score = s; best = c; } }
+  const state = (upcoming.find((e) => e.track === t) || {}).state;
+  if (!best) calTrackErrs.push(`"${t}" is on the calendar but not in the calculator's track list: add it with node tools/add-track.mjs "${t}" (README, Adding a track)`);
+  else if (state && !best.name.endsWith(" " + state)) calTrackErrs.push(`"${t}" (${state}) matches the calculator's "${best.name}", a different state: add the real track with tools/add-track.mjs`);
+}
+const eventRow = (e, i) => `<li data-end="${e.end}"${i >= 4 ? " hidden" : ""}><span class="rail__t">${fmtRange(e.start, e.end)}</span><p><b>${esc(e.title)}</b>, ${esc(e.track)}</p></li>`;
+const countHtml = `<span data-upcoming-count="${upcoming.map((e) => e.end).join(" ")}">${upcoming.length}</span>`;
 for (const p of pages) p.body = p.body.replace(/{{EVENTS_COUNT}}/g, countHtml).replace(/{{EVENTS_NEXT}}/g, upcoming.map(eventRow).join("\n        "));
 // The privacy policy's effective date is the go-live date, set once in site.json on launch day.
 for (const p of pages) p.body = p.body.replace(/{{PRIVACY_EFFECTIVE}}/g, site.privacyEffective || "[set at launch]");
@@ -215,7 +281,7 @@ function checkPage(p) {
   }
   if (/dollars per/i.test(body) && !/dollars per <b>sMile<\/b>|dollars per sMile/.test(body)) errs.push("tagline present but not spelled 'dollars per sMile'");
   if (meta.nav === "calendar") {
-    errs.push(...calRowErrs);
+    errs.push(...calTrackErrs);
     // the calendar shows only the dates still to come, so nothing on it, or in a menu that names it, says a year
     const labels = [...site.nav.flatMap((n) => [n, ...(n.children || [])]).filter((n) => n.href === meta.path).map((n) => n.label),
       ...[...site.footer.race, ...site.footer.more].filter(([, h]) => h === meta.path).map(([l]) => l)];

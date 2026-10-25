@@ -116,6 +116,10 @@ estimate in its hidden `estimate_*` fields and, as text, in `inquiry_message`.
 - Body ≥ 300 words for pages meant to rank. Schema in `meta.schema` where the type is obvious:
   `Service` (rentals, storage, member services), `FAQPage`, `Event` list (calendar), `AboutPage`,
   `ContactPage`, `BlogPosting`, `HowTo` (licence path).
+- The calendar is generated, never typed: its rows (`{{CAL_ROWS}}`), its `Event` list and the
+  next-events rail come from `src/data/events.json`, the approved feed that
+  `tools/calendar-update.mjs` copies in from b2-event-calendar. To change an event, change it at
+  the source (the proposed-calendar page, then a publish); edit `calendar.html` only for its copy.
 
 ## 7. Pages that exist (link only to these)
 
