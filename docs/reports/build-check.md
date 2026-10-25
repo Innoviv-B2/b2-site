@@ -3,7 +3,7 @@
 33 pages.
 
 ## / — `home.html`
-- 1509 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 20 internal links
+- 1510 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 20 internal links
 
 ## /race-with-us/ — `race-with-us.html`
 - 1987 words · H1: "Race car rental: arrive and drive a Spec Racer Ford." · 11 images · 19 internal links
@@ -22,7 +22,7 @@
 - 1101 words · H1: "Spec Racer Ford rental cost Every line. Nothing hidden." · 1 images · 7 internal links
 
 ## /race-calendar-spec-racer-ford-rentals-trackside-support/ — `calendar.html`
-- 2128 words · H1: "The Spec Racer Ford race calendar." · 1 images · 55 internal links
+- 2143 words · H1: "The Spec Racer Ford race calendar." · 1 images · 55 internal links
 
 ## /services/storage/ — `storage.html`
 - 619 words · H1: "Car storage in Huntsville, with a DIY garage on the other side of the door." · 5 images · 14 internal links

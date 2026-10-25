@@ -38,7 +38,7 @@ const pages = pageFiles.map((f) => parsePage(path.join(SRC, "pages", f)));
    The approved event feed from b2-event-calendar (Cliff puts events on the website on its proposed-calendar
    page; publish.py writes the feed; tools/calendar-update.mjs copies it here). Never edited by hand: a wrong
    fact is fixed at the source. It renders the calendar page's rows ({{CAL_ROWS}}) and its Event schema, and on
-   other pages {{EVENTS_COUNT}} (events not yet finished) and {{EVENTS_NEXT}} (rail rows, the first four shown).
+   other pages {{EVENTS_COUNT}} (events not finished that start in the next 12 months) and {{EVENTS_NEXT}} (rail rows, the first four shown).
    The calendar only ever shows dates still to come (Cliff, 25 Oct 2026): the build renders upcoming events only,
    and site.js drops whatever has passed since, because the site rebuilds only on a push. So every row and rail
    item carries its last day as data-end="YYYY-MM-DD", and the count carries every end date. The rows keep the
@@ -128,7 +128,10 @@ for (const t of [...new Set(upcoming.map((e) => e.track))]) {
   else if (state && !best.name.endsWith(" " + state)) calTrackErrs.push(`"${t}" (${state}) matches the calculator's "${best.name}", a different state: add the real track with tools/add-track.mjs`);
 }
 const eventRow = (e, i) => `<li data-end="${e.end}"${i >= 4 ? " hidden" : ""}><span class="rail__t">${fmtRange(e.start, e.end)}</span><p><b>${esc(e.title)}</b>, ${esc(e.track)}</p></li>`;
-const countHtml = `<span data-upcoming-count="${upcoming.map((e) => e.end).join(" ")}">${upcoming.length}</span>`;
+// The home page counts the events in the next 12 months (Cliff, 25 Oct 2026): not finished, and starting within a
+// year of today. The span carries every event as start/end so site.js can recount the same way between builds.
+const yearOut = `${+eventDay.slice(0, 4) + 1}${eventDay.slice(4)}`;
+const countHtml = `<span data-upcoming-count="${upcoming.map((e) => `${e.start}/${e.end}`).join(" ")}">${upcoming.filter((e) => e.start < yearOut).length}</span>`;
 for (const p of pages) p.body = p.body.replace(/{{EVENTS_COUNT}}/g, countHtml).replace(/{{EVENTS_NEXT}}/g, upcoming.map(eventRow).join("\n        "));
 // The privacy policy's effective date is the go-live date, set once in site.json on launch day.
 for (const p of pages) p.body = p.body.replace(/{{PRIVACY_EFFECTIVE}}/g, site.privacyEffective || "[set at launch]");
