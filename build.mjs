@@ -243,16 +243,18 @@ function ghlEmbed(key, review) {
   if (review) return `<div class="ghl-embed ghl-embed--review"><p class="mono">The GoHighLevel form “${key}” loads here on the live site.</p>${fallback}</div>`;
   return `<div class="ghl-embed"><iframe src="${site.ghl.formBase}${id}" id="inline-${id}" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="${key}" data-layout-iframe-id="inline-${id}" data-form-id="${id}" data-b2-form="${key}" title="${key.replace(/-/g, " ")} form"></iframe>${fallback}</div>`;
 }
-/* A booking calendar is the same idea: {{GHL_CAL:<key>}}, the key maps to the calendar's slug in
-   site.json → ghl.calendars. The storage tour is booked straight on the calendar (Cliff, 25 Oct 2026). */
+/* A booking calendar is the same idea: {{GHL_CAL:<key>}}, the key maps to the iframe id in the
+   calendar's GoHighLevel embed code (<calendar id>_<suffix>) in site.json → ghl.calendars. The id is
+   kept whole so form_embed.js can size the frame; the src is the permanent link by calendar id, which
+   survives a slug rename. The storage tour is booked straight on the calendar (Cliff, 25 Oct 2026). */
 function ghlCalendar(key, review) {
-  const slug = site.ghl.calendars[key];
-  if (!slug) throw new Error(`unknown GoHighLevel calendar "${key}" (add it to site.json → ghl.calendars)`);
-  const url = site.ghl.calendarBase + slug;
+  const embedId = site.ghl.calendars[key];
+  if (!embedId) throw new Error(`unknown GoHighLevel calendar "${key}" (add it to site.json → ghl.calendars)`);
+  const url = site.ghl.calendarBase + embedId.split("_")[0];
   const email = /^(storage|member)/.test(key) ? site.storageEmail : site.email;
   const fallback = `<p class="form__fallback">Calendar not loading? <a href="${url}" target="_blank" rel="noopener">Open it in a new tab</a>, call or text <a href="tel:${site.phoneTel}">${site.phoneDisplay}</a> or email <a href="mailto:${email}">${email}</a>.</p>`;
   if (review) return `<div class="ghl-embed ghl-embed--review"><p class="mono">The GoHighLevel calendar “${key}” loads here on the live site.</p>${fallback}</div>`;
-  return `<div class="ghl-embed ghl-embed--calendar"><iframe src="${url}" id="${slug}_cal" scrolling="no" data-b2-form="${key}" title="${key.replace(/-/g, " ")} calendar"></iframe>${fallback}</div>`;
+  return `<div class="ghl-embed ghl-embed--calendar"><iframe src="${url}" id="${embedId}" allow="payment" scrolling="no" data-b2-form="${key}" title="${key.replace(/-/g, " ")} calendar"></iframe>${fallback}</div>`;
 }
 const withForms = (body, review) => body
   .replace(/{{GHL_FORM:([a-z0-9-]+)}}/g, (_, k) => ghlEmbed(k, review))

@@ -53,8 +53,9 @@ gives the form id. The fields, B2's consent text and the thank-you message live 
 Under every embed the build adds "call or text 256-910-0658" and the email, so a visitor is never
 stuck if the frame does not load.
 
-A booking calendar works the same way: `{{GHL_CAL:<key>}}`, with the calendar's slug in
-`site.json → ghl.calendars`. The storage tour (`storage-tour`, on the equipment page) is the only one.
+A booking calendar works the same way: `{{GHL_CAL:<key>}}`, with the iframe id from the calendar's
+GoHighLevel embed code (`<calendar id>_<suffix>`) in `site.json → ghl.calendars`; the build embeds the
+permanent link by calendar id. The storage tour (`storage-tour`, on the equipment page) is the only one.
 
 ## Updating the race calendar
 

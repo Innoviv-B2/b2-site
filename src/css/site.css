@@ -416,6 +416,6 @@ h1 em, h2 em { font-style: inherit; color: var(--blaze-text); }
 
 /* GoHighLevel form embeds: the iframe sizes itself through form_embed.js; the line below it is the fallback */
 .ghl-embed iframe { display: block; width: 100%; min-height: 560px; border: 0; border-radius: var(--radius-card); background: transparent; }
-.ghl-embed--calendar iframe { min-height: 720px; }
+.ghl-embed--calendar iframe { min-height: 720px; overflow: hidden; }
 .form__fallback { margin-top: 12px; font-size: 14px; color: var(--muted); }
 .ghl-embed--review { padding: 22px; border: 1px dashed var(--border); border-radius: var(--radius-card); }
