@@ -555,7 +555,8 @@
    "end": "2026-11-29",
    "dates_estimated": false,
    "types": [
-    "race"
+    "race",
+    "test_day"
    ],
    "registrations": [
     {
@@ -577,6 +578,29 @@
      "srf3_class": "yes",
      "estimated": [
       "srf3_compliance_fee"
+     ],
+     "checked": "2026-10-23"
+    },
+    {
+     "id": "2026-11-27-sebring-cfr-turkey-trot-test-day",
+     "start": "2026-11-27",
+     "end": "2026-11-27",
+     "event_name": "Sebring International Raceway test day (CFR Turkey Trot weekend)",
+     "event_type": "test_day",
+     "status": "registration_open",
+     "registration_url": "https://www.pdffiller.com/en/editor/2116505108?mode=link_to_fill#632dc27becfe46eeb76fba18cbc6f6c6",
+     "entry_fee": null,
+     "entry_fee_late": null,
+     "reg_opens": null,
+     "reg_closes": null,
+     "license_needed": null,
+     "track_hours": null,
+     "sessions": null,
+     "hours_basis": null,
+     "srf3_class": null,
+     "estimated": [
+      "end_date",
+      "start_date"
      ],
      "checked": "2026-10-23"
     }
@@ -946,13 +970,34 @@
    "state": "FL",
    "miles": 679,
    "drive_hours": 11.3,
-   "start": "2027-01-08",
+   "start": "2027-01-07",
    "end": "2027-01-10",
    "dates_estimated": false,
    "types": [
-    "race"
+    "race",
+    "test_day"
    ],
    "registrations": [
+    {
+     "id": "2027-01-07-sebring-test-day",
+     "start": "2027-01-07",
+     "end": "2027-01-07",
+     "event_name": "Sebring Test Day (before CFR Winter Vacation HST)",
+     "event_type": "test_day",
+     "status": "announced",
+     "registration_url": null,
+     "entry_fee": null,
+     "entry_fee_late": null,
+     "reg_opens": null,
+     "reg_closes": null,
+     "license_needed": null,
+     "track_hours": null,
+     "sessions": null,
+     "hours_basis": null,
+     "srf3_class": null,
+     "estimated": [],
+     "checked": "2026-10-23"
+    },
     {
      "id": "2027-01-08-sebring-cfr-hst",
      "start": "2027-01-08",
