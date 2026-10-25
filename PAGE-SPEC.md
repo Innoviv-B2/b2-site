@@ -85,8 +85,8 @@ variants (`-calendar`, `-paths`, `-sim`, `-media`, `-race-with-us`), `fit-check`
 `fit-check-short`, `storage-inquiry`, `storage-tour`, `storage-signup`, `member-services`,
 `corporate`, `safety-gear`, `testimonial`. A field can be prefilled by adding its key to the
 iframe's URL (`?storage_position=3T`). `src/js/site.js` turns a submit into a `form_submit`
-conversion for the tags in Zaraz. The calculator embeds `general-inquiry` with the estimate in
-`inquiry_message`.
+conversion for the tags in Zaraz. The calculator embeds `quote-request` (GoHighLevel's "SRF3 Estimate") with the
+estimate in its hidden `estimate_*` fields and, as text, in `inquiry_message`.
 
 ## 5. Conventions that are checked mechanically (the build fails on these)
 

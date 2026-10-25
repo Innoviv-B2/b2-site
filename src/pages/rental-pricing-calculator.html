@@ -631,14 +631,15 @@ const CONFIG = {
   },
 };
 
-// The quote request is GoHighLevel's general-inquiry form, embedded when the modal opens.
-// The estimate rides in as URL prefill (field keys inquiry_message and inquiry_topic).
+// The quote request is GoHighLevel's "SRF3 Estimate" form (quote-request, TASKS T-84), embedded when
+// the modal opens. The estimate rides in as URL prefill: the hidden estimate_* fields for the CRM's
+// opportunity, and the same estimate as plain text in inquiry_message for the person reading it.
 const QUOTE_FORM = {
-  id:      "u4lXXGwic4y8bzIXkxCM",
-  name:    "general-inquiry",
+  id:      "wB6Q32ctVNEW5VXR9OYM",
+  name:    "SRF3 Estimate",
   base:    "https://api.leadconnectorhq.com/widget/form/",
   embedJs: "https://link.msgsndr.com/js/form_embed.js",
-  topic:   "Rental quote",
+  height:  "2009",
   slowMs:  8000,
 };
 
@@ -1028,8 +1029,23 @@ function estimateLines() {
   lines.push(s.cars_in_trailer + " car" + (s.cars_in_trailer > 1 ? "s" : "") + " in the trailer");
   lines.push((s.tires === "new" ? "New tires" : "Scuffed tires") + ", " + (s.car === "own" ? "your own SRF" : "rental SRF3") + ", pay by " +
              (s.payment_method === "card" ? "credit card (+" + CONFIG.ccFeePct + "%)" : s.payment_method === "ach" ? "ACH" : "check"));
-  lines.push("Estimated total: $" + whole.format(s.estimate_total));
+  lines.push("Estimated total: $" + Number(estimateFields().estimate_total).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
   return lines;
+}
+
+// the estimate as the form's hidden fields (the eleven frozen estimate_* keys of the quote-request
+// spec in b2-wp-tools; the last two only land if the CRM's Driving Estimate folder has them)
+function estimateFields() {
+  const s = snapshot(), c = compute();
+  const total = c.transport + c.prep + c.support + c.tires + c.fuel + c.car + c.cardfee;
+  return {
+    estimate_event_name: s.event_name || "", estimate_event_date: s.event_date || "", estimate_event_type: s.event_type || "",
+    estimate_track: s.track_name, estimate_total: total.toFixed(2), estimate_round_trip_miles: String(s.round_trip_miles),
+    estimate_days: String(s.days), estimate_hours: String(s.track_hours), estimate_sessions: String(s.sessions),
+    estimate_tires: s.tires === "new" ? "New" : "Scuffed",
+    estimate_payment: s.payment_method === "card" ? "Card" : s.payment_method === "ach" ? "ACH" : "Check",
+    estimate_car: s.car === "own" ? "Own SRF" : "Rental SRF3", estimate_cars_in_trailer: String(s.cars_in_trailer),
+  };
 }
 
 function fillSummary(lines) {
@@ -1060,12 +1076,12 @@ function mountForm(msg) {
     return;
   }
   const f = document.createElement("iframe");
-  f.src = QUOTE_FORM.base + QUOTE_FORM.id +
-          "?inquiry_message=" + encodeURIComponent(msg) +
-          "&inquiry_topic=" + encodeURIComponent(QUOTE_FORM.topic);
+  const q = Object.assign(estimateFields(), { inquiry_message: msg });
+  f.src = QUOTE_FORM.base + QUOTE_FORM.id + "?" +
+          Object.keys(q).filter(k => q[k] !== "").map(k => k + "=" + encodeURIComponent(q[k])).join("&");
   f.id = "inline-" + QUOTE_FORM.id;
-  f.title = "Rental quote request";
-  f.style.cssText = "width:100%;height:100%;border:none;border-radius:3px;min-height:640px;display:block";
+  f.title = "SRF3 Estimate";
+  f.style.cssText = "width:100%;height:100%;border:none;border-radius:8px;min-height:640px;display:block";
   const attrs = {
     "data-layout": "{'id':'INLINE'}",
     "data-trigger-type": "alwaysShow",
@@ -1075,9 +1091,11 @@ function mountForm(msg) {
     "data-deactivation-type": "neverDeactivate",
     "data-deactivation-value": "",
     "data-form-name": QUOTE_FORM.name,
-    "data-height": "640",
+    "data-height": QUOTE_FORM.height,
     "data-layout-iframe-id": "inline-" + QUOTE_FORM.id,
     "data-form-id": QUOTE_FORM.id,
+    "data-cookie-consent": "true",
+    "data-cookie-consent-provider": "auto",
     "data-b2-form": "calculator-quote",
   };
   Object.keys(attrs).forEach(k => f.setAttribute(k, attrs[k]));
