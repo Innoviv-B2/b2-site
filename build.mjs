@@ -311,14 +311,15 @@ function checkPage(p) {
 
 /* ---------- Cloudflare Pages: headers, crawlers, llms.txt ---------- */
 // Hosts the pages load from: GoHighLevel's forms and embed script, YouTube's privacy-enhanced player,
-// Google Fonts. Zaraz is served from this origin (/cdn-cgi/zaraz/), so 'self' covers it.
+// Google Maps (the calendar's track map and the contact page's shop map), Google Fonts. Zaraz is
+// served from this origin (/cdn-cgi/zaraz/), so 'self' covers it.
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' https://link.msgsndr.com https://*.msgsndr.com https://*.leadconnectorhq.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https:",
-  "frame-src https://api.leadconnectorhq.com https://*.leadconnectorhq.com https://link.msgsndr.com https://*.msgsndr.com https://www.youtube-nocookie.com",
+  "frame-src https://api.leadconnectorhq.com https://*.leadconnectorhq.com https://link.msgsndr.com https://*.msgsndr.com https://www.youtube-nocookie.com https://www.google.com",
   "connect-src 'self' https:",
   "form-action 'self' https://*.leadconnectorhq.com",
   "frame-ancestors 'self'", "base-uri 'self'", "object-src 'none'", "upgrade-insecure-requests"
