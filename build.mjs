@@ -241,12 +241,14 @@ function ghlEmbed(key, review) {
   const email = /^(storage|member)/.test(key) ? site.storageEmail : site.email;
   const fallback = `<p class="form__fallback">Form not loading? Call or text <a href="tel:${site.phoneTel}">${site.phoneDisplay}</a> or email <a href="mailto:${email}">${email}</a>.</p>`;
   if (review) return `<div class="ghl-embed ghl-embed--review"><p class="mono">The GoHighLevel form “${key}” loads here on the live site.</p>${fallback}</div>`;
-  return `<div class="ghl-embed"><iframe src="${site.ghl.formBase}${id}" id="inline-${id}" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="${key}" data-layout-iframe-id="inline-${id}" data-form-id="${id}" data-b2-form="${key}" title="${key.replace(/-/g, " ")} form"></iframe>${fallback}</div>`;
+  const h = (site.ghl.formHeights || {})[key];   // GoHighLevel's data-height; form_embed.js resizes from there
+  return `<div class="ghl-embed"><iframe src="${site.ghl.formBase}${id}"${h ? ` style="height:${h}px"` : ""} id="inline-${id}" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="${key}"${h ? ` data-height="${h}"` : ""} data-layout-iframe-id="inline-${id}" data-form-id="${id}" data-cookie-consent="true" data-cookie-consent-provider="auto" data-b2-form="${key}" title="${key.replace(/-/g, " ")} form"></iframe>${fallback}</div>`;
 }
 /* A booking calendar is the same idea: {{GHL_CAL:<key>}}, the key maps to the iframe id in the
    calendar's GoHighLevel embed code (<calendar id>_<suffix>) in site.json → ghl.calendars. The id is
    kept whole so form_embed.js can size the frame; the src is the permanent link by calendar id, which
-   survives a slug rename. The storage tour is booked straight on the calendar (Cliff, 25 Oct 2026). */
+   survives a slug rename. The storage tour is booked straight on the calendar (Cliff, 25 Oct 2026): Storage Tour,
+   c8BRHSQrVUuqdzT6soMD (until 27 Oct the id was Shop Tour's by mistake). An id with no _suffix still loads. */
 function ghlCalendar(key, review) {
   const embedId = site.ghl.calendars[key];
   if (!embedId) throw new Error(`unknown GoHighLevel calendar "${key}" (add it to site.json → ghl.calendars)`);
