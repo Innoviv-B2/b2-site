@@ -1,9 +1,9 @@
-# Build check — 2026-10-28
+# Build check — 2026-11-05
 
 33 pages.
 
 ## / — `home.html`
-- 1510 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 20 internal links
+- 1490 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 20 internal links
 
 ## /race-with-us/ — `race-with-us.html`
 - 1987 words · H1: "Race car rental: arrive and drive a Spec Racer Ford." · 11 images · 19 internal links
@@ -16,20 +16,20 @@
 - warn: keyphrase not in H1 ("Do you fit?")
 
 ## /crash-damage/ — `crash-damage.html`
-- 625 words · H1: "Spec Racer Ford crash damage: what it actually costs." · 1 images · 6 internal links
+- 654 words · H1: "Spec Racer Ford crash damage: what it actually costs." · 3 images · 6 internal links
 
 ## /rental-pricing-calculator/ — `rental-pricing-calculator.html`
 - 1101 words · H1: "Spec Racer Ford rental cost Every line. Nothing hidden." · 1 images · 7 internal links
 
 ## /race-calendar-spec-racer-ford-rentals-trackside-support/ — `calendar.html`
-- 2282 words · H1: "The Spec Racer Ford race calendar." · 1 images · 55 internal links
+- 2199 words · H1: "The Spec Racer Ford race calendar." · 1 images · 53 internal links
 
 ## /services/storage/ — `storage.html`
 - 619 words · H1: "Car storage in Huntsville, with a DIY garage on the other side of the door." · 5 images · 14 internal links
 - warn: keyphrase never appears verbatim in body
 
 ## /services/storage/equipment/ — `storage-equipment.html`
-- 427 words · H1: "The equipment in the DIY garage." · 9 images · 5 internal links
+- 441 words · H1: "The equipment in the DIY garage." · 13 images · 5 internal links
 - warn: description is 176 chars (aim 140–159)
 - warn: keyphrase "DIY garage Huntsville" not in title
 - warn: keyphrase not in H1 ("The equipment in the DIY garage.")
@@ -51,7 +51,7 @@
 - warn: keyphrase never appears verbatim in body
 
 ## /about-us/ — `about.html`
-- 1267 words · H1: "A family operation, thirty years in the paddock." · 8 images · 6 internal links
+- 1279 words · H1: "A family operation, thirty years in the paddock." · 9 images · 6 internal links
 - warn: keyphrase not in H1 ("A family operation, thirty years in the paddock.")
 
 ## /about-us/drivers/ — `drivers.html`

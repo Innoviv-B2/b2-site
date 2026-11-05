@@ -1,4 +1,4 @@
-# Open notes — 2026-10-28
+# Open notes — 2026-11-05
 
 Each `<span class="note">` below shows on the live page until it is answered and removed.
 **6 notes on 2 pages.**
