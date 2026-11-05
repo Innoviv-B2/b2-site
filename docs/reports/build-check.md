@@ -12,7 +12,7 @@
 - 1246 words · H1: "The Spec Racer Ford rental. Sealed, equal, ready to drive." · 11 images · 10 internal links
 
 ## /srf3-fit-check/ — `srf3-fit-check.html`
-- 641 words · H1: "Do you fit?" · 7 images · 3 internal links
+- 631 words · H1: "Do you fit?" · 7 images · 3 internal links
 - warn: keyphrase not in H1 ("Do you fit?")
 
 ## /crash-damage/ — `crash-damage.html`
