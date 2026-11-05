@@ -1,191 +1,10 @@
 {
  "feed": "B2 Motorsports approved event schedule",
  "version": 1,
- "published": "2026-10-25",
- "run": "2026-10-23",
+ "published": "2026-11-05",
+ "run": "2026-11-05",
  "note": "Events Cliff put on the website, with the register's facts. Copies are never edited by hand.",
  "events": [
-  {
-   "id": "scca-atlanta-region|930450",
-   "slot": "2026-10-31",
-   "title": "ARRC / Double SARRC",
-   "titled_by": "Cliff",
-   "line": "separate 62+ race, so you can race twice in one weekend",
-   "event_name": "2026 ARRC-Double SARRC (33rd American Road Race of Champions)",
-   "organizer": "SCCA Atlanta Region",
-   "sanctioning_body": "SCCA",
-   "series": "ARRC; Double SARRC (counts toward the 2027 SARRC season)",
-   "track": "Michelin Raceway Road Atlanta",
-   "city": "Braselton",
-   "state": "GA",
-   "miles": 204,
-   "drive_hours": 3.4,
-   "start": "2026-10-29",
-   "end": "2026-11-01",
-   "dates_estimated": false,
-   "types": [
-    "race",
-    "test_day",
-    "time_trial",
-    "track_day"
-   ],
-   "registrations": [
-    {
-     "id": "2026-10-29-road-atlanta-test-day",
-     "start": "2026-10-29",
-     "end": "2026-10-29",
-     "event_name": "Michelin Raceway Road Atlanta test day (Atlanta Region ARRC weekend)",
-     "event_type": "test_day",
-     "status": "registration_open",
-     "registration_url": "https://forms.cloud.microsoft/pages/responsepage.aspx?id=_mgc9uHs9U66-mWlVumweynJ0xkWIldBvPjAOcao9MlUNEJJMTYyWE5QUTFaR0tGWUpLUzNTM0VJNS4u&route=shorturl",
-     "entry_fee": 360,
-     "entry_fee_late": 370,
-     "reg_opens": null,
-     "reg_closes": null,
-     "license_needed": null,
-     "track_hours": 1.08,
-     "sessions": 3,
-     "hours_basis": "published_schedule",
-     "srf3_class": "yes",
-     "estimated": [],
-     "checked": "2026-10-23"
-    },
-    {
-     "id": "2026-10-30-road-atlanta-arrc-double-sarrc",
-     "start": "2026-10-30",
-     "end": "2026-11-01",
-     "event_name": "2026 ARRC-Double SARRC (33rd American Road Race of Champions)",
-     "event_type": "race",
-     "status": "registration_open",
-     "registration_url": "https://www.motorsportreg.com/events/2026-arrc-double-sarrc-michelin-raceway-road-atlanta-scca-club-racing-013775",
-     "entry_fee": 520,
-     "entry_fee_late": null,
-     "reg_opens": "2026-09-10T19:00:00Z",
-     "reg_closes": "2026-10-26T16:00:00Z",
-     "license_needed": "SCCA membership + SCCA Competition License (or recognized license), or Novice Permit with drivers-school requirements signed off",
-     "track_hours": 1.5,
-     "sessions": 4,
-     "hours_basis": "published_schedule",
-     "srf3_class": "yes",
-     "estimated": [],
-     "checked": "2026-10-23"
-    },
-    {
-     "id": "2026-10-31-road-atlanta-time-attack",
-     "start": "2026-10-31",
-     "end": "2026-11-01",
-     "event_name": "Raiders of the Lost TA",
-     "event_type": "time_trial",
-     "status": "registration_open",
-     "registration_url": "https://www.motorsportreg.com/events/raiders-of-lost-ta-michelin-raceway-road-atlanta-scca-club-racing-930450",
-     "entry_fee": 375,
-     "entry_fee_late": null,
-     "reg_opens": "2026-09-15T04:00:00Z",
-     "reg_closes": "2026-11-01T16:00:00Z",
-     "license_needed": "Age 18+, state driver license, SCCA full or weekend membership, and an SCCA TA license, NASA TT license (full), SCCA Road Race Novice or Full license, or another recognized competition license",
-     "track_hours": 1.78,
-     "sessions": null,
-     "hours_basis": "provider_states",
-     "srf3_class": null,
-     "estimated": [],
-     "checked": "2026-10-23"
-    },
-    {
-     "id": "2026-11-01-road-atlanta-masters-srf",
-     "start": "2026-11-01",
-     "end": "2026-11-01",
-     "event_name": "Masters SRF/SRF3 Race (ARRC weekend)",
-     "event_type": "race",
-     "status": "registration_open",
-     "registration_url": "https://www.motorsportreg.com/events/2026-arrc-double-sarrc-michelin-raceway-road-atlanta-scca-club-racing-013775",
-     "entry_fee": 450,
-     "entry_fee_late": null,
-     "reg_opens": "2026-09-10T19:00:00Z",
-     "reg_closes": "2026-10-26T16:00:00Z",
-     "license_needed": "SCCA membership + SCCA Competition License or Novice Permit with school signed off",
-     "track_hours": 1.5,
-     "sessions": 4,
-     "hours_basis": "published_schedule",
-     "srf3_class": "yes",
-     "estimated": [],
-     "checked": "2026-10-23"
-    },
-    {
-     "id": "2026-11-01-road-atlanta-shush-sessions",
-     "start": "2026-11-01",
-     "end": "2026-11-01",
-     "event_name": "2026 Road Atlanta \"Shush Sessions\" Nov 1",
-     "event_type": "track_day",
-     "status": "registration_open",
-     "registration_url": "https://www.motorsportreg.com/events/2026-road-atlanta-shush-sessions-nov-1-michelin-raceway-scca-club-racing-129050",
-     "entry_fee": 130,
-     "entry_fee_late": null,
-     "reg_opens": "2026-09-01T04:00:00Z",
-     "reg_closes": "2026-11-01T00:00:00Z",
-     "license_needed": null,
-     "track_hours": null,
-     "sessions": 2,
-     "hours_basis": null,
-     "srf3_class": "no",
-     "estimated": [],
-     "checked": "2026-10-23"
-    }
-   ],
-   "approved_at": "2026-10-25T21:50:11.769Z",
-   "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
-   "stale": false
-  },
-  {
-   "id": "2026-10-30-ptc-pooled-hpde",
-   "slot": "2026-10-31",
-   "title": "Pooled HPDE",
-   "titled_by": "rule",
-   "line": "",
-   "event_name": "Pooled HPDE",
-   "organizer": null,
-   "sanctioning_body": null,
-   "series": null,
-   "track": "Polecat Training Center",
-   "city": "Fayetteville",
-   "state": "TN",
-   "miles": 35,
-   "drive_hours": 0.7,
-   "start": "2026-10-30",
-   "end": "2026-10-30",
-   "dates_estimated": false,
-   "types": [
-    "track_day"
-   ],
-   "registrations": [
-    {
-     "id": "2026-10-30-ptc-pooled-hpde",
-     "start": "2026-10-30",
-     "end": "2026-10-30",
-     "event_name": "Pooled HPDE",
-     "event_type": "track_day",
-     "status": "announced",
-     "registration_url": null,
-     "entry_fee": null,
-     "entry_fee_late": null,
-     "reg_opens": null,
-     "reg_closes": null,
-     "license_needed": null,
-     "track_hours": null,
-     "sessions": null,
-     "hours_basis": null,
-     "srf3_class": null,
-     "estimated": [],
-     "checked": "2026-10-23"
-    }
-   ],
-   "approved_at": "2026-10-25T21:57:51.773Z",
-   "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
-   "stale": false
-  },
   {
    "id": "svra-speedtour|763218",
    "slot": "2026-11-07",
@@ -226,13 +45,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:50:11.769Z",
    "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -280,7 +99,7 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2026-11-13-nashss-nasa-ms-comp-school",
@@ -300,7 +119,7 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2026-11-13-nashss-nasa-ms-test-tune",
@@ -320,7 +139,7 @@
      "hours_basis": "published_schedule",
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2026-11-14-nashss-nasa-ms-race",
@@ -340,7 +159,7 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2026-11-14-nashss-nasa-ms-tt",
@@ -360,7 +179,7 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2026-11-14-nashss-nasa-ms-hpde",
@@ -380,13 +199,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:47.156Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -429,13 +248,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:50:11.769Z",
    "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -478,13 +297,13 @@
      "hours_basis": "published_schedule",
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:50:11.769Z",
    "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -527,13 +346,13 @@
      "hours_basis": "provider_states",
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:50:11.769Z",
    "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -579,7 +398,7 @@
      "estimated": [
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2026-11-27-sebring-cfr-turkey-trot-test-day",
@@ -602,13 +421,13 @@
       "end_date",
       "start_date"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:50:11.769Z",
    "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -651,13 +470,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:50:11.769Z",
    "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -700,13 +519,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:50:11.769Z",
    "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -751,7 +570,7 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2026-12-05-mrra-nasa-se-tt",
@@ -771,7 +590,7 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2026-12-05-mrra-nasa-se-hpde",
@@ -791,13 +610,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:50:11.769Z",
    "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -848,13 +667,13 @@
       "other_fees",
       "refund_deadline"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:38.500Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -897,13 +716,13 @@
      "hours_basis": "provider_states",
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:50:11.769Z",
    "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -946,13 +765,13 @@
      "hours_basis": "provider_states",
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:50:11.769Z",
    "seeded": true,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -996,7 +815,7 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-01-08-sebring-cfr-hst",
@@ -1019,13 +838,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:34.023Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1068,13 +887,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:32.305Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1120,13 +939,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:31.538Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1174,7 +993,7 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-02-19-sebring-cfr-cabin-fever-test-day",
@@ -1196,7 +1015,7 @@
      "estimated": [
       "srf3_class"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-02-19-sebring-cfr-cabin-fever-enduro",
@@ -1218,13 +1037,13 @@
      "estimated": [
       "srf3_class"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:28.430Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1271,7 +1090,7 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-03-05-road-atlanta-hst-test-day",
@@ -1291,13 +1110,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:25.968Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1332,7 +1151,7 @@
      "registration_url": "https://www.chintrackdays.com/schedule.aspx",
      "entry_fee": null,
      "entry_fee_late": null,
-     "reg_opens": null,
+     "reg_opens": "2027-01-18T21:00:00-05:00",
      "reg_closes": null,
      "license_needed": null,
      "track_hours": null,
@@ -1340,13 +1159,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:25.344Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1392,7 +1211,7 @@
      "estimated": [
       "license_needed"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-03-20-cmp-ccr-double-sarrc",
@@ -1415,13 +1234,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:24.210Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1465,9 +1284,10 @@
      "hours_basis": null,
      "srf3_class": "yes",
      "estimated": [
+      "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-04-02-vir-hst-test-day",
@@ -1485,15 +1305,15 @@
      "track_hours": null,
      "sessions": null,
      "hours_basis": null,
-     "srf3_class": "yes",
+     "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:22.788Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1539,13 +1359,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:21.525Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1591,13 +1411,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:20.344Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1643,13 +1463,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:18.906Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1696,7 +1516,7 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-04-30-sebring-cfr-drivers-school",
@@ -1716,13 +1536,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:57:15.697Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1774,7 +1594,7 @@
       "srf3_class",
       "track_hours"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-04-30-vir-ncr-test-day",
@@ -1800,7 +1620,7 @@
       "srf3_class",
       "track_hours"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-05-01-vir-ncr-cre",
@@ -1827,7 +1647,7 @@
       "srf3_class",
       "track_hours"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-05-02-vir-ncr-time-attack",
@@ -1853,22 +1673,22 @@
       "srf3_class",
       "track_hours"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:58:22.443Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
    "id": "2027-05-14-mid-ohio-hst",
    "slot": "2027-05-15",
-   "title": "Hoosier SCCA Super Tour, Mid-Ohio (Ohio Valley Region)",
+   "title": "OVR SCCA Hoosier Super Tour (Great Lakes Race of Champions )",
    "titled_by": "rule",
    "line": "",
-   "event_name": "Hoosier SCCA Super Tour, Mid-Ohio (Ohio Valley Region)",
+   "event_name": "OVR SCCA Hoosier Super Tour 2027 (Great Lakes Race of Champions 2027)",
    "organizer": "SCCA Ohio Valley Region",
    "sanctioning_body": "SCCA",
    "series": "Hoosier Super Tour",
@@ -1888,14 +1708,14 @@
      "id": "2027-05-14-mid-ohio-hst",
      "start": "2027-05-14",
      "end": "2027-05-16",
-     "event_name": "Hoosier SCCA Super Tour, Mid-Ohio (Ohio Valley Region)",
+     "event_name": "OVR SCCA Hoosier Super Tour 2027 (Great Lakes Race of Champions 2027)",
      "event_type": "race",
      "status": "tentative",
-     "registration_url": null,
+     "registration_url": "https://www.motorsportreg.com/events/ovr-scca-hoosier-super-tour-2027-mid-ohio-sports-car-course-valley-club-racing-546992",
      "entry_fee": null,
      "entry_fee_late": null,
-     "reg_opens": null,
-     "reg_closes": null,
+     "reg_opens": "2027-04-01T04:00:00Z",
+     "reg_closes": "2027-05-08T03:59:00Z",
      "license_needed": "SCCA Full Competition License",
      "track_hours": null,
      "sessions": null,
@@ -1905,13 +1725,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:58:59.715Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -1957,13 +1777,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:59:03.544Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2010,7 +1830,7 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-06-04-sebring-cfr-love-bug-test-day",
@@ -2030,13 +1850,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:59:07.622Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2082,13 +1902,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:59:49.800Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2131,13 +1951,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:59:11.060Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2183,13 +2003,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:59:51.652Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2237,7 +2057,7 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-06-25-daytona-cfr-daytona-classic-test-day",
@@ -2259,7 +2079,7 @@
      "estimated": [
       "srf3_class"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-06-25-daytona-cfr-daytona-classic-enduro",
@@ -2281,13 +2101,13 @@
      "estimated": [
       "srf3_class"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T21:59:54.612Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2333,13 +2153,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:00:01.752Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2385,7 +2205,7 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-07-17-road-atlanta-cre",
@@ -2409,7 +2229,7 @@
       "other_fees",
       "srf3_class"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-07-17-road-atlanta-double-sarrc",
@@ -2434,7 +2254,7 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-07-17-road-atlanta-time-attack",
@@ -2454,13 +2274,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:00:00.338Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2507,7 +2327,7 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     },
     {
      "id": "2027-07-30-daytona-cfr-daytona-double-test-day",
@@ -2529,13 +2349,13 @@
      "estimated": [
       "srf3_class"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:00:05.104Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2578,13 +2398,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:00:10.268Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2627,13 +2447,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:00:14.064Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2679,13 +2499,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:00:18.010Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2728,13 +2548,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:00:56.515Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2780,13 +2600,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:00:58.662Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2829,13 +2649,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:01:10.851Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2878,13 +2698,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:01:07.368Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2931,13 +2751,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:01:05.233Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -2983,13 +2803,13 @@
       "srf3_class",
       "srf3_compliance_fee"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:01:21.311Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -3032,13 +2852,13 @@
      "hours_basis": null,
      "srf3_class": null,
      "estimated": [],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:01:25.835Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   },
   {
@@ -3088,13 +2908,13 @@
       "srf3_compliance_fee",
       "track_hours"
      ],
-     "checked": "2026-10-23"
+     "checked": "2026-11-05"
     }
    ],
    "approved_at": "2026-10-25T22:01:28.741Z",
    "seeded": false,
-   "checked": "2026-10-23",
-   "run": "2026-10-23",
+   "checked": "2026-11-05",
+   "run": "2026-11-05",
    "stale": false
   }
  ]
