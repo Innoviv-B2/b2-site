@@ -37,6 +37,12 @@ Generated for the standalone B2 Motorsports website. Every photo has a full (max
 | shop-bay-tire-rack-bmw.jpg | 1600x1200 | Shop bay with two Spec Racer Fords, a BMW on the lift, and a tire rack against the purple wall. | OneDrive zip: 20230418_105250.jpg | any |
 | shop-outdoor-trailer-parking.jpg | 1600x1200 | Outdoor trailer parking area behind the building. | OneDrive zip: 20230418_105350.jpg | any |
 | shop-facebook-bay-purple-wall.jpg | 1080x608 | Small Facebook photo of the shop bay with car 58 and the purple wall alignment equipment. | OneDrive zip: FB_IMG_1673644310320.jpg | any |
+| shop-dyno-superflow-srf.jpg | 1600x900 | A blue and white B2 Spec Racer Ford strapped down on the Superflow chassis dyno. | Media Library, 29 Aug 2024 (index 27eb1d5fba) | member-services |
+| team-cliff-white-road-atlanta.jpg | 1600x900 | Cliff White under the team awning, Road Atlanta, 19 Jul 2025. | Media Library IMG_7428 (index 8e39019103), crop | about |
+| team-mark-eaton-sebring.jpg | 1600x900 | Mark Eaton at the team trailer, Sebring, 11 Jan 2025. Credit Appleton Automotive Images. | Appleton, SebringSaturday-107 (index e8f5b572d0), crop | about |
+| team-todd-white-road-atlanta.jpg | 1600x900 | Todd White leaning over car 40 under the awning, Road Atlanta, 19 Jul 2025. | Media Library DJI_..._0199 (index a0cf56f79c), crop | about |
+| crew-shop-srf-engine.jpg | 1600x900 | A crew member kneeling at a stripped Spec Racer Ford, face not visible. | Media Library, 16 Jun 2025 (index 715d120377) | about |
+| driver-wade-white-road-atlanta.jpg | 1600x900 | Wade White in his red race suit beside car 59, Road Atlanta, 19 Jul 2025. | Media Library DJI_..._0159 (index 70dbdbd351), crop | drivers |
 
 | og-default.jpg | 1200x630 | Cover crop of hero-car58-checkered-flag.jpg for social/link previews (og:image). | homepage mockup (orig: hero-web.jpg) | og-image |
 

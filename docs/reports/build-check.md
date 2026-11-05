@@ -1,4 +1,4 @@
-# Build check — 2026-10-25
+# Build check — 2026-10-28
 
 33 pages.
 
@@ -22,7 +22,7 @@
 - 1101 words · H1: "Spec Racer Ford rental cost Every line. Nothing hidden." · 1 images · 7 internal links
 
 ## /race-calendar-spec-racer-ford-rentals-trackside-support/ — `calendar.html`
-- 2274 words · H1: "The Spec Racer Ford race calendar." · 1 images · 55 internal links
+- 2282 words · H1: "The Spec Racer Ford race calendar." · 1 images · 55 internal links
 
 ## /services/storage/ — `storage.html`
 - 619 words · H1: "Car storage in Huntsville, with a DIY garage on the other side of the door." · 5 images · 14 internal links
@@ -41,7 +41,7 @@
 - warn: keyphrase not in H1 ("How membership works.")
 
 ## /services/performance-shop/ — `member-services.html`
-- 629 words · H1: "Our race mechanics, on your car. For members." · 7 images · 6 internal links
+- 623 words · H1: "Our race mechanics, on your car. For members." · 8 images · 6 internal links
 - warn: keyphrase not in H1 ("Our race mechanics, on your car. For members.")
 
 ## /services/storage/sign-up/ — `storage-sign-up.html`
@@ -51,11 +51,11 @@
 - warn: keyphrase never appears verbatim in body
 
 ## /about-us/ — `about.html`
-- 1279 words · H1: "A family operation, thirty years in the paddock." · 4 images · 6 internal links
+- 1267 words · H1: "A family operation, thirty years in the paddock." · 8 images · 6 internal links
 - warn: keyphrase not in H1 ("A family operation, thirty years in the paddock.")
 
 ## /about-us/drivers/ — `drivers.html`
-- 845 words · H1: "Meet the B2 Motorsports drivers." · 1 images · 6 internal links
+- 841 words · H1: "Meet the B2 Motorsports drivers." · 2 images · 6 internal links
 
 ## /faq/ — `faq.html`
 - 1576 words · H1: "Spec Racer Ford rental FAQ" · 1 images · 17 internal links

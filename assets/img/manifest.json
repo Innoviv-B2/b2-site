@@ -391,8 +391,74 @@
     "width": 1600,
     "height": 1067,
     "source": "Appleton Automotive Images (Jonythan Appleton), Hoosier Super Tour, Sebring, 11 Jan 2025; website use agreed by email 5 Aug 2025; credit \"Photo: Appleton Automotive Images\"",
-    "subject": "Cliff White in a purple B2 shirt talking with two B2 drivers at the open team trailer. Both drivers have signed releases (Cliff, 25 Oct 2026).",
-    "suggestedAlt": "Cliff White talks with two B2 drivers at the team trailer, Sebring, January 2025",
+    "subject": "Mark Eaton in a purple B2 shirt talking with two B2 drivers at the open team trailer (Mark, not Cliff: Cliff, 28 Oct 2026). Both drivers have signed releases (Cliff, 25 Oct 2026).",
+    "suggestedAlt": "Mark Eaton talks with two B2 drivers at the team trailer, Sebring, January 2025",
     "suggestedUse": "media-packages, about, arrive-and-drive"
+  },
+  {
+    "file": "shop-dyno-superflow-srf.jpg",
+    "webp": "shop-dyno-superflow-srf.webp",
+    "small": "shop-dyno-superflow-srf-800.jpg",
+    "width": 1600,
+    "height": 900,
+    "source": "Media Library Photos/2024/2024-08/2024-08-29/2024-08-29_1400_20240829_140021.jpg (media index 27eb1d5fba), 16:9 crop",
+    "subject": "A blue and white B2 Spec Racer Ford strapped down on the Superflow chassis dyno, exhaust hose fitted.",
+    "suggestedAlt": "A blue and white B2 Spec Racer Ford strapped down on the Superflow chassis dyno",
+    "suggestedUse": "member-services"
+  },
+  {
+    "file": "team-cliff-white-road-atlanta.jpg",
+    "webp": "team-cliff-white-road-atlanta.webp",
+    "small": "team-cliff-white-road-atlanta-800.jpg",
+    "width": 1600,
+    "height": 900,
+    "source": "Media Library Photos/2025/2025-07/2025-07-18_Road-Atlanta_SRF3/...(IMG_7428).heic (media index 8e39019103), Road Atlanta, 19 Jul 2025; crop of Cliff from a posed shot with Todd and Wade",
+    "subject": "Cliff White in a purple B2 shirt under the team awning at Road Atlanta.",
+    "suggestedAlt": "Cliff White in a purple B2 shirt under the team awning at Road Atlanta",
+    "suggestedUse": "about"
+  },
+  {
+    "file": "team-mark-eaton-sebring.jpg",
+    "webp": "team-mark-eaton-sebring.webp",
+    "small": "team-mark-eaton-sebring-800.jpg",
+    "width": 1600,
+    "height": 900,
+    "source": "Appleton Automotive Images, Sebring, 11 Jan 2025 (media index e8f5b572d0, SebringSaturday-107; the full frame is appleton-sebring-2025-trailer.jpg); crop of Mark alone; credit \"Photo: Appleton Automotive Images\"",
+    "subject": "Mark Eaton in a purple B2 shirt at the team trailer, Sebring.",
+    "suggestedAlt": "Mark Eaton in a purple B2 shirt at the team trailer, Sebring",
+    "suggestedUse": "about"
+  },
+  {
+    "file": "team-todd-white-road-atlanta.jpg",
+    "webp": "team-todd-white-road-atlanta.webp",
+    "small": "team-todd-white-road-atlanta-800.jpg",
+    "width": 1600,
+    "height": 900,
+    "source": "Media Library Photos/2025/2025-07/2025-07-18_Road-Atlanta_SRF3/...DJI_20250719065200_0199_D.jpg (media index a0cf56f79c), Road Atlanta, 19 Jul 2025; crop of Todd (face match)",
+    "subject": "Todd White leaning over the black car 40 under the B2 awning at Road Atlanta.",
+    "suggestedAlt": "Todd White working over a Spec Racer Ford under the B2 awning at Road Atlanta",
+    "suggestedUse": "about"
+  },
+  {
+    "file": "crew-shop-srf-engine.jpg",
+    "webp": "crew-shop-srf-engine.webp",
+    "small": "crew-shop-srf-engine-800.jpg",
+    "width": 1600,
+    "height": 900,
+    "source": "Media Library Photos/2025/2025-06/2025-06-16/2025-06-16_1657_PXL_20250616_215746728.jpg (media index 715d120377), 16 Jun 2025; face not visible",
+    "subject": "A crew member in a grey shirt kneeling at a stripped Spec Racer Ford, bodywork off, engine and blue plug leads exposed.",
+    "suggestedAlt": "A B2 crew member kneeling at a stripped Spec Racer Ford in the shop",
+    "suggestedUse": "about"
+  },
+  {
+    "file": "driver-wade-white-road-atlanta.jpg",
+    "webp": "driver-wade-white-road-atlanta.webp",
+    "small": "driver-wade-white-road-atlanta-800.jpg",
+    "width": 1600,
+    "height": 900,
+    "source": "Media Library Photos/2025/2025-07/2025-07-18_Road-Atlanta_SRF3/...DJI_20250719064141_0159_D.jpg (media index 70dbdbd351), Road Atlanta, 19 Jul 2025",
+    "subject": "Wade White in his red race suit beside car 59 under the awning at Road Atlanta.",
+    "suggestedAlt": "Wade White in his red race suit beside car 59 at Road Atlanta",
+    "suggestedUse": "drivers"
   }
 ]
