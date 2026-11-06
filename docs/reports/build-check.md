@@ -97,7 +97,7 @@
 - 888 words · H1: "How to Choose a Prep Shop" · 1 images · 6 internal links
 
 ## /summer-sizzle-weekend-at-road-atlanta/ — `post-summer-sizzle-weekend-at-road-atlanta.html`
-- 2135 words · H1: "Summer Sizzle Weekend at Road Atlanta" · 6 images · 8 internal links
+- 2143 words · H1: "Summer Sizzle Weekend at Road Atlanta" · 6 images · 8 internal links
 
 ## /sponsors/ — `sponsors.html`
 - 663 words · H1: "Motorsports hospitality that puts your brand at the track." · 2 images · 4 internal links
