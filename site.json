@@ -85,6 +85,7 @@
     "/blog/buying-safety-gear/",
     "/how-to-get-a-racing-license/",
     "/paths-into-racing/",
+    "/hoosier-super-tour-season-cost/",
     "/driver-development-program/",
     "/simulator-and-sim-training/",
     "/sponsors/",
@@ -209,6 +210,10 @@
       [
         "Paths Into Racing",
         "/paths-into-racing/"
+      ],
+      [
+        "A Super Tour Season",
+        "/hoosier-super-tour-season-cost/"
       ],
       [
         "FAQ",

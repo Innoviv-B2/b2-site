@@ -131,7 +131,7 @@ A booking calendar is `{{GHL_CAL:<key>}}`, the iframe id from its GoHighLevel em
 `/race-calendar-spec-racer-ford-rentals-trackside-support/` `/services/storage/`
 `/services/performance-shop/` `/about-us/` `/faq/` `/contact-us/` `/blog/`
 `/blog/buying-safety-gear/` `/how-to-get-a-racing-license/` `/paths-into-racing/`
-`/driver-development-program/` `/simulator-and-sim-training/` `/sponsors/` `/media-packages/`
+`/hoosier-super-tour-season-cost/` `/driver-development-program/` `/simulator-and-sim-training/` `/sponsors/` `/media-packages/`
 `/product-development/` `/privacy-policy/`. Anchors: `/contact-us/#quote` is the general form,
 `/services/performance-shop/#member-form` the member-services form.
 
