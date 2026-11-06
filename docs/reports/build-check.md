@@ -64,7 +64,7 @@
 - 521 words · H1: "How to get a racing license" · 1 images · 6 internal links
 
 ## /paths-into-racing/ — `paths-into-racing.html`
-- 2413 words · H1: "How much does it cost to start racing? Every route, costed end to end" · 2 images · 13 internal links
+- 2412 words · H1: "How much does it cost to start racing? Every route, costed end to end" · 3 images · 13 internal links
 
 ## /hoosier-super-tour-season-cost/ — `super-tour-season.html`
 - 697 words · H1: "What a Hoosier Super Tour season costs in our SRF3" · 1 images · 11 internal links
