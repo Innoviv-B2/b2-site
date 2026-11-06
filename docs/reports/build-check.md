@@ -1,9 +1,9 @@
-# Build check — 2026-11-05
+# Build check — 2026-11-06
 
-33 pages.
+34 pages.
 
 ## / — `home.html`
-- 1490 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 20 internal links
+- 1493 words · H1: "Huntsville's race shop. Everything it takes to go road racing." · 12 images · 20 internal links
 
 ## /race-with-us/ — `race-with-us.html`
 - 1989 words · H1: "Race car rental: arrive and drive a Spec Racer Ford." · 11 images · 19 internal links
@@ -22,7 +22,7 @@
 - 1101 words · H1: "Spec Racer Ford rental cost Every line. Nothing hidden." · 1 images · 7 internal links
 
 ## /race-calendar-spec-racer-ford-rentals-trackside-support/ — `calendar.html`
-- 2200 words · H1: "The Spec Racer Ford race calendar." · 1 images · 53 internal links
+- 2202 words · H1: "The Spec Racer Ford race calendar." · 1 images · 53 internal links
 
 ## /services/storage/ — `storage.html`
 - 619 words · H1: "Car storage in Huntsville, with a DIY garage on the other side of the door." · 5 images · 14 internal links
@@ -58,13 +58,16 @@
 - 841 words · H1: "Meet the B2 Motorsports drivers." · 2 images · 6 internal links
 
 ## /faq/ — `faq.html`
-- 1576 words · H1: "Spec Racer Ford rental FAQ" · 1 images · 17 internal links
+- 1578 words · H1: "Spec Racer Ford rental FAQ" · 1 images · 17 internal links
 
 ## /how-to-get-a-racing-license/ — `how-to-get-a-racing-license.html`
 - 521 words · H1: "How to get a racing license" · 1 images · 6 internal links
 
 ## /paths-into-racing/ — `paths-into-racing.html`
-- 3125 words · H1: "How much does it cost to start racing? Every route, costed end to end" · 2 images · 15 internal links
+- 2413 words · H1: "How much does it cost to start racing? Every route, costed end to end" · 2 images · 13 internal links
+
+## /hoosier-super-tour-season-cost/ — `super-tour-season.html`
+- 697 words · H1: "What a Hoosier Super Tour season costs in our SRF3" · 1 images · 11 internal links
 
 ## /contact-us/ — `contact.html`
 - 311 words · H1: "Contact B2 Motorsports" · 1 images · 7 internal links
