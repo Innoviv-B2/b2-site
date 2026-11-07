@@ -64,7 +64,7 @@
 - 521 words · H1: "How to get a racing license" · 1 images · 6 internal links
 
 ## /paths-into-racing/ — `paths-into-racing.html`
-- 2413 words · H1: "How much does it cost to start racing? Every route, costed end to end" · 2 images · 13 internal links
+- 2412 words · H1: "How much does it cost to start racing? Every route, costed end to end" · 3 images · 13 internal links
 
 ## /hoosier-super-tour-season-cost/ — `super-tour-season.html`
 - 697 words · H1: "What a Hoosier Super Tour season costs in our SRF3" · 1 images · 11 internal links
@@ -97,7 +97,7 @@
 - 888 words · H1: "How to Choose a Prep Shop" · 1 images · 6 internal links
 
 ## /summer-sizzle-weekend-at-road-atlanta/ — `post-summer-sizzle-weekend-at-road-atlanta.html`
-- 2135 words · H1: "Summer Sizzle Weekend at Road Atlanta" · 6 images · 8 internal links
+- 2143 words · H1: "Summer Sizzle Weekend at Road Atlanta" · 6 images · 8 internal links
 
 ## /sponsors/ — `sponsors.html`
 - 663 words · H1: "Motorsports hospitality that puts your brand at the track." · 2 images · 4 internal links
