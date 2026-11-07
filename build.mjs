@@ -6,6 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { NOT_PUBLISHED, assetLeaks } from "./tools/check-assets.mjs";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const SRC = path.join(ROOT, "src");
@@ -424,19 +425,22 @@ ${site.ghl.trackingId ? `<script src="${site.ghl.trackingScript}" data-tracking-
 </html>
 `;
 }
-function copyDir(from, to) {
+// skip(name) leaves a file out. The photo notes (assets/img/manifest.json and README.md: subjects, sources,
+// release notes) stay in the repo and are never published (B-02, 6 Nov 2026); see tools/check-assets.mjs.
+const unpublished = (f) => NOT_PUBLISHED.test(f);
+function copyDir(from, to, skip = () => false) {
   if (!fs.existsSync(from)) return;
   fs.mkdirSync(to, { recursive: true });
   for (const f of fs.readdirSync(from)) {
     const s = path.join(from, f), d = path.join(to, f);
-    if (fs.statSync(s).isDirectory()) copyDir(s, d); else fs.copyFileSync(s, d);
+    if (fs.statSync(s).isDirectory()) copyDir(s, d, skip); else if (!skip(f)) fs.copyFileSync(s, d);
   }
 }
 function buildDist() {
   const DIST = path.join(ROOT, "dist");
   fs.rmSync(DIST, { recursive: true, force: true });
   fs.mkdirSync(path.join(DIST, "assets"), { recursive: true });
-  copyDir(path.join(ROOT, "assets"), path.join(DIST, "assets"));
+  copyDir(path.join(ROOT, "assets"), path.join(DIST, "assets"), unpublished);
   fs.writeFileSync(path.join(DIST, "assets", "site.css"), css);
   fs.writeFileSync(path.join(DIST, "assets", "site.js"), js);
   for (const p of pages) {
@@ -609,7 +613,11 @@ if (!CHECK_ONLY) {
   errCount += defects.length;
   fs.mkdirSync(path.join(ROOT, "review"), { recursive: true });
   fs.writeFileSync(path.join(ROOT, "review", "index.html"), reviewHtml(reports));
-  copyDir(path.join(ROOT, "assets", "img"), path.join(ROOT, "review", "assets", "img")); // so the review file also works locally
+  copyDir(path.join(ROOT, "assets", "img"), path.join(ROOT, "review", "assets", "img"), unpublished); // so the review file also works locally
   console.log(`\nWrote ${dist} (${pages.length} pages) and review/index.html`);
+  // A .json or .md file under dist/assets stops the build, with or without --strict, so Pages never deploys it.
+  const leaks = assetLeaks(dist);
+  if (leaks.length) { console.error(`\nUnpublished files in dist/assets (tools/check-assets.mjs): ${leaks.join(", ")}. Build failed.`); process.exitCode = 1; }
+  else console.log("No .json or .md file in dist/assets.");
 }
 if (errCount && args.has("--strict")) process.exit(1);
