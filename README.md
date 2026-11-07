@@ -32,7 +32,8 @@ needs-Cliff flags still on the pages to `docs/reports/open-notes.md`.
 | `src/data/events.json` | The race calendar: the approved event feed from b2-event-calendar, which the build renders as the calendar table, its Event schema and the next-events rail. Never edited by hand |
 | `tools/calendar-update.mjs` | Copies that feed in and prints what changes; `--branch --push` puts the change on `events/<date>` for a Cloudflare preview (never on `main`; the merge is the publish) |
 | `src/redirects.txt` | Every old WordPress URL → its new page, in Cloudflare's `_redirects` syntax |
-| `assets/img/` | Optimized photos (JPEG 1600/800 + WebP) and `manifest.json` with subjects and alt text |
+| `assets/img/` | Optimized photos (JPEG 1600/800 + WebP) and `manifest.json` with subjects and alt text. The build publishes the photos only: no `.json` or `.md` file under `assets/` reaches `dist/` |
+| `tools/check-assets.mjs` | Fails if a `.json` or `.md` file is in `dist/assets/`; the build runs it, and `node tools/check-assets.mjs <folder>` checks any built folder |
 | `build.mjs` | The builder and the checker |
 | `PAGE-SPEC.md` | How to write a page: classes, forms, conventions, SEO rules |
 | `docs/cloudflare.md` | Hosting: Pages, Zaraz, the switch-over |
@@ -89,4 +90,5 @@ because that event's Price it link would open with no transport price. To add th
 One `<h1>`, title and meta lengths, keyphrase in title/meta/H1/body, alt text on every image,
 lazy-loading, internal links resolve to real pages, the contact conventions (phone, emails, the shop
 address), the tagline's capital M, the brand purple, no dead links from the old site; and on the
-built site, the 25 Oct audit's defects.
+built site, the 25 Oct audit's defects. The build also fails (exit 1, with or without `--strict`) if a
+`.json` or `.md` file is in `dist/assets/`: the photo notes in `assets/img/` stay in the repository.
